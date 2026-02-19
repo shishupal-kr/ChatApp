@@ -1,5 +1,6 @@
 package com.shishupal.chatapp.service;
 
+import com.shishupal.chatapp.dto.LoginRequest;
 import com.shishupal.chatapp.dto.RegisterRequest;
 import com.shishupal.chatapp.entity.User;
 import com.shishupal.chatapp.repository.UserRepository;
@@ -39,5 +40,18 @@ public class UserService {
        userRepository.save(user); //save user to db
 
        return "user registered successfully!!";
+    }
+
+    //added login logic
+    public String loginUser(LoginRequest request) {
+
+        User user = userRepository.findByUsername(request.getUsername())
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
+            throw new RuntimeException("Invalid password");
+        }
+
+        return "Login successful";
     }
 }
