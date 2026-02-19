@@ -13,6 +13,11 @@ public class UserService {
     private final UserRepository userRepository;
 
     public String registerUser(RegisterRequest request){
+        //for debug
+        System.out.println("Username: " + request.getUsername());
+        System.out.println("Email: " + request.getEmail());
+        System.out.println("Password: " + request.getPassword());
+
        if (userRepository.findByUsername(request.getUsername()).isPresent()) {
            return "Username already exists";
        }
