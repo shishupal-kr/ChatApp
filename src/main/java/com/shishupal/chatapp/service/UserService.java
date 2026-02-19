@@ -4,6 +4,7 @@ import com.shishupal.chatapp.dto.RegisterRequest;
 import com.shishupal.chatapp.entity.User;
 import com.shishupal.chatapp.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Service;
 public class UserService {
 
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder; //inject password encoder
 
     public String registerUser(RegisterRequest request){
         //for debug
@@ -29,7 +31,8 @@ public class UserService {
        User user = User.builder()
                .username(request.getUsername())
                .email(request.getEmail())
-               .password(request.getPassword())
+               //.password(request.getPassword())
+               .password(passwordEncoder.encode(request.getPassword())) //update password encoder
                .status("OFFLINE")
                .build();
 
