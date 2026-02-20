@@ -18,19 +18,24 @@
     var socket = new SockJS("/chat");
     var stompClient = Stomp.over(socket);
 
-    stompClient.connect({}, function () {
+    stompClient.connect(
+        {
+            Authorization: "Bearer " + localStorage.getItem("token")
+        },
+        function () {
+            console.log("Connected with JWT");
 
-        console.log("Connected to server");
+            stompClient.subscribe("/user/queue/messages", function (message) {
 
-        stompClient.subscribe("/user/queue/messages", function (message) {
-            var chatMessage = JSON.parse(message.body);
+                var chatMessage = JSON.parse(message.body);
 
-            var li = document.createElement("li");
-            li.textContent = chatMessage.sender + ": " + chatMessage.content;
+                var li = document.createElement("li");
+                li.textContent = chatMessage.sender + ": " + chatMessage.content;
 
-            document.getElementById("messages").appendChild(li);
-        });
-    });
+                document.getElementById("messages").appendChild(li);
+            });
+        }
+    );
 
     function sendMessage() {
         var content = document.getElementById("messageInput").value;
