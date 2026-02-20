@@ -1,57 +1,54 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <meta charset="UTF-8">
     <title>ChatApp</title>
+
+    <link rel="stylesheet" href="/chat-style.css">
+
     <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/stompjs@2.3.3/lib/stomp.min.js"></script>
 </head>
 <body>
 
-<h2>ChatApp</h2>
+<div class="chat-container">
 
-<!-- Login Section -->
-<div>
-    <input id="username" placeholder="Username" />
-    <input id="password" type="password" placeholder="Password" />
-    <button onclick="login()">Login</button>
+    <div class="chat-header">
+        ChatApp
+    </div>
+
+    <div class="chat-login">
+        <input id="username" placeholder="Username" />
+        <input id="password" type="password" placeholder="Password" />
+        <button onclick="login()">Login</button>
+    </div>
+
+    <div id="messages" class="chat-messages"></div>
+
+    <div class="chat-input">
+        <input id="receiver" placeholder="Receiver Username" />
+        <input id="messageInput" placeholder="Type message..." />
+        <button onclick="sendMessage()">Send</button>
+        <button onclick="loadChatHistory()">History</button>
+    </div>
+
+    <div id="typingIndicator" class="typing-indicator"></div>
+
 </div>
-
-<hr/>
-
-<!-- Online Users -->
-<h3>Online Users</h3>
-<ul id="onlineUsers"></ul>
-
-<hr/>
-
-<!-- Chat Section -->
-<input id="receiver" placeholder="Receiver Username" />
-<br/><br/>
-<input id="messageInput" placeholder="Type message..." />
-<div id="typingIndicator" style="color: gray;"></div>
-<button onclick="sendMessage()">Send</button>
-<button onclick="loadChatHistory()">Load History</button>
-
-<ul id="messages"></ul>
 
 <script>
 
     var stompClient = null;
+    var currentUser = null;
 
-    // LOGIN FUNCTION
     function login() {
         var username = document.getElementById("username").value;
         var password = document.getElementById("password").value;
 
         fetch("/api/auth/login", {
             method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-                username: username,
-                password: password
-            })
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ username: username, password: password })
         })
         .then(response => response.text())
         .then(token => {
@@ -61,85 +58,68 @@
             }
 
             localStorage.setItem("token", token);
-            alert("Login successful");
+            currentUser = username;
+            // Show login success message
+            alert("Logged in as " + username);
             connectWebSocket();
-        })
-        .catch(error => {
-            console.error("Login error:", error);
         });
     }
 
-    // CONNECT WEBSOCKET AFTER LOGIN
     function connectWebSocket() {
+        if (stompClient && stompClient.connected) return;
+
+        var socket = new SockJS('/chat');
+        stompClient = Stomp.over(socket);
+        stompClient.debug = null;
+
         var token = localStorage.getItem("token");
 
-        if (!token) {
-            alert("No token found. Please login first.");
-            return;
-        }
+        stompClient.connect({ Authorization: "Bearer " + token }, function () {
 
-        var socket = new SockJS("/chat");
-        stompClient = Stomp.over(socket);
+            stompClient.subscribe("/user/queue/messages", function (message) {
+                var chatMessage = JSON.parse(message.body);
+                renderMessage(chatMessage);
+            });
 
-        stompClient.connect(
-            {
-                Authorization: "Bearer " + token
-            },
-            function () {
-                console.log("WebSocket connected with JWT");
+            // Auto-load history when receiver field changes
+            document.getElementById("receiver").addEventListener("change", function() {
+                if (this.value) {
+                    loadChatHistory();
+                }
+            });
 
-                // Subscribe to private messages
-                stompClient.subscribe("/user/queue/messages", function (message) {
-                    var chatMessage = JSON.parse(message.body);
-
-                    var li = document.createElement("li");
-                    li.textContent = chatMessage.sender + ": " + chatMessage.content;
-                    document.getElementById("messages").appendChild(li);
-                });
-
-                // Subscribe to online users list
-                stompClient.subscribe("/topic/online-users", function (message) {
-                    var users = JSON.parse(message.body);
-                    var list = document.getElementById("onlineUsers");
-                    list.innerHTML = "";
-
-                    users.forEach(function(user) {
-                        var li = document.createElement("li");
-                        li.textContent = user;
-                        list.appendChild(li);
-                    });
-                });
-
-                // Subscribe to typing indicator
-                stompClient.subscribe("/user/queue/typing", function(message) {
-                    document.getElementById("typingIndicator").innerText = message.body;
-
-                    setTimeout(function() {
-                        document.getElementById("typingIndicator").innerText = "";
-                    }, 2000);
-                });
-            },
-            function (error) {
-                console.error("WebSocket connection error:", error);
+            // If receiver already filled before login, load immediately
+            var receiver = document.getElementById("receiver").value;
+            if (receiver) {
+                loadChatHistory();
             }
-        );
+        });
     }
 
-    // SEND PRIVATE MESSAGE
-    function sendMessage() {
+    function renderMessage(chatMessage) {
+        var messageDiv = document.createElement("div");
+        messageDiv.classList.add("message");
 
-        if (!stompClient || !stompClient.connected) {
-            alert("WebSocket not connected yet.");
-            return;
+        if (chatMessage.sender === currentUser) {
+            messageDiv.classList.add("sent");
+        } else {
+            messageDiv.classList.add("received");
         }
+
+        messageDiv.innerText = chatMessage.content;
+
+        var container = document.getElementById("messages");
+        container.appendChild(messageDiv);
+        container.scrollTop = container.scrollHeight;
+    }
+
+    function sendMessage() {
+        if (!stompClient || !stompClient.connected) return;
 
         var content = document.getElementById("messageInput").value;
         var receiver = document.getElementById("receiver").value;
 
-        if (!receiver || !content) {
-            alert("Receiver and message required");
-            return;
-        }
+        if (!receiver || !content) return;
 
         stompClient.send("/app/private-message", {}, JSON.stringify({
             receiver: receiver,
@@ -149,73 +129,29 @@
         document.getElementById("messageInput").value = "";
     }
 
-    //chat history
     function loadChatHistory() {
-
         var receiver = document.getElementById("receiver").value;
         var token = localStorage.getItem("token");
 
-        console.log("Receiver:", receiver);
-        console.log("Token:", token);
-
         fetch("/api/chat/history/" + receiver, {
             method: "GET",
-            headers: {
-                "Authorization": "Bearer " + token
-            }
+            headers: { "Authorization": "Bearer " + token }
         })
-            .then(response => {
-                console.log("Status:", response.status);
-                return response.json();
-            })
-            .then(messages => {
-
-                console.log("Messages received:", messages);
-
-                const list = document.getElementById("messages");
-
-                if (!list) {
-                    console.error("UL element not found!");
-                    return;
-                }
-
-                list.innerHTML = "";
-
-                if (!messages || messages.length === 0) {
-                    list.innerHTML = "<li>No messages found</li>";
-                    return;
-                }
-
-                messages.forEach(msg => {
-                    console.log("Rendering:", msg);
-
-                    const li = document.createElement("li");
-                    li.textContent = msg.sender + " : " + msg.content;
-                    list.appendChild(li);
-                });
-            })
-            .catch(error => {
-                console.error("History error:", error);
-            });
+        .then(response => response.json())
+        .then(messages => {
+            var container = document.getElementById("messages");
+            container.innerHTML = "";
+            messages.forEach(msg => renderMessage(msg));
+        });
     }
 
-    //typing event
     document.getElementById("messageInput").addEventListener("input", function() {
-
         var receiver = document.getElementById("receiver").value;
-
         if (!receiver || !stompClient || !stompClient.connected) return;
 
-        stompClient.send("/app/typing", {}, JSON.stringify({
-            receiver: receiver
-        }));
+        stompClient.send("/app/typing", {}, JSON.stringify({ receiver: receiver }));
     });
 
-    window.onload = function() {
-        if (localStorage.getItem("token")) {
-            connectWebSocket();
-        }
-    };
 </script>
 
 </body>

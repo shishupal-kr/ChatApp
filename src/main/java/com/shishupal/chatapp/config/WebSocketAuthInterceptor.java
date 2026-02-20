@@ -26,12 +26,14 @@ public class WebSocketAuthInterceptor implements ChannelInterceptor {
 
     @Override
     public Message<?> preSend(Message<?> message, MessageChannel channel) {
-        StompHeaderAccessor accessor = StompHeaderAccessor.wrap(message);
+        StompHeaderAccessor accessor =
+                org.springframework.messaging.support.MessageHeaderAccessor
+                        .getAccessor(message, StompHeaderAccessor.class);
 
-        // 1) If user already present on the message, keep it
-        if (accessor.getUser() != null) {
+        if (accessor == null) {
             return message;
         }
+
 
         // 2) If we previously stored auth in the WebSocket session, restore it
         Map<String, Object> sessionAttributes = accessor.getSessionAttributes();
@@ -41,6 +43,13 @@ public class WebSocketAuthInterceptor implements ChannelInterceptor {
                 accessor.setUser(auth);
                 return message;
             }
+        }
+
+        // 2.5) Block SEND frames if no authenticated user is attached
+        if (StompCommand.SEND.equals(accessor.getCommand())
+                && accessor.getUser() == null) {
+            System.out.println("Unauthenticated SEND blocked.");
+            throw new IllegalArgumentException("User not authenticated");
         }
 
         // 3) Only attempt JWT extraction when client provides a token (usually on CONNECT)

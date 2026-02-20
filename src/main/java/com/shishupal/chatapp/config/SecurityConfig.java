@@ -28,15 +28,16 @@ public class SecurityConfig {
                 )
                 .httpBasic(httpBasic -> httpBasic.disable())
                 .formLogin(form -> form.disable())
-                            .authorizeHttpRequests(auth -> auth
-                                    .requestMatchers("/api/auth/**").permitAll()
-                                    .requestMatchers("/chat/**").permitAll()
-                                    .requestMatchers("/topic/**").permitAll()
-                                    .requestMatchers("/app/**").permitAll()
-                                    .requestMatchers("/chat-test.html").permitAll()
-                                    .anyRequest().authenticated()
-                                    //.anyRequest().permitAll()
-                            )
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/api/auth/**").permitAll()
+                        .requestMatchers("/chat/**").permitAll()
+                        .requestMatchers("/topic/**").permitAll()
+                        .requestMatchers("/app/**").permitAll()
+                        .requestMatchers("/*.html").permitAll()
+                        .requestMatchers("/*.css").permitAll()
+                        .requestMatchers("/*.js").permitAll()
+                        .anyRequest().authenticated()
+                )
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
