@@ -30,12 +30,14 @@
         <java.version>25</java.version>
     </properties>
     <dependencies>
+        <!-- JWT API -->
         <dependency>
             <groupId>io.jsonwebtoken</groupId>
             <artifactId>jjwt-api</artifactId>
             <version>0.11.5</version>
         </dependency>
 
+        <!-- JWT Implementation -->
         <dependency>
             <groupId>io.jsonwebtoken</groupId>
             <artifactId>jjwt-impl</artifactId>
@@ -43,6 +45,7 @@
             <scope>runtime</scope>
         </dependency>
 
+        <!-- JWT Jackson Support -->
         <dependency>
             <groupId>io.jsonwebtoken</groupId>
             <artifactId>jjwt-jackson</artifactId>

@@ -7,6 +7,7 @@ import com.shishupal.chatapp.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import com.shishupal.chatapp.service.JwtService;
 
 @Service
 @RequiredArgsConstructor
@@ -14,19 +15,16 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder; //inject password encoder
+    private final JwtService jwtService;
 
     public String registerUser(RegisterRequest request){
-        //for debug
-        System.out.println("Username: " + request.getUsername());
-        System.out.println("Email: " + request.getEmail());
-        System.out.println("Password: " + request.getPassword());
 
        if (userRepository.findByUsername(request.getUsername()).isPresent()) {
-           return "Username already exists";
+           throw new IllegalArgumentException("Username already exists");
        }
 
        if (userRepository.findByEmail(request.getEmail()).isPresent()) {
-           return "Email already exists";
+           throw new IllegalArgumentException("Email already exists");
        }
 
        User user = User.builder()
@@ -39,19 +37,19 @@ public class UserService {
 
        userRepository.save(user); //save user to db
 
-       return "user registered successfully!!";
+       return "Registration successful";
     }
 
     //added login logic
     public String loginUser(LoginRequest request) {
 
         User user = userRepository.findByUsername(request.getUsername())
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new IllegalArgumentException("User not found"));
 
         if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
-            throw new RuntimeException("Invalid password");
+            throw new IllegalArgumentException("Invalid password");
         }
-
-        return "Login successful";
+        //return "Login successful";
+        return jwtService.generateToken(user.getUsername());
     }
 }
