@@ -64,9 +64,16 @@
         { Authorization: "Bearer " + token },
         function () {
 
+            // Receive private messages
             stompClient.subscribe("/user/queue/messages", function (message) {
                 var msg = JSON.parse(message.body);
                 renderMessage(msg);
+            });
+
+            // Subscribe to online users topic to update header indicator
+            stompClient.subscribe("/topic/online-users", function (message) {
+                var onlineUsers = JSON.parse(message.body);
+                updateOnlineIndicator(onlineUsers);
             });
 
             loadHistory();
@@ -144,6 +151,19 @@
         var container = document.getElementById("messages");
         container.appendChild(wrapper);
         container.scrollTop = container.scrollHeight;
+    }
+
+    function updateOnlineIndicator(onlineUsers) {
+
+        var wrapper = document.getElementById("profileWrapper");
+
+        if (onlineUsers.includes(selectedUser)) {
+            wrapper.classList.remove("offline");
+            wrapper.classList.add("online");
+        } else {
+            wrapper.classList.remove("online");
+            wrapper.classList.add("offline");
+        }
     }
 
 </script>
