@@ -71,6 +71,12 @@
               handleIncomingMessage(msg);
             });
 
+            // Listen for typing indicator
+            stompClient.subscribe("/user/queue/typing", function (message) {
+              var typingUser = message.body;
+              showTypingPreview(typingUser);
+            });
+
           }
   );
 
@@ -190,6 +196,30 @@
         wrapper.classList.add('offline');
       }
     });
+  }
+
+  function showTypingPreview(username) {
+
+    var container = document.getElementById("friendList");
+    var wrapper = container.querySelector("[data-user='" + username + "']");
+
+    if (!wrapper) return;
+
+    var parentItem = wrapper.closest(".friend-item");
+    var preview = parentItem.querySelector(".friend-message");
+
+    preview.innerText = "Typing...";
+    preview.style.fontStyle = "italic";
+    preview.style.color = "#25d366";
+
+    // Reset after 2 seconds
+    setTimeout(function () {
+      fetch("/api/chat/conversations", {
+        headers: { Authorization: "Bearer " + token }
+      })
+      .then(res => res.json())
+      .then(data => renderConversations(data));
+    }, 2000);
   }
 
   function logout() {

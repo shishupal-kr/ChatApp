@@ -99,6 +99,26 @@
         });
     }
 
+    // Send typing indicator when user types
+    var messageInput = document.getElementById("messageInput");
+
+    var typingTimeout;
+
+    messageInput.addEventListener("input", function () {
+
+        // Send typing event
+        stompClient.send("/app/typing", {}, JSON.stringify({
+            receiver: selectedUser
+        }));
+
+        // Optional: prevent spamming (basic debounce)
+        clearTimeout(typingTimeout);
+        typingTimeout = setTimeout(function () {
+            // You can later send "stopped typing" here if needed
+        }, 1000);
+
+    });
+
     function sendMessage() {
 
         var content = document.getElementById("messageInput").value;

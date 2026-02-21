@@ -1,6 +1,7 @@
 package com.shishupal.chatapp.controller;
 
 import com.shishupal.chatapp.dto.ChatMessage;
+import com.shishupal.chatapp.dto.TypingDTO;
 import com.shishupal.chatapp.entity.ChatMessageEntity;
 import com.shishupal.chatapp.repository.ChatMessageRepository;
 import org.springframework.transaction.annotation.Transactional;
@@ -82,18 +83,19 @@ public class ChatController {
         );
     }
 
-    //typing method
+    // typing indicator
     @MessageMapping("/typing")
-    public void typingIndicator(ChatMessage message, Principal principal) {
+    public void typingIndicator(TypingDTO dto, Principal principal) {
 
         if (principal == null) return;
+        if (dto == null || dto.getReceiver() == null || dto.getReceiver().isBlank()) return;
 
         String sender = principal.getName();
 
         messagingTemplate.convertAndSendToUser(
-                message.getReceiver(),
+                dto.getReceiver(),
                 "/queue/typing",
-                sender + " is typing..."
+                sender
         );
     }
 
