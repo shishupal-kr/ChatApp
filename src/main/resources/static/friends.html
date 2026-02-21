@@ -36,49 +36,99 @@
   var stompClient = Stomp.over(socket);
   stompClient.debug = null;
 
-  // Show default state initially
-  renderUsers([]);
 
+  // Load conversations immediately (independent of WebSocket)
+  fetch("/api/chat/conversations", {
+    headers: { Authorization: "Bearer " + token }
+  })
+          .then(res => res.json())
+          .then(data => renderConversations(data));
+
+
+  // Then connect WebSocket only for online updates
   stompClient.connect(
           { Authorization: "Bearer " + token },
           function () {
 
             stompClient.subscribe("/topic/online-users", function (message) {
               var users = JSON.parse(message.body);
-              renderUsers(users);
+              updateOnlineStatus(users);
             });
 
           }
   );
 
-  function renderUsers(users) {
+
+  function renderConversations(conversations) {
 
     var container = document.getElementById("friendList");
     container.innerHTML = "";
 
-    var onlineUsers = users.filter(function(user) {
-      return user !== currentUser;
-    });
-
-    if (onlineUsers.length === 0) {
+    if (!conversations || conversations.length === 0) {
       var empty = document.createElement("div");
       empty.className = "empty-state";
-      empty.innerText = "No friends online";
+      empty.innerText = "No conversations yet";
       container.appendChild(empty);
       return;
     }
 
-    onlineUsers.forEach(function(user) {
+    conversations.forEach(function(conv) {
 
       var div = document.createElement("div");
       div.className = "friend-item";
-      div.innerText = user;
+
+      // Format timestamp to HH:MM
+      var time = "";
+      if (conv.timestamp) {
+        var date = new Date(conv.timestamp);
+        time = date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+      }
+
+      // Unread count (if backend not sending yet, default 0)
+      var unread = conv.unreadCount || 0;
+      var unreadHtml = unread > 0 ?
+          "<span class='unread-badge'>" + unread + "</span>" : "";
+
+      var initial = conv.username.charAt(0).toUpperCase();
+
+      div.innerHTML =
+        "<div class='friend-left'>" +
+            "<div class='friend-avatar-wrapper offline' data-user='" + conv.username + "'>" +
+                "<div class='friend-avatar'>" + initial + "</div>" +
+            "</div>" +
+            "<div class='friend-text'>" +
+                "<div class='friend-name'>" + conv.username + "</div>" +
+                "<div class='friend-message'>" + (conv.lastMessage || "") + "</div>" +
+            "</div>" +
+        "</div>" +
+        "<div class='friend-right'>" +
+            "<div class='friend-time'>" + time + "</div>" +
+            unreadHtml +
+        "</div>";
 
       div.onclick = function() {
-        window.location.href = "/chat.html?user=" + user;
+        window.location.href = "/chat.html?user=" + conv.username;
       };
 
       container.appendChild(div);
+    });
+  }
+
+
+  function updateOnlineStatus(onlineUsers) {
+
+    var wrappers = document.querySelectorAll('.friend-avatar-wrapper');
+
+    wrappers.forEach(function(wrapper) {
+      var username = wrapper.getAttribute('data-user');
+
+      if (onlineUsers.includes(username)) {
+        wrapper.classList.remove('offline');
+        wrapper.classList.add('online');
+      } else {
+        wrapper.classList.remove('online');
+        wrapper.classList.add('offline');
+      }
     });
   }
 
