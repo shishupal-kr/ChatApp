@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Friends - ChatApp</title>
+  <link rel="stylesheet" href="/chat-style.css">
+
+  <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/stompjs@2.3.3/lib/stomp.min.js"></script>
+</head>
+<body>
+
+<div class="friends-container full-screen">
+
+  <div class="friends-header">
+    <span>Chats</span>
+    <button onclick="logout()">Logout</button>
+  </div>
+
+  <div id="friendList" class="friend-list">
+    <div class="empty-state">No friends online</div>
+  </div>
+
+</div>
+
+<script>
+
+  var currentUser = localStorage.getItem("username");
+  var token = localStorage.getItem("token");
+
+  if (!currentUser || !token) {
+    window.location.href = "/login.html";
+  }
+
+  var socket = new SockJS('/chat');
+  var stompClient = Stomp.over(socket);
+  stompClient.debug = null;
+
+  // Show default state initially
+  renderUsers([]);
+
+  stompClient.connect(
+          { Authorization: "Bearer " + token },
+          function () {
+
+            stompClient.subscribe("/topic/online-users", function (message) {
+              var users = JSON.parse(message.body);
+              renderUsers(users);
+            });
+
+          }
+  );
+
+  function renderUsers(users) {
+
+    var container = document.getElementById("friendList");
+    container.innerHTML = "";
+
+    var onlineUsers = users.filter(function(user) {
+      return user !== currentUser;
+    });
+
+    if (onlineUsers.length === 0) {
+      var empty = document.createElement("div");
+      empty.className = "empty-state";
+      empty.innerText = "No friends online";
+      container.appendChild(empty);
+      return;
+    }
+
+    onlineUsers.forEach(function(user) {
+
+      var div = document.createElement("div");
+      div.className = "friend-item";
+      div.innerText = user;
+
+      div.onclick = function() {
+        window.location.href = "/chat.html?user=" + user;
+      };
+
+      container.appendChild(div);
+    });
+  }
+
+  function logout() {
+    localStorage.clear();
+    window.location.href = "/login.html";
+  }
+
+</script>
+
+</body>
+</html>

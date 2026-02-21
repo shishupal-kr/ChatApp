@@ -10,13 +10,13 @@ import java.util.List;
 public interface ChatMessageRepository
         extends JpaRepository<ChatMessageEntity, Long> {
 
-    @Query("""
-    SELECT c FROM ChatMessageEntity c
-    WHERE (LOWER(c.sender) = LOWER(:user1) AND LOWER(c.receiver) = LOWER(:user2))
-       OR (LOWER(c.sender) = LOWER(:user2) AND LOWER(c.receiver) = LOWER(:user1))
-    ORDER BY c.timestamp ASC
-""")
-    List<ChatMessageEntity> findChatHistory(
+    @Query(
+            "SELECT m FROM ChatMessageEntity m " +
+                    "WHERE (m.sender = :user1 AND m.receiver = :user2) " +
+                    "   OR (m.sender = :user2 AND m.receiver = :user1) " +
+                    "ORDER BY m.timestamp ASC"
+    )
+    List<ChatMessageEntity> findConversation(
             @Param("user1") String user1,
             @Param("user2") String user2
     );

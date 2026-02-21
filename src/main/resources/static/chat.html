@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Chat - ChatApp</title>
+    <link rel="stylesheet" href="/chat-style.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/stompjs@2.3.3/lib/stomp.min.js"></script>
+</head>
+<body>
+
+<div class="glass-chat-container">
+
+    <!-- HEADER -->
+    <div class="glass-header">
+
+        <div class="profile-wrapper online" id="profileWrapper">
+            <div class="profile-circle" id="profileCircle"></div>
+        </div>
+
+        <div class="chat-user-info">
+            <span id="chatTitle" class="chat-username"></span>
+        </div>
+
+    </div>
+
+    <!-- MESSAGES -->
+    <div id="messages" class="glass-messages"></div>
+
+    <!-- INPUT -->
+    <div class="glass-input">
+        <input id="messageInput" class="glass-message-input" placeholder="Message...">
+        <button class="glass-send-btn" onclick="sendMessage()">➤</button>
+    </div>
+
+</div>
+
+<script>
+
+    var currentUser = localStorage.getItem("username");
+    var token = localStorage.getItem("token");
+
+    if (!currentUser || !token) {
+        window.location.href = "/login.html";
+    }
+
+    var params = new URLSearchParams(window.location.search);
+    var selectedUser = params.get("user");
+
+    if (!selectedUser) {
+        window.location.href = "/friends.html";
+    }
+
+    // Set header name and profile initial
+    document.getElementById("chatTitle").innerText = selectedUser;
+    document.getElementById("profileCircle").innerText = selectedUser.charAt(0).toUpperCase();
+
+    var socket = new SockJS('/chat');
+    var stompClient = Stomp.over(socket);
+    stompClient.debug = null;
+
+    stompClient.connect(
+        { Authorization: "Bearer " + token },
+        function () {
+
+            stompClient.subscribe("/user/queue/messages", function (message) {
+                var msg = JSON.parse(message.body);
+                renderMessage(msg);
+            });
+
+            loadHistory();
+        }
+    );
+
+    function loadHistory() {
+
+        fetch("/api/chat/history/" + selectedUser, {
+            headers: { Authorization: "Bearer " + token }
+        })
+        .then(res => res.json())
+        .then(messages => {
+
+            var container = document.getElementById("messages");
+            container.innerHTML = "";
+
+            messages.forEach(function(msg) {
+                renderMessage(msg);
+            });
+
+            container.scrollTop = container.scrollHeight;
+        });
+    }
+
+    function sendMessage() {
+
+        var content = document.getElementById("messageInput").value;
+        if (!content) return;
+
+        stompClient.send("/app/private-message", {}, JSON.stringify({
+            receiver: selectedUser,
+            content: content
+        }));
+
+        document.getElementById("messageInput").value = "";
+    }
+
+    function renderMessage(msg) {
+
+        var wrapper = document.createElement("div");
+        wrapper.classList.add("glass-message");
+
+        if (msg.sender === currentUser)
+            wrapper.classList.add("sent");
+        else
+            wrapper.classList.add("received");
+
+        var bubble = document.createElement("div");
+        bubble.classList.add("glass-bubble");
+        bubble.innerText = msg.content;
+
+        // Meta (time + ticks)
+        var meta = document.createElement("div");
+        meta.classList.add("message-meta");
+
+        var time = document.createElement("span");
+        time.classList.add("message-time");
+
+        var date = msg.timestamp ? new Date(msg.timestamp) : new Date();
+        time.innerText = date.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+
+        meta.appendChild(time);
+
+        if (msg.sender === currentUser) {
+            var ticks = document.createElement("span");
+            ticks.classList.add("message-ticks");
+            ticks.innerText = "✔✔";
+            meta.appendChild(ticks);
+        }
+
+        wrapper.appendChild(bubble);
+        wrapper.appendChild(meta);
+
+        var container = document.getElementById("messages");
+        container.appendChild(wrapper);
+        container.scrollTop = container.scrollHeight;
+    }
+
+</script>
+
+</body>
+</html>

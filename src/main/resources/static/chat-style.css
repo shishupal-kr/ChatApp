@@ -1,82 +1,324 @@
+/* ================= GLOBAL ================= */
+/* Applies base styling to entire application */
 body {
-    font-family: Arial, sans-serif;
-    background-color: #ece5dd;
-    margin: 0;
-    padding: 0;
+    margin: 0; /* Removes default browser spacing */
+    font-family: "Segoe UI", Arial, sans-serif; /* Sets default font for whole app */
+    background: #ece5dd; /* Default background (used in friends page mainly) */
 }
 
-.chat-container {
-    width: 400px;
-    height: 600px;
-    margin: 40px auto;
-    background-color: #ffffff;
-    display: flex;
-    flex-direction: column;
-    border-radius: 10px;
-    overflow: hidden;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+
+/* ================= LOGIN ================= */
+/* Full screen wrapper to center login card */
+.login-wrapper {
+    display: flex; /* Enables flexbox */
+    justify-content: center; /* Centers horizontally */
+    align-items: center; /* Centers vertically */
+    height: 100vh; /* Takes full viewport height */
+    background: linear-gradient(135deg, #075e54, #128c7e); /* Green gradient background */
 }
 
-.chat-header {
-    background-color: #075e54;
-    color: white;
-    padding: 15px;
-    font-size: 18px;
+/* White login card box */
+.login-card {
+    background: white; /* Card background */
+    padding: 40px; /* Inner spacing */
+    border-radius: 14px; /* Rounded corners */
+    width: 340px; /* Fixed card width */
+    display: flex; /* Flex layout */
+    flex-direction: column; /* Stack elements vertically */
+    box-shadow: 0 15px 35px rgba(0,0,0,0.25); /* Soft floating shadow */
+}
+
+/* Login title styling */
+.login-card h2 {
+    text-align: center; /* Center title */
+    margin-bottom: 20px; /* Space below title */
+}
+
+/* Login input fields */
+.login-card input {
+    padding: 12px; /* Inner spacing */
+    margin-bottom: 12px; /* Space between inputs */
+    border-radius: 8px; /* Rounded input */
+    border: 1px solid #ccc; /* Light border */
+    font-size: 14px; /* Text size */
+}
+
+/* Input focus effect */
+.login-card input:focus {
+    outline: none; /* Remove blue default outline */
+    border-color: #25d366; /* WhatsApp green focus */
+}
+
+/* Login button */
+.login-card button {
+    padding: 12px; /* Button padding */
+    background: #25d366; /* Green background */
+    border: none; /* Remove border */
+    color: white; /* White text */
+    border-radius: 8px; /* Rounded button */
+    font-weight: bold; /* Bold text */
+    cursor: pointer; /* Pointer on hover */
+}
+
+/* Hover effect for login button */
+.login-card button:hover {
+    background: #1ebe5d; /* Slightly darker green */
+}
+
+
+/* ================= FRIENDS ================= */
+/* Main friends screen container */
+.friends-container {
+    width: 420px; /* Fixed width (mobile style) */
+    height: 720px; /* Fixed height */
+    margin: 40px auto; /* Center horizontally */
+    background: white; /* White background */
+    border-radius: 16px; /* Rounded edges */
+    overflow: hidden; /* Hide overflow */
+    display: flex; /* Flex layout */
+    flex-direction: column; /* Vertical stacking */
+    box-shadow: 0 15px 35px rgba(0,0,0,0.2); /* Card shadow */
+}
+
+/* Top header bar */
+.friends-header {
+    background: #075e54; /* Dark green */
+    color: white; /* White text */
+    padding: 16px; /* Inner spacing */
+    font-size: 18px; /* Header size */
+    display: flex; /* Flexbox */
+    justify-content: space-between; /* Space between title & logout */
+    align-items: center; /* Vertical alignment */
+}
+
+/* Scrollable friend list area */
+.friend-list {
+    flex: 1; /* Takes remaining height */
+    overflow-y: auto; /* Enables vertical scroll */
+    background: #ffffff; /* White background */
+}
+
+/* Individual friend row */
+.friend-item {
+    padding: 16px; /* Spacing */
+    border-bottom: 1px solid #eee; /* Divider line */
+    cursor: pointer; /* Clickable */
+    font-size: 15px; /* Text size */
+    transition: 0.2s; /* Smooth hover transition */
+}
+
+/* Hover effect */
+.friend-item:hover {
+    background: #f5f5f5; /* Light gray hover */
+}
+
+/* Empty state when no friends online */
+.empty-state {
+    height: 100%; /* Full height */
+    display: flex; /* Flexbox */
+    justify-content: center; /* Horizontal center */
+    align-items: center; /* Vertical center */
+    color: #777; /* Gray text */
+    font-size: 16px; /* Slightly larger text */
+}
+
+
+/* ================= GLASS CHAT ================= */
+/* Main chat screen container */
+.glass-chat-container {
+    width: 420px; /* Fixed width */
+    height: 720px; /* Fixed height */
+    margin: 40px auto; /* Centered */
+    border-radius: 20px; /* Rounded edges */
+    display: flex; /* Flex layout */
+    flex-direction: column; /* Stack header/messages/input */
+    overflow: hidden; /* Hide overflow */
+    background: linear-gradient(135deg, #1f4037, #99f2c8); /* Gradient chat background */
+    box-shadow: 0 20px 40px rgba(0,0,0,0.3); /* Deep shadow */
+}
+
+/* Chat header bar */
+.glass-header {
+    display: flex; /* Flex layout */
+    align-items: center; /* Center vertically */
+    padding: 16px; /* Spacing */
+    background: rgba(0,0,0,0.35); /* Semi-transparent dark */
+    color: white; /* White text */
+}
+
+/* Profile outer ring */
+.profile-wrapper {
+    width: 48px; /* Circle width */
+    height: 48px; /* Circle height */
+    border-radius: 50%; /* Make circular */
+    padding: 3px; /* Inner spacing for border effect */
+    margin-right: 12px; /* Space from username */
+}
+
+/* Online state ring */
+.profile-wrapper.online {
+    border: 3px solid #00ff6a; /* Green border */
+}
+
+/* Offline state ring */
+.profile-wrapper.offline {
+    border: 3px solid white; /* White border */
+}
+
+/* Inner profile circle */
+.profile-circle {
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    border-radius: 50%; /* Circular */
+    background: #128c7e; /* Teal background */
+    display: flex; /* Flexbox */
+    align-items: center; /* Vertical center */
+    justify-content: center; /* Horizontal center */
+    color: white; /* White letter */
+    font-weight: bold; /* Bold letter */
+    font-size: 18px; /* Size of initial */
+}
+
+/* Username text */
+.chat-username {
+    font-size: 17px; /* Text size */
+    font-weight: 600; /* Semi-bold */
+}
+
+/* Messages container */
+.glass-messages {
+    flex: 1; /* Take remaining height */
+    padding: 16px; /* Spacing */
+    overflow-y: auto; /* Scroll vertically */
+    display: flex; /* Flex layout */
+    flex-direction: column; /* Stack messages */
+}
+
+/* Individual message wrapper */
+.glass-message {
+    margin-bottom: 16px; /* Space between messages */
+    max-width: 70%; /* Limit bubble width */
+    animation: fadeInUp 0.25s ease; /* Entry animation */
+}
+
+/* Sent message alignment */
+.glass-message.sent {
+    align-self: flex-end; /* Align right */
+}
+
+/* Received message alignment */
+.glass-message.received {
+    align-self: flex-start; /* Align left */
+}
+
+/* Message bubble base style */
+.glass-bubble {
+    padding: 12px 16px; /* Inner spacing */
+    border-radius: 18px; /* Rounded bubble */
+    font-size: 14px; /* Text size */
+    box-shadow: 0 6px 15px rgba(0,0,0,0.2); /* Soft bubble shadow */
+}
+
+/* Received bubble color */
+.glass-message.received .glass-bubble {
+    background: rgba(255,255,255,0.92); /* Light background */
+    color: #1a1a1a; /* Dark text */
+}
+
+/* Sent bubble color */
+.glass-message.sent .glass-bubble {
+    background: linear-gradient(135deg, #00c6ff, #0072ff); /* Blue gradient */
+    color: white; /* White text */
+}
+
+/* Message metadata container (time + ticks) */
+.message-meta {
+    display: flex; /* Horizontal layout */
+    justify-content: flex-end; /* Align to right */
+    align-items: center; /* Center vertically */
+    font-size: 11px; /* Small text */
+    margin-top: 5px; /* Space above metadata */
+}
+
+/* Sent metadata color */
+.glass-message.sent .message-meta {
+    color: rgba(255,255,255,0.85); /* Light text */
+}
+
+/* Received metadata color */
+.glass-message.received .message-meta {
+    color: #444; /* Dark gray */
+}
+
+/* Time spacing */
+.message-time {
+    margin-right: 6px; /* Space before ticks */
+}
+
+/* Tick icon styling */
+.message-ticks {
+    font-size: 12px; /* Slightly bigger */
+    color: #4fc3f7; /* Blue tick */
+}
+
+/* Input area container */
+.glass-input {
+    display: flex; /* Horizontal layout */
+    padding: 14px; /* Spacing */
+    background: rgba(0,0,0,0.35); /* Semi-transparent dark */
+}
+
+/* Message input field */
+.glass-message-input {
+    flex: 1; /* Take available width */
+    padding: 12px 16px; /* Spacing */
+    border-radius: 25px; /* Pill shape */
+    border: none; /* Remove border */
+    outline: none; /* Remove focus outline */
+}
+
+/* Send button */
+.glass-send-btn {
+    margin-left: 10px; /* Space from input */
+    background: #00c853; /* Green */
+    border: none; /* No border */
+    color: white; /* White icon */
+    font-size: 18px; /* Icon size */
+    padding: 12px 16px; /* Spacing */
+    border-radius: 50%; /* Circular */
+    cursor: pointer; /* Clickable */
+}
+
+/* Hover effect for send button */
+.glass-send-btn:hover {
+    background: #00b248; /* Darker green */
+}
+
+/* Message fade-in animation */
+@keyframes fadeInUp {
+    from {
+        opacity: 0; /* Start invisible */
+        transform: translateY(6px); /* Slightly lower */
+    }
+    to {
+        opacity: 1; /* Fully visible */
+        transform: translateY(0); /* Normal position */
+    }
+}
+
+/* Register button (secondary style) */
+.register-button {
+    padding: 12px;
+    margin-top: 10px;
+    background: transparent;
+    border: 2px solid #25d366;
+    color: #25d366;
+    border-radius: 8px;
     font-weight: bold;
-}
-
-.chat-messages {
-    flex: 1;
-    padding: 15px;
-    overflow-y: auto;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    background-color: #e5ddd5;
-}
-
-.message {
-    max-width: 70%;
-    padding: 10px 14px;
-    border-radius: 15px;
-    font-size: 14px;
-    line-height: 1.4;
-}
-
-.sent {
-    align-self: flex-end;
-    background-color: #dcf8c6;
-}
-
-.received {
-    align-self: flex-start;
-    background-color: #ffffff;
-}
-
-.chat-input {
-    display: flex;
-    padding: 10px;
-    background-color: #f0f0f0;
-}
-
-.chat-input input {
-    flex: 1;
-    padding: 10px;
-    border-radius: 20px;
-    border: 1px solid #ccc;
-    outline: none;
-}
-
-.chat-input button {
-    margin-left: 10px;
-    padding: 10px 15px;
-    border: none;
-    border-radius: 20px;
-    background-color: #075e54;
-    color: white;
     cursor: pointer;
 }
 
-.chat-input button:hover {
-    background-color: #0b7a6b;
+.register-button:hover {
+    background: #25d366;
+    color: white;
 }

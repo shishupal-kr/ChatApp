@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 
 import java.security.Principal;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Controller
 public class ChatController {
@@ -60,9 +61,12 @@ public class ChatController {
                 .receiver(receiver)
                 .content(message.getContent())
                 .timestamp(LocalDateTime.now())
+                .status("DELIVERED") // directly delivered
                 .build();
 
-        chatMessageRepository.saveAndFlush(entity);
+        chatMessageRepository.save(entity);
+        message.setId(entity.getId());
+
         System.out.println("MESSAGE SAVED TO DATABASE SUCCESSFULLY");
 
         messagingTemplate.convertAndSendToUser(
@@ -78,7 +82,7 @@ public class ChatController {
         );
     }
 
-
+    //typing method
     @MessageMapping("/typing")
     public void typingIndicator(ChatMessage message, Principal principal) {
 
@@ -90,6 +94,67 @@ public class ChatController {
                 message.getReceiver(),
                 "/queue/typing",
                 sender + " is typing..."
+        );
+    }
+
+    //mark as read
+    @MessageMapping("/read")
+    @Transactional
+    public void markAsRead(ChatMessage message, Principal principal) {
+
+        if (principal == null) return;
+
+        String currentUser = principal.getName();
+        String otherUser = message.getReceiver();
+
+        if (otherUser == null || otherUser.isBlank()) return;
+
+        java.util.List<com.shishupal.chatapp.entity.ChatMessageEntity> messages =
+                chatMessageRepository.findConversation(otherUser, currentUser);
+
+        for (ChatMessageEntity m : messages) {
+            if (m.getReceiver().equals(currentUser)
+                    && !"READ".equals(m.getStatus())) {
+                m.setStatus("READ");
+            }
+        }
+
+        chatMessageRepository.saveAll(messages);
+    }
+
+    //delete message
+    @MessageMapping("/delete")
+    @Transactional
+    public void deleteMessage(ChatMessage message, Principal principal) {
+
+        if (principal == null) return;
+
+        String currentUser = principal.getName();
+
+        if (message.getId() == null) return;
+
+        var optional = chatMessageRepository.findById(message.getId());
+
+        if (optional.isEmpty()) return;
+
+        ChatMessageEntity entity = optional.get();
+
+        // Only sender can delete
+        if (!entity.getSender().equals(currentUser)) return;
+
+        chatMessageRepository.delete(entity);
+
+        // Notify both users
+        messagingTemplate.convertAndSendToUser(
+                entity.getReceiver(),
+                "/queue/delete",
+                message.getId()
+        );
+
+        messagingTemplate.convertAndSendToUser(
+                entity.getSender(),
+                "/queue/delete",
+                message.getId()
         );
     }
 }

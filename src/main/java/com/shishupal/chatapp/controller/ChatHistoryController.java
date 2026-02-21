@@ -26,6 +26,6 @@ public class ChatHistoryController {
         String currentUser = principal.getName();
         System.out.println("History requested by: " + currentUser);
 
-        return chatMessageRepository.findChatHistory(currentUser, username);
+        return chatMessageRepository.findConversation(currentUser, username);
     }
 }

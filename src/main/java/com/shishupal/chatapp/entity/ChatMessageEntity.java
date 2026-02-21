@@ -26,4 +26,7 @@ public class ChatMessageEntity {
     private String content;
 
     private LocalDateTime timestamp;
+
+    private String status; // SENT, DELIVERED, READ
+
 }
