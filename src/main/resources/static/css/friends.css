@@ -1,0 +1,134 @@
+/* ================= GLOBAL ================= */
+body {
+    margin: 0;
+    font-family: "Segoe UI", Arial, sans-serif;
+    background: #ece5dd;
+}
+
+/* ================= FRIENDS ================= */
+.friends-container {
+    width: 420px;
+    height: 720px;
+    margin: 40px auto;
+    background: white;
+    border-radius: 16px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+}
+
+.friends-header {
+    background: #075e54;
+    color: white;
+    padding: 16px;
+    font-size: 18px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.friend-list {
+    flex: 1;
+    overflow-y: auto;
+    background: #ffffff;
+}
+
+.empty-state {
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #777;
+    font-size: 16px;
+}
+
+/* Friend item layout */
+.friend-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 14px;
+    cursor: pointer;
+    border-bottom: 1px solid #eee;
+    transition: background 0.2s ease;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.friend-item:hover {
+    background: #f5f5f5;
+    transform: translateY(-2px);
+}
+
+/* Left section */
+.friend-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+/* Profile circle */
+.friend-avatar-wrapper {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    padding: 3px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.friend-avatar-wrapper.online {
+    border: 3px solid #00ff6a; /* green */
+}
+
+.friend-avatar-wrapper.offline {
+    border: 3px solid white; /* white */
+}
+
+.friend-avatar {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background: #128c7e;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: bold;
+    font-size: 16px;
+}
+
+/* Name */
+.friend-name {
+    font-weight: 600;
+    font-size: 15px;
+}
+
+/* Last message preview */
+.friend-message {
+    font-size: 13px;
+    color: #666;
+}
+
+/* Right section */
+.friend-right {
+    text-align: right;
+}
+
+/* Time */
+.friend-time {
+    font-size: 12px;
+    color: #999;
+    margin-bottom: 4px;
+}
+
+/* Unread badge */
+.unread-badge {
+    background: #25d366;
+    color: white;
+    font-size: 12px;
+    padding: 3px 7px;
+    border-radius: 12px;
+    display: inline-block;
+}

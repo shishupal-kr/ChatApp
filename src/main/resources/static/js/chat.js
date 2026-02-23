@@ -1,0 +1,201 @@
+var currentUser = localStorage.getItem("username");
+var token = localStorage.getItem("token");
+var readTriggered = false;
+
+if (!currentUser || !token) {
+    window.location.href = "/html/login.html";
+}
+
+var params = new URLSearchParams(window.location.search);
+var selectedUser = params.get("user");
+
+if (!selectedUser) {
+    window.location.href = "/html/friends.html";
+}
+
+// Set header name and profile initial
+document.getElementById("chatTitle").innerText = selectedUser;
+document.getElementById("profileCircle").innerText = selectedUser.charAt(0).toUpperCase();
+
+var socket = new SockJS('/chat');
+var stompClient = Stomp.over(socket);
+stompClient.debug = null;
+
+stompClient.connect(
+    { Authorization: "Bearer " + token },
+    function () {
+
+        // Receive private messages
+        stompClient.subscribe("/user/queue/messages", function (message) {
+            var msg = JSON.parse(message.body);
+            renderMessage(msg);
+        });
+
+        // Subscribe to online users topic to update header indicator
+        stompClient.subscribe("/topic/online-users", function (message) {
+            var onlineUsers = JSON.parse(message.body);
+            updateOnlineIndicator(onlineUsers);
+        });
+
+        // Listen for read receipts (turn ticks blue live)
+        stompClient.subscribe("/user/queue/read-receipt", function (message) {
+            var messageId = message.body;
+
+            var tickElement = document.querySelector(
+                "[data-id='" + messageId + "'] .message-ticks"
+            );
+
+            if (tickElement) {
+                tickElement.innerText = "✔✔";
+                tickElement.style.color = "#4fc3f7";
+            }
+        });
+
+        // Listen for delivered receipts (turn ticks double grey)
+        stompClient.subscribe("/user/queue/delivered", function (message) {
+
+            var messageId = message.body;
+
+            var tickElement = document.querySelector(
+                "[data-id='" + messageId + "'] .message-ticks"
+            );
+
+            if (tickElement) {
+                tickElement.innerText = "✔✔";
+                tickElement.style.color = "#999";
+            }
+        });
+
+        loadHistory();
+    }
+);
+
+function loadHistory() {
+
+    fetch("/api/chat/history/" + selectedUser, {
+        headers: { Authorization: "Bearer " + token }
+    })
+    .then(res => res.json())
+    .then(messages => {
+
+        var container = document.getElementById("messages");
+        container.innerHTML = "";
+
+        messages.forEach(function(msg) {
+            renderMessage(msg);
+        });
+
+        container.scrollTop = container.scrollHeight;
+
+        // Mark messages as READ only once when chat is opened
+        if (!readTriggered) {
+
+            var hasUnread = messages.some(function(m) {
+                return m.sender === selectedUser &&
+                       m.status === "DELIVERED";
+            });
+
+            if (hasUnread) {
+                stompClient.send("/app/read", {}, JSON.stringify({
+                    receiver: selectedUser
+                }));
+
+                readTriggered = true;
+            }
+        }
+    });
+}
+
+// Send typing indicator when user types
+var messageInput = document.getElementById("messageInput");
+
+var typingTimeout;
+
+messageInput.addEventListener("input", function () {
+
+    // Send typing event
+    stompClient.send("/app/typing", {}, JSON.stringify({
+        receiver: selectedUser
+    }));
+
+    // Optional: prevent spamming (basic debounce)
+    clearTimeout(typingTimeout);
+    typingTimeout = setTimeout(function () {
+        // You can later send "stopped typing" here if needed
+    }, 1000);
+
+});
+
+function sendMessage() {
+
+    var content = document.getElementById("messageInput").value;
+    if (!content) return;
+
+    stompClient.send("/app/private-message", {}, JSON.stringify({
+        receiver: selectedUser,
+        content: content
+    }));
+
+    document.getElementById("messageInput").value = "";
+}
+
+function renderMessage(msg) {
+
+    var wrapper = document.createElement("div");
+    if (msg.id) {
+        wrapper.setAttribute("data-id", msg.id);
+    }
+    wrapper.classList.add("glass-message");
+
+    if (msg.sender === currentUser)
+        wrapper.classList.add("sent");
+    else
+        wrapper.classList.add("received");
+
+    var bubble = document.createElement("div");
+    bubble.classList.add("glass-bubble");
+    bubble.innerText = msg.content;
+
+    // Meta (time + ticks)
+    var meta = document.createElement("div");
+    meta.classList.add("message-meta");
+
+    var time = document.createElement("span");
+    time.classList.add("message-time");
+
+    var date = msg.timestamp ? new Date(msg.timestamp) : new Date();
+    time.innerText = date.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+
+    meta.appendChild(time);
+
+    if (msg.sender === currentUser) {
+
+        var ticks = document.createElement("span");
+        ticks.classList.add("message-ticks");
+
+        // Default if backend does not send status yet
+        var status = msg.status || "SENT";
+
+        if (status === "SENT") {
+            ticks.innerText = "✔"; // 1 tick
+            ticks.style.color = "#999";
+        }
+        else if (status === "DELIVERED") {
+            ticks.innerText = "✔✔"; // 2 grey ticks
+            ticks.style.color = "#999";
+        }
+        else if (status === "READ") {
+            ticks.innerText = "✔✔"; // 2 blue ticks
+            ticks.style.color = "#4fc3f7";
+        }
+
+        meta.appendChild(ticks);
+    }
+
+    wrapper.appendChild(bubble);
+    wrapper.appendChild(meta);
+
+    var container = document.getElementById("messages");
+    container.appendChild(wrapper);
+    container.scrollTop = container.scrollHeight;
+}

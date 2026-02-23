@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Friends - ChatApp</title>
+  <link rel="stylesheet" href="/css/friends.css">
+
+  <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/stompjs@2.3.3/lib/stomp.min.js" defer></script>
+  <script src="/js/friends.js" defer></script>
+</head>
+<body>
+
+<div class="friends-container full-screen">
+
+  <div class="friends-header">
+    <span>Chats</span>
+    <button onclick="logout()">Logout</button>
+  </div>
+
+  <div id="friendList" class="friend-list">
+    <div class="empty-state">No friends online</div>
+  </div>
+
+</div>
+
+</body>
+</html>

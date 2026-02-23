@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Register - ChatApp</title>
+    <link rel="stylesheet" href="/css/register.css">
+    <script src="/js/register.js" defer></script>
+</head>
+<body>
+
+<div class="login-wrapper">
+
+    <div class="login-card">
+        <h2>Create Account</h2>
+
+        <input id="username" placeholder="Username">
+        <input id="email" type="email" placeholder="Email">
+        <input id="password" type="password" placeholder="Password">
+        <input id="confirmPassword" type="password" placeholder="Confirm Password">
+
+        <button onclick="register()">Register</button>
+        <button class="register-button" onclick="goToLogin()">Back to Login</button>
+
+        <p id="errorMessage" style="color:red; font-size:13px; margin-top:10px;"></p>
+    </div>
+
+</div>
+
+</body>
+</html>
