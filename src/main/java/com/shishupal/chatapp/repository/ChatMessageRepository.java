@@ -8,9 +8,11 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 import java.util.Optional;
 
+ // used for CRUD operations on ChatMessageEntity entity
 public interface ChatMessageRepository
         extends JpaRepository<ChatMessageEntity, Long> {
 
+    // Returns all messages between two users
     @Query(
             "SELECT m FROM ChatMessageEntity m " +
                     "WHERE (m.sender = :user1 AND m.receiver = :user2) " +
@@ -22,6 +24,7 @@ public interface ChatMessageRepository
             @Param("user2") String user2
     );
 
+    // Returns distinct users who have sent or received messages
     @Query("""
     SELECT DISTINCT
     CASE
