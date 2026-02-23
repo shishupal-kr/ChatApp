@@ -20,6 +20,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final JwtService jwtService;
 
+    //Authenticates requests except WebSocket; authorizes valid tokens
     @Override
     protected void doFilterInternal(HttpServletRequest request,
                                     HttpServletResponse response,
@@ -28,7 +29,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         String path = request.getRequestURI();
 
-        // 🔥 Skip WebSocket endpoints
+        // Skip WebSocket endpoints for authentication
         if (path.startsWith("/chat")) {
             filterChain.doFilter(request, response);
             return;
@@ -46,6 +47,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         try {
             String username = jwtService.extractUsername(token);
 
+            // Sets authenticated user in security context
             if (username != null &&
                     SecurityContextHolder.getContext().getAuthentication() == null) {
 
