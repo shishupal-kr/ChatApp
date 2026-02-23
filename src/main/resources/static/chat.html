@@ -40,6 +40,7 @@
 
     var currentUser = localStorage.getItem("username");
     var token = localStorage.getItem("token");
+    var readTriggered = false;
 
     if (!currentUser || !token) {
         window.location.href = "/login.html";
@@ -76,6 +77,35 @@
                 updateOnlineIndicator(onlineUsers);
             });
 
+            // Listen for read receipts (turn ticks blue live)
+            stompClient.subscribe("/user/queue/read-receipt", function (message) {
+                var messageId = message.body;
+
+                var tickElement = document.querySelector(
+                    "[data-id='" + messageId + "'] .message-ticks"
+                );
+
+                if (tickElement) {
+                    tickElement.innerText = "✔✔";
+                    tickElement.style.color = "#4fc3f7";
+                }
+            });
+
+            // Listen for delivered receipts (turn ticks double grey)
+            stompClient.subscribe("/user/queue/delivered", function (message) {
+
+                var messageId = message.body;
+
+                var tickElement = document.querySelector(
+                    "[data-id='" + messageId + "'] .message-ticks"
+                );
+
+                if (tickElement) {
+                    tickElement.innerText = "✔✔";
+                    tickElement.style.color = "#999";
+                }
+            });
+
             loadHistory();
         }
     );
@@ -96,6 +126,23 @@
             });
 
             container.scrollTop = container.scrollHeight;
+
+            // Mark messages as READ only once when chat is opened
+            if (!readTriggered) {
+
+                var hasUnread = messages.some(function(m) {
+                    return m.sender === selectedUser &&
+                           m.status === "DELIVERED";
+                });
+
+                if (hasUnread) {
+                    stompClient.send("/app/read", {}, JSON.stringify({
+                        receiver: selectedUser
+                    }));
+
+                    readTriggered = true;
+                }
+            }
         });
     }
 
@@ -135,6 +182,9 @@
     function renderMessage(msg) {
 
         var wrapper = document.createElement("div");
+        if (msg.id) {
+            wrapper.setAttribute("data-id", msg.id);
+        }
         wrapper.classList.add("glass-message");
 
         if (msg.sender === currentUser)
@@ -159,9 +209,26 @@
         meta.appendChild(time);
 
         if (msg.sender === currentUser) {
+
             var ticks = document.createElement("span");
             ticks.classList.add("message-ticks");
-            ticks.innerText = "✔✔";
+
+            // Default if backend does not send status yet
+            var status = msg.status || "SENT";
+
+            if (status === "SENT") {
+                ticks.innerText = "✔"; // 1 tick
+                ticks.style.color = "#999";
+            }
+            else if (status === "DELIVERED") {
+                ticks.innerText = "✔✔"; // 2 grey ticks
+                ticks.style.color = "#999";
+            }
+            else if (status === "READ") {
+                ticks.innerText = "✔✔"; // 2 blue ticks
+                ticks.style.color = "#4fc3f7";
+            }
+
             meta.appendChild(ticks);
         }
 

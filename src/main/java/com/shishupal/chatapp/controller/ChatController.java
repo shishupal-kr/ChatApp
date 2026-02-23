@@ -62,7 +62,7 @@ public class ChatController {
                 .receiver(receiver)
                 .content(message.getContent())
                 .timestamp(LocalDateTime.now())
-                .status("DELIVERED") // directly delivered
+                .status(ChatMessageEntity.MessageStatus.SENT)
                 .build();
 
         chatMessageRepository.save(entity);
@@ -80,6 +80,17 @@ public class ChatController {
                 sender,
                 "/queue/messages",
                 message
+        );
+
+        // Mark as DELIVERED after sending to receiver
+        entity.setStatus(ChatMessageEntity.MessageStatus.DELIVERED);
+        chatMessageRepository.save(entity);
+
+        // Notify sender that message was delivered
+        messagingTemplate.convertAndSendToUser(
+                sender,
+                "/queue/delivered",
+                String.valueOf(entity.getId())
         );
     }
 
@@ -116,8 +127,15 @@ public class ChatController {
 
         for (ChatMessageEntity m : messages) {
             if (m.getReceiver().equals(currentUser)
-                    && !"READ".equals(m.getStatus())) {
-                m.setStatus("READ");
+                    && m.getStatus() != ChatMessageEntity.MessageStatus.READ) {
+                m.setStatus(ChatMessageEntity.MessageStatus.READ);
+
+                // notify sender about read receipt
+                messagingTemplate.convertAndSendToUser(
+                        m.getSender(),
+                        "/queue/read-receipt",
+                        String.valueOf(m.getId())
+                );
             }
         }
 

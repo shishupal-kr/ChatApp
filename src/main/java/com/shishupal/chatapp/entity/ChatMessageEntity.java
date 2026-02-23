@@ -27,6 +27,12 @@ public class ChatMessageEntity {
 
     private LocalDateTime timestamp;
 
-    private String status; // SENT, DELIVERED, READ
+    @Enumerated(EnumType.STRING)
+    private MessageStatus status;
 
+    public enum MessageStatus {
+        SENT,
+        DELIVERED,
+        READ
+    }
 }
