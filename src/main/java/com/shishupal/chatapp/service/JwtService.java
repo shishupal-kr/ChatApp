@@ -20,6 +20,7 @@ public class JwtService {
     }
 
     public String generateToken(String username) {
+        // Builds signed token with username and expiration
         return Jwts.builder()
                 .setSubject(username)
                 .setIssuedAt(new Date())
@@ -28,6 +29,7 @@ public class JwtService {
                 .compact();
     }
 
+    //Extracts username from signed token claims
     public String extractUsername(String token) {
         Claims claims = Jwts.parserBuilder()
                 .setSigningKey(getSignKey())

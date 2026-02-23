@@ -23,6 +23,7 @@ public class ChatService {
         List<String> users = repository.findDistinctChatUsers(currentUser);
         List<ConversationDTO> conversations = new ArrayList<>();
 
+        // Iterates users; adds conversation with latest message
         for (String user : users) {
 
             Optional<ChatMessageEntity> lastSent =
@@ -33,6 +34,7 @@ public class ChatService {
 
             ChatMessageEntity latest = null;
 
+            // Selects latest message from sent or received
             if (lastSent.isPresent() && lastReceived.isPresent()) {
                 latest = lastSent.get().getTimestamp()
                         .isAfter(lastReceived.get().getTimestamp())
@@ -44,6 +46,7 @@ public class ChatService {
                 latest = lastReceived.get();
             }
 
+            // Adds conversation
             if (latest != null) {
                 conversations.add(
                         new ConversationDTO(

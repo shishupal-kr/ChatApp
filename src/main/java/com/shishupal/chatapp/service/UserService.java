@@ -17,6 +17,7 @@ public class UserService {
     private final PasswordEncoder passwordEncoder; //inject password encoder
     private final JwtService jwtService;
 
+    // Registers user; throws exception if username/email exists
     public String registerUser(RegisterRequest request){
 
        if (userRepository.findByUsername(request.getUsername()).isPresent()) {
@@ -27,6 +28,7 @@ public class UserService {
            throw new IllegalArgumentException("Email already exists");
        }
 
+       // Save user to DB
        User user = User.builder()
                .username(request.getUsername())
                .email(request.getEmail())
