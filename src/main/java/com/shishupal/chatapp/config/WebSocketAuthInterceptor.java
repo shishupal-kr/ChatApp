@@ -24,6 +24,7 @@ public class WebSocketAuthInterceptor implements ChannelInterceptor {
 
     private final JwtService jwtService;
 
+    //Authenticates WebSocket connection using JWT; persists authentication
     @Override
     public Message<?> preSend(Message<?> message, MessageChannel channel) {
         StompHeaderAccessor accessor =
@@ -33,7 +34,6 @@ public class WebSocketAuthInterceptor implements ChannelInterceptor {
         if (accessor == null) {
             return message;
         }
-
 
         // 2) If we previously stored auth in the WebSocket session, restore it
         Map<String, Object> sessionAttributes = accessor.getSessionAttributes();

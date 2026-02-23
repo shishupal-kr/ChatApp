@@ -1,6 +1,5 @@
 package com.shishupal.chatapp.config;
 
-import com.shishupal.chatapp.config.WebSocketAuthInterceptor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.simp.config.ChannelRegistration;
@@ -11,13 +10,10 @@ import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerCo
 
 @Configuration
 @EnableWebSocketMessageBroker
+@RequiredArgsConstructor
 public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
     private final WebSocketAuthInterceptor webSocketAuthInterceptor;
-
-    public WebSocketConfig(WebSocketAuthInterceptor webSocketAuthInterceptor) {
-        this.webSocketAuthInterceptor = webSocketAuthInterceptor;
-    }
 
     @Override
     public void configureMessageBroker(MessageBrokerRegistry config) {

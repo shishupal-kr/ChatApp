@@ -21,6 +21,7 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
+        // Configures stateless session management; disables default auth
         http
                 .csrf(csrf -> csrf.disable())
                 .sessionManagement(session ->
@@ -28,6 +29,8 @@ public class SecurityConfig {
                 )
                 .httpBasic(httpBasic -> httpBasic.disable())
                 .formLogin(form -> form.disable())
+
+                // Permits unauthenticated access to specified endpoints
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/auth/**").permitAll()
                         .requestMatchers("/chat/**").permitAll()
