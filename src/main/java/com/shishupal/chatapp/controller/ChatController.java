@@ -4,6 +4,7 @@ import com.shishupal.chatapp.dto.ChatMessage;
 import com.shishupal.chatapp.dto.TypingDTO;
 import com.shishupal.chatapp.entity.ChatMessageEntity;
 import com.shishupal.chatapp.repository.ChatMessageRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
@@ -13,17 +14,11 @@ import java.security.Principal;
 import java.time.LocalDateTime;
 
 @Controller
+@RequiredArgsConstructor
 public class ChatController {
 
     private final SimpMessagingTemplate messagingTemplate;
     private final ChatMessageRepository chatMessageRepository;
-
-    // Manual constructor injection (No Lombok needed)
-    public ChatController(SimpMessagingTemplate messagingTemplate,
-                          ChatMessageRepository chatMessageRepository) {
-        this.messagingTemplate = messagingTemplate;
-        this.chatMessageRepository = chatMessageRepository;
-    }
 
     //Handles private messages; persists; sends; notifies sender
     @MessageMapping("/private-message")
