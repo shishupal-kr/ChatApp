@@ -11,7 +11,6 @@ import org.springframework.stereotype.Controller;
 
 import java.security.Principal;
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Controller
 public class ChatController {
@@ -26,6 +25,7 @@ public class ChatController {
         this.chatMessageRepository = chatMessageRepository;
     }
 
+    //Handles private messages; persists; sends; notifies sender
     @MessageMapping("/private-message")
     @Transactional
     public void sendPrivateMessage(ChatMessage message,
@@ -39,7 +39,6 @@ public class ChatController {
         }
 
         String sender = accessor.getUser().getName();
-
         String receiver = message.getReceiver();
 
         if (receiver == null || receiver.isBlank()) {
@@ -57,6 +56,7 @@ public class ChatController {
 
         message.setSender(sender);
 
+        // Builds persistable message from sender, receiver, content
         ChatMessageEntity entity = ChatMessageEntity.builder()
                 .sender(sender)
                 .receiver(receiver)
@@ -65,10 +65,10 @@ public class ChatController {
                 .status(ChatMessageEntity.MessageStatus.SENT)
                 .build();
 
-        chatMessageRepository.save(entity);
-        message.setId(entity.getId());
+         chatMessageRepository.save(entity);
+         message.setId(entity.getId());
 
-        System.out.println("MESSAGE SAVED TO DATABASE SUCCESSFULLY");
+         System.out.println("MESSAGE SAVED TO DATABASE SUCCESSFULLY");
 
         messagingTemplate.convertAndSendToUser(
                 receiver,
@@ -86,7 +86,7 @@ public class ChatController {
         entity.setStatus(ChatMessageEntity.MessageStatus.DELIVERED);
         chatMessageRepository.save(entity);
 
-        // Notify sender that message was delivered
+        // Notify the sender that a message was delivered
         messagingTemplate.convertAndSendToUser(
                 sender,
                 "/queue/delivered",
@@ -94,7 +94,7 @@ public class ChatController {
         );
     }
 
-    // typing indicator
+    // Typing indicator for receiver
     @MessageMapping("/typing")
     public void typingIndicator(TypingDTO dto, Principal principal) {
 
@@ -110,7 +110,7 @@ public class ChatController {
         );
     }
 
-    //mark as read
+    //Mark as read message
     @MessageMapping("/read")
     @Transactional
     public void markAsRead(ChatMessage message, Principal principal) {
@@ -125,6 +125,7 @@ public class ChatController {
         java.util.List<com.shishupal.chatapp.entity.ChatMessageEntity> messages =
                 chatMessageRepository.findConversation(otherUser, currentUser);
 
+        // Updates message statuses; notifies sender of read receipts
         for (ChatMessageEntity m : messages) {
             if (m.getReceiver().equals(currentUser)
                     && m.getStatus() != ChatMessageEntity.MessageStatus.READ) {
