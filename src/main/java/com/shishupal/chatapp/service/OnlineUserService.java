@@ -19,14 +19,14 @@ public class OnlineUserService {
     public void userConnected(String username) {
         onlineUsers.add(username);
 
-        // Send full list to ALL users
+        // Send a full list to ALL users
         messagingTemplate.convertAndSend("/topic/online-users", onlineUsers);
     }
 
     public void userDisconnected(String username) {
         onlineUsers.remove(username);
 
-        // Send updated list to ALL users
+        // Send an updated list to ALL users
         messagingTemplate.convertAndSend("/topic/online-users", onlineUsers);
     }
 }
