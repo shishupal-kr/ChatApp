@@ -47,7 +47,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         try {
             String username = jwtService.extractUsername(token);
 
-            // Sets authenticated user in security context
+            // Sets authenticated user in a security context
             if (username != null &&
                     SecurityContextHolder.getContext().getAuthentication() == null) {
 

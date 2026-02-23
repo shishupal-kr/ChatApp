@@ -105,7 +105,7 @@ public class ChatController {
         );
     }
 
-    //Mark as read message
+    //Mark as read the message
     @MessageMapping("/read")
     @Transactional
     public void markAsRead(ChatMessage message, Principal principal) {
@@ -126,7 +126,7 @@ public class ChatController {
                     && m.getStatus() != ChatMessageEntity.MessageStatus.READ) {
                 m.setStatus(ChatMessageEntity.MessageStatus.READ);
 
-                // notify sender about read receipt
+                // notify sender about the read receipt
                 messagingTemplate.convertAndSendToUser(
                         m.getSender(),
                         "/queue/read-receipt",
@@ -138,7 +138,7 @@ public class ChatController {
         chatMessageRepository.saveAll(messages);
     }
 
-    //delete message
+    //Delete a message
     @MessageMapping("/delete")
     @Transactional
     public void deleteMessage(ChatMessage message, Principal principal) {
