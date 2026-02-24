@@ -10,6 +10,19 @@ var socket = new SockJS('/chat');
 var stompClient = Stomp.over(socket);
 stompClient.debug = null;
 
+// toggle menu dropdown
+function toggleMenu() {
+  const menu = document.getElementById("menuDropdown");
+  menu.classList.toggle("show");
+}
+
+// Close menu when clicking outside
+document.addEventListener("click", function (event) {
+  const wrapper = document.querySelector(".menu-wrapper");
+  if (!wrapper.contains(event.target)) {
+    document.getElementById("menuDropdown").classList.remove("show");
+  }
+});
 
 // Load conversations immediately (independent of WebSocket)
 fetch("/api/chat/conversations", {
