@@ -24,7 +24,12 @@
              onkeyup="handleSearchKey(event)">
     </div>
 
-    <button onclick="logout()">Logout</button>
+    <div class="menu-wrapper">
+      <span class="menu-icon" onclick="toggleMenu()">⋮</span>
+      <div class="menu-dropdown" id="menuDropdown">
+        <div class="menu-item" onclick="logout()">Logout</div>
+      </div>
+    </div>
   </div>
 
   <div id="friendList" class="friend-list">
