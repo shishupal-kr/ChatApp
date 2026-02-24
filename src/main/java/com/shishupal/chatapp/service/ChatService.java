@@ -17,6 +17,9 @@ public class ChatService {
     public ChatService(ChatMessageRepository repository) {
         this.repository = repository;
     }
+    public List<String> searchUsers(String keyword, String currentUser) {
+        return repository.searchUsers(keyword, currentUser);
+    }
 
     public List<ConversationDTO> getConversations(String currentUser) {
 

@@ -15,6 +15,15 @@
 
   <div class="friends-header">
     <span>Chats</span>
+
+    <div class="search-wrapper">
+      <span class="search-icon">🔍</span>
+      <input type="text"
+             id="searchBox"
+             placeholder="Search user..."
+             onkeyup="handleSearchKey(event)">
+    </div>
+
     <button onclick="logout()">Logout</button>
   </div>
 

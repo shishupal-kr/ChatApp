@@ -24,4 +24,16 @@ public class ChatRestController {
 
         return chatService.getConversations(principal.getName());
     }
+
+    @GetMapping("/users/search")
+    public List<String> searchUsers(@RequestParam String keyword,
+                                    Principal principal) {
+
+        if (principal == null) {
+            return List.of();
+        }
+
+        return chatService.searchUsers(keyword, principal.getName());
+    }
+
 }

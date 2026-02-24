@@ -1,3 +1,4 @@
+let debounceTimer;
 var currentUser = localStorage.getItem("username");
 var token = localStorage.getItem("token");
 
@@ -53,7 +54,7 @@ stompClient.connect(
         }
 );
 
-
+  // Render conversations
 function renderConversations(conversations) {
 
   var container = document.getElementById("friendList");
@@ -109,7 +110,7 @@ function renderConversations(conversations) {
   });
 }
 
-
+  // handle incoming message
 function handleIncomingMessage(msg) {
 
   var container = document.getElementById("friendList");
@@ -150,7 +151,7 @@ function handleIncomingMessage(msg) {
     parentItem.querySelector(".friend-right").appendChild(newBadge);
   }
 
-  // Move conversation visually to top
+  // Move conversation visually to the top
   container.prepend(parentItem);
 }
 
@@ -193,6 +194,61 @@ function showTypingPreview(username) {
     .then(res => res.json())
     .then(data => renderConversations(data));
   }, 2000);
+}
+
+// ================= SEARCH WITH DEBOUNCE =================
+function handleSearchKey(event) {
+  const keyword = event.target.value.trim();
+
+  // Press Enter → instant search
+  if (event.key === "Enter") {
+    searchUser(keyword);
+    return;
+  }
+
+  // Debounce (300ms delay)
+  clearTimeout(debounceTimer);
+  debounceTimer = setTimeout(() => {
+    if (keyword === "") {
+      // Restore conversations list
+      fetch("/api/chat/conversations", {
+        headers: { Authorization: "Bearer " + token }
+      })
+      .then(res => res.json())
+      .then(data => renderConversations(data));
+    } else {
+      searchUser(keyword);
+    }
+  }, 300);
+}
+
+function searchUser(keyword) {
+  fetch(`/api/chat/users/search?keyword=${keyword}`, {
+    headers: { Authorization: "Bearer " + token }
+  })
+    .then(res => res.json())
+    .then(data => {
+      const container = document.getElementById("friendList");
+      container.innerHTML = "";
+
+      if (!data || data.length === 0) {
+        const empty = document.createElement("div");
+        empty.className = "empty-state";
+        empty.innerText = "No user found";
+        container.appendChild(empty);
+        return;
+      }
+
+      data.forEach(username => {
+        const div = document.createElement("div");
+        div.className = "friend-item";
+        div.innerText = username;
+        div.onclick = () => {
+          window.location.href = "/html/chat.html?user=" + username;
+        };
+        container.appendChild(div);
+      });
+    });
 }
 
 function logout() {

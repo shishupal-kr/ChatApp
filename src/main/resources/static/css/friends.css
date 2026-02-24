@@ -154,3 +154,50 @@ body {
     border-radius: 12px;
     display: inline-block;
 }
+
+/* ================= SEARCH BOX ================= */
+
+.search-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.search-icon {
+    position: absolute;
+    left: 10px;
+    font-size: 13px;
+    color: rgba(255,255,255,0.7);
+}
+
+#searchBox {
+    padding: 6px 10px 6px 28px;
+    border-radius: 18px;
+    border: 1px solid rgba(255,255,255,0.3);
+    background: rgba(255,255,255,0.12);
+    color: white;
+    outline: none;
+    font-size: 13px;
+    width: 160px;
+}
+
+#searchBox::placeholder {
+    color: rgba(255,255,255,0.7);
+}
+
+/* ================= FADE ANIMATION ================= */
+
+.friend-item {
+    animation: fadeIn 0.25s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(6px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
