@@ -202,3 +202,47 @@ body {
         transform: translateY(0);
     }
 }
+/* ===== 3 DOT MENU ===== */
+
+.menu-wrapper {
+    position: relative;
+    display: inline-block;
+}
+
+.menu-icon {
+    cursor: pointer;
+    font-size: 20px;
+    color: white;
+    padding: 4px 8px;
+}
+
+.menu-dropdown {
+    position: absolute;
+    right: 0;
+    top: 32px;
+
+    background: rgba(255,255,255,0.10);
+    backdrop-filter: blur(12px);
+
+    border-radius: 10px;
+    border: 1px solid rgba(255,255,255,0.18);
+
+    min-width: 90px;
+    padding: 4px 0;
+    display: none;
+}
+
+.menu-dropdown.show {
+    display: block;
+}
+
+.menu-item {
+    padding: 6px 10px;
+    font-size: 13px;
+    cursor: pointer;
+    color: white;
+}
+
+.menu-item:hover {
+    background: rgba(255,255,255,0.15);
+}
