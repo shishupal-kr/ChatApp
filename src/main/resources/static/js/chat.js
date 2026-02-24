@@ -201,6 +201,22 @@ function renderMessage(msg) {
 
 }
 
+// ================= ONLINE INDICATOR =================
+function updateOnlineIndicator(onlineUsers) {
+
+    var profileWrapper = document.getElementById("profileWrapper");
+
+    if (!profileWrapper) return;
+
+    if (onlineUsers.includes(selectedUser)) {
+        profileWrapper.classList.remove("offline");
+        profileWrapper.classList.add("online");
+    } else {
+        profileWrapper.classList.remove("online");
+        profileWrapper.classList.add("offline");
+    }
+}
+
 // ================= ENTER / SHIFT+ENTER SUPPORT =================
 document.addEventListener("DOMContentLoaded", function () {
     const input = document.getElementById("messageInput");
