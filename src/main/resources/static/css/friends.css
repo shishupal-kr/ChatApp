@@ -189,6 +189,7 @@ body {
 
 .friend-item {
     animation: fadeIn 0.25s ease-in-out;
+    color: white;
 }
 
 @keyframes fadeIn {
