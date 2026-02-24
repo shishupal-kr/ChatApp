@@ -198,4 +198,26 @@ function renderMessage(msg) {
     var container = document.getElementById("messages");
     container.appendChild(wrapper);
     container.scrollTop = container.scrollHeight;
+
 }
+
+// ================= ENTER / SHIFT+ENTER SUPPORT =================
+document.addEventListener("DOMContentLoaded", function () {
+    const input = document.getElementById("messageInput");
+
+    if (!input) return;
+
+    input.addEventListener("keydown", function (event) {
+
+        if (event.key === "Enter") {
+
+            if (event.shiftKey) {
+                return; // Shift + Enter → new line
+            }
+
+            event.preventDefault();
+            sendMessage();
+        }
+
+    });
+});
