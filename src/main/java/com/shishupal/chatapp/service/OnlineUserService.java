@@ -1,6 +1,5 @@
 package com.shishupal.chatapp.service;
 
-import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.Set;
@@ -9,24 +8,29 @@ import java.util.concurrent.ConcurrentHashMap;
 @Service
 public class OnlineUserService {
 
-    private final SimpMessagingTemplate messagingTemplate;
-    private final Set<String> onlineUsers = ConcurrentHashMap.newKeySet();
+    private final java.util.Map<String, Set<String>> userSessions = new ConcurrentHashMap<>();
 
-    public OnlineUserService(SimpMessagingTemplate messagingTemplate) {
-        this.messagingTemplate = messagingTemplate;
+    public void userConnected(String username, String sessionId) {
+        userSessions.compute(username, (user, sessions) -> {
+            if (sessions == null) {
+                sessions = ConcurrentHashMap.newKeySet();
+            }
+            sessions.add(sessionId);
+            return sessions;
+        });
     }
 
-    public void userConnected(String username) {
-        onlineUsers.add(username);
-
-        // Send a full list to ALL users
-        messagingTemplate.convertAndSend("/topic/online-users", onlineUsers);
+    public void userDisconnected(String username, String sessionId) {
+        userSessions.computeIfPresent(username, (user, sessions) -> {
+            sessions.remove(sessionId);
+            if (sessions.isEmpty()) {
+                return null; // remove user completely
+            }
+            return sessions;
+        });
     }
 
-    public void userDisconnected(String username) {
-        onlineUsers.remove(username);
-
-        // Send an updated list to ALL users
-        messagingTemplate.convertAndSend("/topic/online-users", onlineUsers);
+    public Set<String> getOnlineUsers() {
+        return userSessions.keySet();
     }
 }

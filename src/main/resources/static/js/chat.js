@@ -4,6 +4,10 @@ let selectedMessages = new Set();
 var currentUser = localStorage.getItem("username");
 var token = localStorage.getItem("token");
 var readTriggered = false;
+let currentPage = 0;
+let pageSize = 20;
+let loading = false;
+
 
 if (!currentUser || !token) {
     window.location.href = "/html/login.html";
@@ -11,6 +15,65 @@ if (!currentUser || !token) {
 
 var params = new URLSearchParams(window.location.search);
 var selectedUser = params.get("user");
+
+var stompClient = null;
+
+function connectWebSocket() {
+    if (stompClient) {
+        console.log("WebSocket already created");
+        return;
+    }
+
+    var socket = new SockJS('/chat');
+    stompClient = Stomp.over(socket);
+    stompClient.debug = null;
+
+    stompClient.connect(
+        { Authorization: "Bearer " + token },
+        function () {
+
+            stompClient.subscribe("/user/queue/messages", function (message) {
+                var msg = JSON.parse(message.body);
+                renderMessage(msg);
+            });
+
+            stompClient.subscribe("/topic/online-users", function (message) {
+                var onlineUsers = JSON.parse(message.body);
+                updateOnlineIndicator(onlineUsers);
+            });
+
+            // Receive current online users list on fresh connect
+            stompClient.subscribe("/user/queue/online-users", function (message) {
+                var onlineUsers = JSON.parse(message.body);
+                updateOnlineIndicator(onlineUsers);
+            });
+
+            stompClient.subscribe("/user/queue/read-receipt", function (message) {
+                var messageId = message.body;
+                var tickElement = document.querySelector(
+                    "[data-id='" + messageId + "'] .message-ticks"
+                );
+                if (tickElement) {
+                    tickElement.innerText = "✔✔";
+                    tickElement.style.color = "#4fc3f7";
+                }
+            });
+
+            stompClient.subscribe("/user/queue/delivered", function (message) {
+                var messageId = message.body;
+                var tickElement = document.querySelector(
+                    "[data-id='" + messageId + "'] .message-ticks"
+                );
+                if (tickElement) {
+                    tickElement.innerText = "✔✔";
+                    tickElement.style.color = "#999";
+                }
+            });
+
+            loadHistory();
+        }
+    );
+}
 
 if (!selectedUser) {
     window.location.href = "/html/friends.html";
@@ -20,78 +83,46 @@ if (!selectedUser) {
 document.getElementById("chatTitle").innerText = selectedUser;
 document.getElementById("profileCircle").innerText = selectedUser.charAt(0).toUpperCase();
 
-var socket = new SockJS('/chat');
-var stompClient = Stomp.over(socket);
-stompClient.debug = null;
-
-stompClient.connect(
-    { Authorization: "Bearer " + token },
-    function () {
-
-        // Receive private messages
-        stompClient.subscribe("/user/queue/messages", function (message) {
-            var msg = JSON.parse(message.body);
-            renderMessage(msg);
-        });
-
-        // Subscribe to online users topic to update header indicator
-        stompClient.subscribe("/topic/online-users", function (message) {
-            var onlineUsers = JSON.parse(message.body);
-            updateOnlineIndicator(onlineUsers);
-        });
-
-        // Listen for read receipts (turn ticks blue live)
-        stompClient.subscribe("/user/queue/read-receipt", function (message) {
-            var messageId = message.body;
-
-            var tickElement = document.querySelector(
-                "[data-id='" + messageId + "'] .message-ticks"
-            );
-
-            if (tickElement) {
-                tickElement.innerText = "✔✔";
-                tickElement.style.color = "#4fc3f7";
-            }
-        });
-
-        // Listen for delivered receipts (turn ticks double grey)
-        stompClient.subscribe("/user/queue/delivered", function (message) {
-
-            var messageId = message.body;
-
-            var tickElement = document.querySelector(
-                "[data-id='" + messageId + "'] .message-ticks"
-            );
-
-            if (tickElement) {
-                tickElement.innerText = "✔✔";
-                tickElement.style.color = "#999";
-            }
-        });
-
-        loadHistory();
-    }
-);
-
 function loadHistory() {
 
-    fetch("/api/chat/history/" + selectedUser, {
+    if (loading) return;
+    loading = true;
+
+    fetch(`/api/chat/history/${selectedUser}?page=${currentPage}&size=${pageSize}`, {
         headers: { Authorization: "Bearer " + token }
     })
     .then(res => res.json())
     .then(messages => {
 
         var container = document.getElementById("messages");
-        container.innerHTML = "";
 
-        messages.forEach(function(msg) {
-            renderMessage(msg);
+        // If first page, clear container
+        if (currentPage === 0) {
+            container.innerHTML = "";
+        }
+
+        const previousHeight = container.scrollHeight;
+
+        messages.reverse().forEach(function(msg) {
+            renderMessage(msg, currentPage !== 0);
         });
 
-        container.scrollTop = container.scrollHeight;
+        const newHeight = container.scrollHeight;
 
-        // Mark messages as READ only once when chat is opened
-        if (!readTriggered) {
+        if (currentPage !== 0) {
+            container.scrollTop = newHeight - previousHeight;
+        }
+
+        currentPage++;
+        loading = false;
+
+        // Scroll to bottom only first time
+        if (currentPage === 1) {
+            container.scrollTop = container.scrollHeight;
+        }
+
+        // Mark as READ only once when chat is opened
+        if (!readTriggered && currentPage === 1) {
 
             var hasUnread = messages.some(function(m) {
                 return m.sender === selectedUser &&
@@ -106,6 +137,9 @@ function loadHistory() {
                 readTriggered = true;
             }
         }
+    })
+    .catch(() => {
+        loading = false;
     });
 }
 
@@ -159,7 +193,7 @@ function sendMessage() {
     cancelReply();
 }
 
-function renderMessage(msg) {
+function renderMessage(msg, prepend = false) {
 
     var wrapper = document.createElement("div");
     if (msg.id) {
@@ -232,8 +266,13 @@ function renderMessage(msg) {
     wrapper.appendChild(meta);
 
     var container = document.getElementById("messages");
-    container.appendChild(wrapper);
-    container.scrollTop = container.scrollHeight;
+
+    if (prepend) {
+        container.prepend(wrapper);
+    } else {
+        container.appendChild(wrapper);
+        container.scrollTop = container.scrollHeight;
+    }
 
 }
 
@@ -336,6 +375,8 @@ function updateOnlineIndicator(onlineUsers) {
 
 // ================= ENTER / SHIFT+ENTER SUPPORT =================
 document.addEventListener("DOMContentLoaded", function () {
+    connectWebSocket();
+
     const input = document.getElementById("messageInput");
 
     if (!input) return;
@@ -353,6 +394,16 @@ document.addEventListener("DOMContentLoaded", function () {
         }
 
     });
+
+    const messagesDiv = document.getElementById("messages");
+
+    if (messagesDiv) {
+        messagesDiv.addEventListener("scroll", function () {
+            if (messagesDiv.scrollTop <= 50 && !loading) {
+                loadHistory();
+            }
+        });
+    }
 
 });
 
@@ -377,3 +428,10 @@ function cancelReply() {
         bar.style.display = "none";
     }
 }
+
+window.addEventListener("beforeunload", function () {
+    if (stompClient && stompClient.connected) {
+        stompClient.disconnect();
+    }
+    stompClient = null;
+});

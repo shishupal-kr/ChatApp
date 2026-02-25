@@ -1,14 +1,12 @@
 let debounceTimer;
 var currentUser = localStorage.getItem("username");
 var token = localStorage.getItem("token");
+var stompClient = null;
 
 if (!currentUser || !token) {
   window.location.href = "/html/login.html";
 }
 
-var socket = new SockJS('/chat');
-var stompClient = Stomp.over(socket);
-stompClient.debug = null;
 
 // toggle menu dropdown
 function toggleMenu() {
@@ -40,32 +38,43 @@ fetch("/api/chat/conversations", {
   .then(res => res.json())
   .then(users => updateOnlineStatus(users));
 
+function connectWebSocket() {
+  if (stompClient) {
+    return;
+  }
 
-// Then connect WebSocket only for online updates
-stompClient.connect(
-        { Authorization: "Bearer " + token },
-        function () {
+  var socket = new SockJS('/chat');
+  stompClient = Stomp.over(socket);
+  stompClient.debug = null;
 
-          // Online status updates
-          stompClient.subscribe("/topic/online-users", function (message) {
-            var users = JSON.parse(message.body);
-            updateOnlineStatus(users);
-          });
+  stompClient.connect(
+    { Authorization: "Bearer " + token },
+    function () {
+      stompClient.subscribe("/topic/online-users", function (message) {
+        var onlineUsers = JSON.parse(message.body);
+        updateOnlineStatus(onlineUsers);
+      });
 
-          // Listen for new private messages (auto refresh + unread update)
-          stompClient.subscribe("/user/queue/messages", function (message) {
-            var msg = JSON.parse(message.body);
-            handleIncomingMessage(msg);
-          });
+      stompClient.subscribe("/user/queue/online-users", function (message) {
+        var onlineUsers = JSON.parse(message.body);
+        updateOnlineStatus(onlineUsers);
+      });
+    }
+  );
+}
 
-          // Listen for typing indicator
-          stompClient.subscribe("/user/queue/typing", function (message) {
-            var typingUser = message.body;
-            showTypingPreview(typingUser);
-          });
+document.addEventListener("DOMContentLoaded", function () {
+  connectWebSocket();
+});
 
-        }
-);
+window.addEventListener("beforeunload", function () {
+  if (stompClient && stompClient.connected) {
+    stompClient.disconnect();
+  }
+  stompClient = null;
+});
+
+
 
   // Render conversations
 function renderConversations(conversations) {

@@ -21,6 +21,7 @@ import java.util.Map;
 public class WebSocketAuthInterceptor implements ChannelInterceptor {
 
     private static final String WS_AUTH_ATTR = "WS_AUTHENTICATION";
+    private static final String WS_USERNAME_ATTR = "username";
 
     private final JwtService jwtService;
 
@@ -85,6 +86,7 @@ public class WebSocketAuthInterceptor implements ChannelInterceptor {
         // Persist for later frames (SEND/SUBSCRIBE) in the same WebSocket session
         if (sessionAttributes != null) {
             sessionAttributes.put(WS_AUTH_ATTR, authentication);
+            sessionAttributes.put(WS_USERNAME_ATTR, username);
         }
 
         // Optional: helpful if any code relies on SecurityContext in the same thread

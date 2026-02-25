@@ -17,19 +17,21 @@ public class ChatHistoryController {
     private final ChatMessageRepository chatMessageRepository;
     private final SimpMessagingTemplate messagingTemplate;
 
-    // used for fetching chat history by username
     @GetMapping("/history/{username}")
     public List<ChatMessageEntity> getChatHistory(
             @PathVariable String username,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "20") int size,
             Principal principal
     ) {
 
         String currentUser = principal.getName();
         System.out.println("History requested by: " + currentUser);
 
-        List<ChatMessageEntity> messages =
-                chatMessageRepository.findConversation(currentUser, username);
+        var pageable = org.springframework.data.domain.PageRequest.of(page, size);
 
-        return messages;
+        return chatMessageRepository
+                .findConversationPaginated(currentUser, username, pageable)
+                .getContent();
     }
 }
