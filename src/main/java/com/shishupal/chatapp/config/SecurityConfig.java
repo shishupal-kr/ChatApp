@@ -42,6 +42,7 @@ public class SecurityConfig {
                         .requestMatchers("/images/**").permitAll()
                         .requestMatchers("/css/**").permitAll()
                         .requestMatchers("/js/**").permitAll()
+                        .requestMatchers("/favicon.ico").permitAll()
                         .requestMatchers("/api/chat/**").authenticated()
                         .anyRequest().authenticated()
                 )
