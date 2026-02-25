@@ -19,6 +19,7 @@ public class ChatController {
 
     private final SimpMessagingTemplate messagingTemplate;
     private final ChatMessageRepository chatMessageRepository;
+    private final com.shishupal.chatapp.service.OnlineUserService onlineUserService;
 
     //Handles private messages; persists; sends; notifies sender
     @MessageMapping("/private-message")
@@ -77,16 +78,18 @@ public class ChatController {
                 message
         );
 
-        // Mark as DELIVERED after sending to receiver
-        entity.setStatus(ChatMessageEntity.MessageStatus.DELIVERED);
-        chatMessageRepository.save(entity);
+        // Mark as DELIVERED only if receiver is online
+        if (onlineUserService.getOnlineUsers().contains(receiver)) {
+            entity.setStatus(ChatMessageEntity.MessageStatus.DELIVERED);
+            chatMessageRepository.save(entity);
 
-        // Notify the sender that a message was delivered
-        messagingTemplate.convertAndSendToUser(
-                sender,
-                "/queue/delivered",
-                String.valueOf(entity.getId())
-        );
+            // Notify sender that message was delivered
+            messagingTemplate.convertAndSendToUser(
+                    sender,
+                    "/queue/delivered",
+                    String.valueOf(entity.getId())
+            );
+        }
     }
 
     // Typing indicator for receiver
@@ -98,10 +101,13 @@ public class ChatController {
 
         String sender = principal.getName();
 
+        java.util.Map<String, String> response = new java.util.HashMap<>();
+        response.put("sender", sender);
+
         messagingTemplate.convertAndSendToUser(
                 dto.getReceiver(),
                 "/queue/typing",
-                sender
+                response
         );
     }
 

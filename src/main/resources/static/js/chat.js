@@ -70,6 +70,15 @@ function connectWebSocket() {
                 }
             });
 
+            // Typing indicator subscription
+            stompClient.subscribe("/user/queue/typing", function (message) {
+                var data = JSON.parse(message.body);
+
+                if (data.sender === selectedUser) {
+                    showTypingIndicator();
+                }
+            });
+
             loadHistory();
         }
     );
@@ -430,6 +439,18 @@ function cancelReply() {
     if (bar) {
         bar.style.display = "none";
     }
+}
+
+function showTypingIndicator() {
+    var header = document.getElementById("chatTitle");
+    if (!header) return;
+
+    header.innerText = selectedUser + " is typing...";
+
+    clearTimeout(window.typingIndicatorTimeout);
+    window.typingIndicatorTimeout = setTimeout(function () {
+        header.innerText = selectedUser;
+    }, 1500);
 }
 
 window.addEventListener("beforeunload", function () {
