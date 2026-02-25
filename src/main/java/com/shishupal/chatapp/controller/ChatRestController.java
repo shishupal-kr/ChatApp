@@ -36,4 +36,9 @@ public class ChatRestController {
         return chatService.searchUsers(keyword, principal.getName());
     }
 
+    @GetMapping("/online-users")
+    public List<String> getOnlineUsers() {
+        return List.copyOf(chatService.getOnlineUsers());
+    }
+
 }

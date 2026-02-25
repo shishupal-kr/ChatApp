@@ -32,7 +32,7 @@ fetch("/api/chat/conversations", {
 
     // After conversations render, fetch current online users
     return fetch("/api/chat/online-users", {
-      headers: { Authorization: "Bearer " + token }
+      headers: { Authorization: "Bearer " + localStorage.getItem("token")}
     });
   })
   .then(res => res.json())

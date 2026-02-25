@@ -8,14 +8,18 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 public class ChatService {
 
     private final ChatMessageRepository repository;
+    private final OnlineUserService onlineUserService;
 
-    public ChatService(ChatMessageRepository repository) {
+    public ChatService(ChatMessageRepository repository,
+                       OnlineUserService onlineUserService) {
         this.repository = repository;
+        this.onlineUserService = onlineUserService;
     }
     public List<String> searchUsers(String keyword, String currentUser) {
         return repository.searchUsers(keyword, currentUser);
@@ -67,5 +71,9 @@ public class ChatService {
         );
 
         return conversations;
+    }
+
+    public Set<String> getOnlineUsers() {
+        return onlineUserService.getOnlineUsers();
     }
 }
