@@ -15,7 +15,8 @@ body {
 }
 
 .login-card {
-    width: 360px;
+    width: 90%;
+    max-width: 360px;
     padding: 40px 35px;
     border-radius: 28px;
     display: flex;
