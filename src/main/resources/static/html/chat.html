@@ -26,6 +26,28 @@
             </div>
 
         </div>
+
+        <!-- SELECTION HEADER (Hidden by default) -->
+        <div id="selectionHeader" class="selection-header" style="display: none;">
+            <span id="selectionCount">1</span>
+            <div class="selection-actions">
+                <span onclick="replySelected()">↩️</span>
+                <span onclick="editSelected()">✏️</span>
+                <span onclick="copySelected()">📋</span>
+                <span onclick="forwardSelected()">🔁</span>
+                <span onclick="deleteSelected()">🗑️</span>
+            </div>
+        </div>
+
+        <!-- REPLY BAR (Hidden by default) -->
+        <div id="replyBar" class="reply-bar" style="display: none;">
+            <div class="reply-content">
+                <span class="reply-label">Replying to</span>
+                <span id="replyPreview" class="reply-preview-text"></span>
+            </div>
+            <span class="reply-close" onclick="cancelReply()">✕</span>
+        </div>
+
     </div>
 
     <!-- MESSAGES -->
