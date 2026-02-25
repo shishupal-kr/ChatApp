@@ -50,8 +50,8 @@ public class WebSocketEventListener {
     public void handleWebSocketDisconnect(SessionDisconnectEvent event) {
         StompHeaderAccessor accessor = StompHeaderAccessor.wrap(event.getMessage());
 
-        String username = null;
         String sessionId = accessor.getSessionId();
+        String username = null;
 
         if (accessor.getUser() != null) {
             username = accessor.getUser().getName();
@@ -60,12 +60,22 @@ public class WebSocketEventListener {
         }
 
         if (username != null && sessionId != null) {
-            onlineUserService.userDisconnected(username, sessionId);
+            String finalUsername = username;
+            String finalSessionId = sessionId;
 
-            messagingTemplate.convertAndSend(
-                    "/topic/online-users",
-                    onlineUserService.getOnlineUsers()
-            );
+            // Delay removal slightly to prevent refresh flicker
+            new Thread(() -> {
+                try {
+                    Thread.sleep(500);
+                } catch (InterruptedException ignored) {}
+
+                onlineUserService.userDisconnected(finalUsername, finalSessionId);
+
+                messagingTemplate.convertAndSend(
+                        "/topic/online-users",
+                        onlineUserService.getOnlineUsers()
+                );
+            }).start();
         }
     }
 }
