@@ -201,7 +201,10 @@ function renderMessage(msg, prepend = false) {
     }
     wrapper.classList.add("glass-message");
 
-    if (msg.sender === currentUser)
+    const isSent = (msg.sender && currentUser) &&
+                   msg.sender.toLowerCase().trim() === currentUser.toLowerCase().trim();
+
+    if (isSent)
         wrapper.classList.add("sent");
     else
         wrapper.classList.add("received");
@@ -238,7 +241,7 @@ function renderMessage(msg, prepend = false) {
 
     meta.appendChild(time);
 
-    if (msg.sender === currentUser) {
+    if (isSent) {
 
         var ticks = document.createElement("span");
         ticks.classList.add("message-ticks");
