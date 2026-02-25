@@ -14,4 +14,5 @@ public class ChatMessage {
     private String content;
     private String status;
     private Long id;
+    private boolean edited;
 }
