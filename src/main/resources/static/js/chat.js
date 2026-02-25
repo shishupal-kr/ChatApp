@@ -220,7 +220,23 @@ function renderMessage(msg, prepend = false) {
 
     var bubble = document.createElement("div");
     bubble.classList.add("glass-bubble");
-    bubble.innerText = msg.content;
+    // If message is a reply, show replied message preview above content
+    if (msg.replyToContent) {
+        const replyBox = document.createElement("div");
+        replyBox.classList.add("reply-preview-bubble");
+
+        replyBox.innerHTML = `
+            <div class="reply-sender">${msg.replyToSender || ""}</div>
+            <div class="reply-text">${msg.replyToContent}</div>
+        `;
+
+        bubble.appendChild(replyBox);
+    }
+
+    const messageText = document.createElement("div");
+    messageText.classList.add("message-text");
+    messageText.innerText = msg.content;
+    bubble.appendChild(messageText);
 
     // Long press to select (mobile + desktop)
     bubble.style.cursor = "pointer";
@@ -253,7 +269,13 @@ function renderMessage(msg, prepend = false) {
     time.classList.add("message-time");
 
     var date = msg.timestamp ? new Date(msg.timestamp) : new Date();
-    time.innerText = date.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+    var formattedTime = date.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+
+    if (msg.edited === true) {
+        time.innerHTML = '<span class="edited-label">edited</span> ' + formattedTime;
+    } else {
+        time.innerText = formattedTime;
+    }
 
     meta.appendChild(time);
 
