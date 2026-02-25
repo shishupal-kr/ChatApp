@@ -70,6 +70,13 @@ function connectWebSocket() {
                 }
             });
 
+            // Delete message subscription
+            stompClient.subscribe("/user/queue/delete", function (message) {
+                var messageId = JSON.parse(message.body);
+                removeMessageFromUI(messageId);
+            });
+
+
             // Typing indicator subscription
             stompClient.subscribe("/user/queue/typing", function (message) {
                 var data = JSON.parse(message.body);
@@ -326,6 +333,13 @@ function toggleMessageSelection(wrapper, messageId) {
         wrapper.classList.add("selected");
     }
     updateSelectionHeader();
+}
+
+function removeMessageFromUI(id) {
+    var element = document.querySelector("[data-id='" + id + "']");
+    if (element) {
+        element.remove();
+    }
 }
 
 // ================= SELECTION HEADER =================
