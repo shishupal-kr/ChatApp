@@ -33,14 +33,22 @@
 
         <!-- SELECTION HEADER (Hidden by default) -->
         <div id="selectionHeader" class="selection-header" style="display: none;">
-            <span id="selectionCount">1</span>
-            <div class="selection-actions">
-                <span onclick="replySelected()">↩️</span>
-                <span onclick="editSelected()">✏️</span>
-                <span onclick="copySelected()">📋</span>
-                <span onclick="forwardSelected()">🔁</span>
-                <span onclick="deleteSelected()">🗑️</span>
+
+            <!-- LEFT SIDE (Back + Count) -->
+            <div class="selection-left">
+                <span class="selection-back" onclick="clearSelection()">←</span>
+                <span id="selectionCount">1</span>
             </div>
+
+            <!-- RIGHT SIDE (Actions) -->
+            <div class="selection-actions">
+                <span onclick="replySelected()">↩</span>
+                <span onclick="editSelected()">✏</span>
+                <span onclick="copySelected()">⧉</span>
+                <span onclick="forwardSelected()">↪</span>
+                <span onclick="deleteSelected()">🗑</span>
+            </div>
+
         </div>
 
 

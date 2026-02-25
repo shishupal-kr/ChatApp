@@ -290,32 +290,63 @@ body {
 /* ================= SELECTION HEADER ================= */
 
 .selection-header {
-    width: 100%;
-    background: rgba(0, 0, 0, 0.45);
-    backdrop-filter: blur(20px);
-    border-radius: 30px;
-    padding: 8px 14px;
+    width: calc(100% - 32px);
+    margin: 8px 16px 0 16px;
+
+    background: rgba(255,255,255,0.10);
+    backdrop-filter: blur(22px);
+    -webkit-backdrop-filter: blur(22px);
+
+    border-radius: 26px;
+    border: 1px solid rgba(255,255,255,0.25);
+
+    padding: 10px 16px;
+
     display: flex;
-    justify-content: space-between;
     align-items: center;
+    justify-content: space-between;
+
     color: white;
+
+    box-shadow:
+        0 10px 25px rgba(0,0,0,0.35),
+        inset 0 0 10px rgba(255,255,255,0.05);
+
     animation: fadeInUp 0.2s ease;
 }
 
-.selection-header span {
-    font-size: 14px;
+.selection-left {
+    display: flex;
+    align-items: center;
+}
+
+.selection-back {
+    font-size: 20px;
+    margin-right: 18px;
+    cursor: pointer;
+}
+
+#selectionCount {
+    font-size: 16px;
     font-weight: 600;
 }
 
+.selection-actions {
+    display: flex;
+    align-items: center;
+}
+
 .selection-actions span {
-    margin-left: 18px;
+    margin-left: 22px;
     cursor: pointer;
-    font-size: 16px;
-    transition: 0.2s ease;
+    font-size: 20px;
+    opacity: 0.9;
+    transition: transform 0.2s ease, opacity 0.2s ease;
 }
 
 .selection-actions span:hover {
-    transform: scale(1.1);
+    transform: scale(1.15);
+    opacity: 1;
 }
 
 /* Highlight selected message */
