@@ -38,6 +38,15 @@ public interface ChatMessageRepository
             Pageable pageable
     );
 
+    @Query("""
+        SELECT m.sender, COUNT(m)
+        FROM ChatMessageEntity m
+        WHERE m.receiver = :username
+          AND m.status <> com.shishupal.chatapp.entity.ChatMessageEntity.MessageStatus.READ
+        GROUP BY m.sender
+    """)
+    List<Object[]> countUnreadGroupedBySender(@Param("username") String username);
+
     // Returns distinct users who have sent or received messages
     @Query("""
     SELECT DISTINCT

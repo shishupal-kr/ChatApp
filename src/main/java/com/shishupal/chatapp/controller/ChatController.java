@@ -78,6 +78,13 @@ public class ChatController {
                 message
         );
 
+        // Notify receiver's friends page to update unread count
+        messagingTemplate.convertAndSendToUser(
+                receiver,
+                "/queue/unread-update",
+                sender
+        );
+
         // Mark as DELIVERED only if receiver is online
         if (onlineUserService.getOnlineUsers().contains(receiver)) {
             entity.setStatus(ChatMessageEntity.MessageStatus.DELIVERED);

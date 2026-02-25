@@ -30,6 +30,30 @@ fetch("/api/chat/conversations", {
   .then(data => {
     renderConversations(data);
 
+    // Load unread counts initially
+    fetch("/api/chat/unread-counts", {
+      headers: { Authorization: "Bearer " + token }
+    })
+    .then(res => res.json())
+    .then(unreadMap => {
+      Object.keys(unreadMap).forEach(username => {
+        var wrapper = document.querySelector("[data-user='" + username + "']");
+        if (!wrapper) return;
+
+        var parentItem = wrapper.closest(".friend-item");
+        var badge = parentItem.querySelector(".unread-badge");
+
+        if (badge) {
+          badge.innerText = unreadMap[username];
+        } else {
+          var newBadge = document.createElement("span");
+          newBadge.className = "unread-badge";
+          newBadge.innerText = unreadMap[username];
+          parentItem.querySelector(".friend-right").appendChild(newBadge);
+        }
+      });
+    });
+
     // After conversations render, fetch current online users
     return fetch("/api/chat/online-users", {
       headers: { Authorization: "Bearer " + localStorage.getItem("token")}
@@ -58,6 +82,29 @@ function connectWebSocket() {
       stompClient.subscribe("/user/queue/online-users", function (message) {
         var onlineUsers = JSON.parse(message.body);
         updateOnlineStatus(onlineUsers);
+      });
+
+      // Real-time unread badge update
+      stompClient.subscribe("/user/queue/unread-update", function (message) {
+        var sender = message.body;
+
+        var container = document.getElementById("friendList");
+        var wrapper = container.querySelector("[data-user='" + sender + "']");
+
+        if (!wrapper) return;
+
+        var parentItem = wrapper.closest(".friend-item");
+        var badge = parentItem.querySelector(".unread-badge");
+
+        if (badge) {
+          var count = parseInt(badge.innerText || "0");
+          badge.innerText = count + 1;
+        } else {
+          var newBadge = document.createElement("span");
+          newBadge.className = "unread-badge";
+          newBadge.innerText = "1";
+          parentItem.querySelector(".friend-right").appendChild(newBadge);
+        }
       });
     }
   );
