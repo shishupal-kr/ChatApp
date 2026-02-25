@@ -1,3 +1,4 @@
+window.editingMessageId = null;
 let replyingToMessageId = null;
 let selectedMessages = new Set();
 var currentUser = localStorage.getItem("username");
