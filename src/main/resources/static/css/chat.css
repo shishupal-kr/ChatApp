@@ -228,21 +228,27 @@ body {
 /* ================= REPLY BAR ================= */
 
 .reply-bar {
+    width: calc(100% - 32px);
+    margin: 0 16px 4px 16px;
+
+    padding: 6px 12px;
+
+    background: rgba(255,255,255,0.10);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+
+    border-radius: 18px;
+    border-left: 3px solid #4facfe;
+
     display: flex;
     justify-content: space-between;
     align-items: center;
 
-    margin-top: 6px;
-    padding: 6px 12px;
-
-    background: rgba(255,255,255,0.12);
-    backdrop-filter: blur(15px);
-
-    border-radius: 16px;
-    border-left: 4px solid #4facfe;
-
-    font-size: 13px;
+    font-size: 12px;
     color: white;
+
+    box-sizing: border-box;
+    animation: fadeInUp 0.2s ease;
 }
 
 .reply-content {

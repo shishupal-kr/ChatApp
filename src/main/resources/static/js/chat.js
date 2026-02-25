@@ -222,21 +222,28 @@ function renderMessage(msg, prepend = false) {
     bubble.classList.add("glass-bubble");
     bubble.innerText = msg.content;
 
-    // Click to select message (WhatsApp style)
+    // Long press to select (mobile + desktop)
     bubble.style.cursor = "pointer";
-    bubble.addEventListener("click", function (e) {
+
+    let pressTimer;
+
+    function startPress(e) {
         e.stopPropagation();
+        pressTimer = setTimeout(function () {
+            toggleMessageSelection(wrapper, msg.id);
+        }, 500); // 500ms long press
+    }
 
-        if (selectedMessages.has(msg.id)) {
-            selectedMessages.delete(msg.id);
-            wrapper.classList.remove("selected");
-        } else {
-            selectedMessages.add(msg.id);
-            wrapper.classList.add("selected");
-        }
+    function cancelPress() {
+        clearTimeout(pressTimer);
+    }
 
-        updateSelectionHeader();
-    });
+    bubble.addEventListener("mousedown", startPress);
+    bubble.addEventListener("touchstart", startPress);
+
+    bubble.addEventListener("mouseup", cancelPress);
+    bubble.addEventListener("mouseleave", cancelPress);
+    bubble.addEventListener("touchend", cancelPress);
 
     // Meta (time + ticks)
     var meta = document.createElement("div");
@@ -286,6 +293,17 @@ function renderMessage(msg, prepend = false) {
         container.scrollTop = container.scrollHeight;
     }
 
+}
+
+function toggleMessageSelection(wrapper, messageId) {
+    if (selectedMessages.has(messageId)) {
+        selectedMessages.delete(messageId);
+        wrapper.classList.remove("selected");
+    } else {
+        selectedMessages.add(messageId);
+        wrapper.classList.add("selected");
+    }
+    updateSelectionHeader();
 }
 
 // ================= SELECTION HEADER =================
