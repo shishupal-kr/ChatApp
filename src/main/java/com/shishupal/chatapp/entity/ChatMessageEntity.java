@@ -30,6 +30,8 @@ public class ChatMessageEntity {
     @Enumerated(EnumType.STRING)
     private MessageStatus status;
 
+    private boolean edited;
+
     public enum MessageStatus {
         SENT,
         DELIVERED,

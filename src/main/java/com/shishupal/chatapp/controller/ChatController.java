@@ -138,6 +138,42 @@ public class ChatController {
         chatMessageRepository.saveAll(messages);
     }
 
+    @MessageMapping("/edit")
+    @Transactional
+    public void editMessage(ChatMessage message, Principal principal) {
+
+        if (principal == null) return;
+
+        var optional = chatMessageRepository.findById(message.getId());
+        if (optional.isEmpty()) return;
+
+        ChatMessageEntity entity = optional.get();
+
+        if (!entity.getSender().equals(principal.getName())) return;
+
+        entity.setContent(message.getContent());
+        entity.setEdited(true);
+
+        chatMessageRepository.save(entity);
+
+        // Update DTO before sending
+        message.setId(entity.getId());
+        message.setContent(entity.getContent());
+        message.setEdited(true);
+
+        messagingTemplate.convertAndSendToUser(
+                entity.getReceiver(),
+                "/queue/edit",
+                message
+        );
+
+        messagingTemplate.convertAndSendToUser(
+                entity.getSender(),
+                "/queue/edit",
+                message
+        );
+    }
+
     //Delete a message
     @MessageMapping("/delete")
     @Transactional

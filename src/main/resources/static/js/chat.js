@@ -1,3 +1,5 @@
+let replyingToMessageId = null;
+let selectedMessages = new Set();
 var currentUser = localStorage.getItem("username");
 var token = localStorage.getItem("token");
 var readTriggered = false;
@@ -126,17 +128,34 @@ messageInput.addEventListener("input", function () {
 
 });
 
+ // send a message
 function sendMessage() {
 
-    var content = document.getElementById("messageInput").value;
+    var input = document.getElementById("messageInput");
+    var content = input.value.trim();
     if (!content) return;
 
+    // If editing an existing message
+    if (window.editingMessageId) {
+        stompClient.send("/app/edit", {}, JSON.stringify({
+            id: window.editingMessageId,
+            content: content
+        }));
+
+        window.editingMessageId = null;
+        input.value = "";
+        return;
+    }
+
+    // Normal send
     stompClient.send("/app/private-message", {}, JSON.stringify({
         receiver: selectedUser,
-        content: content
+        content: content,
+        replyToId: replyingToMessageId
     }));
 
-    document.getElementById("messageInput").value = "";
+    input.value = "";
+    cancelReply();
 }
 
 function renderMessage(msg) {
@@ -155,6 +174,22 @@ function renderMessage(msg) {
     var bubble = document.createElement("div");
     bubble.classList.add("glass-bubble");
     bubble.innerText = msg.content;
+
+    // Click to select message (WhatsApp style)
+    bubble.style.cursor = "pointer";
+    bubble.addEventListener("click", function (e) {
+        e.stopPropagation();
+
+        if (selectedMessages.has(msg.id)) {
+            selectedMessages.delete(msg.id);
+            wrapper.classList.remove("selected");
+        } else {
+            selectedMessages.add(msg.id);
+            wrapper.classList.add("selected");
+        }
+
+        updateSelectionHeader();
+    });
 
     // Meta (time + ticks)
     var meta = document.createElement("div");
@@ -201,6 +236,87 @@ function renderMessage(msg) {
 
 }
 
+// ================= SELECTION HEADER =================
+function updateSelectionHeader() {
+    const normalHeader = document.getElementById("normalHeader");
+    const selectionHeader = document.getElementById("selectionHeader");
+    const selectionCount = document.getElementById("selectionCount");
+
+    if (!normalHeader || !selectionHeader) return;
+
+    if (selectedMessages.size > 0) {
+        normalHeader.style.display = "none";
+        selectionHeader.style.display = "flex";
+        selectionCount.innerText = selectedMessages.size;
+    } else {
+        normalHeader.style.display = "flex";
+        selectionHeader.style.display = "none";
+    }
+}
+
+function clearSelection() {
+    selectedMessages.clear();
+    document.querySelectorAll(".glass-message.selected").forEach(el => {
+        el.classList.remove("selected");
+    });
+    updateSelectionHeader();
+}
+
+function replySelected() {
+    if (selectedMessages.size !== 1) return;
+
+    const id = [...selectedMessages][0];
+    const bubble = document.querySelector("[data-id='" + id + "'] .glass-bubble");
+
+    if (!bubble) return;
+
+    startReply(id, bubble.innerText);
+    clearSelection();
+}
+
+function copySelected() {
+    const texts = [];
+
+    selectedMessages.forEach(id => {
+        const bubble = document.querySelector("[data-id='" + id + "'] .glass-bubble");
+        if (bubble) texts.push(bubble.innerText);
+    });
+
+    if (texts.length > 0) {
+        navigator.clipboard.writeText(texts.join("\n"));
+    }
+
+    clearSelection();
+}
+
+function deleteSelected() {
+    selectedMessages.forEach(id => {
+        stompClient.send("/app/delete", {}, JSON.stringify({ id: id }));
+    });
+
+    clearSelection();
+}
+
+function editSelected() {
+
+    if (selectedMessages.size !== 1) return;
+
+    const id = [...selectedMessages][0];
+    const bubble = document.querySelector("[data-id='" + id + "'] .glass-bubble");
+
+    if (!bubble) return;
+
+    const oldText = bubble.innerText;
+
+    document.getElementById("messageInput").value = oldText;
+    document.getElementById("messageInput").focus();
+
+    // Store editing id
+    window.editingMessageId = id;
+
+    clearSelection();
+}
+
 // ================= ONLINE INDICATOR =================
 function updateOnlineIndicator(onlineUsers) {
 
@@ -236,4 +352,27 @@ document.addEventListener("DOMContentLoaded", function () {
         }
 
     });
+
 });
+
+// ================= REPLY FUNCTIONS =================
+function startReply(messageId, content) {
+    replyingToMessageId = messageId;
+
+    var preview = document.getElementById("replyPreview");
+    var bar = document.getElementById("replyBar");
+
+    if (preview && bar) {
+        preview.innerText = content;
+        bar.style.display = "flex";
+    }
+}
+
+function cancelReply() {
+    replyingToMessageId = null;
+
+    var bar = document.getElementById("replyBar");
+    if (bar) {
+        bar.style.display = "none";
+    }
+}
