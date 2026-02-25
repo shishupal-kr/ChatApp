@@ -76,6 +76,12 @@ function connectWebSocket() {
                 removeMessageFromUI(messageId);
             });
 
+            // Edit message subscription
+            stompClient.subscribe("/user/queue/edit", function (message) {
+                var updatedMsg = JSON.parse(message.body);
+                updateEditedMessageInUI(updatedMsg);
+            });
+
 
             // Typing indicator subscription
             stompClient.subscribe("/user/queue/typing", function (message) {
@@ -339,6 +345,26 @@ function removeMessageFromUI(id) {
     var element = document.querySelector("[data-id='" + id + "']");
     if (element) {
         element.remove();
+    }
+}
+
+function updateEditedMessageInUI(msg) {
+    var wrapper = document.querySelector("[data-id='" + msg.id + "']");
+    if (!wrapper) return;
+
+    var bubble = wrapper.querySelector(".glass-bubble");
+    if (!bubble) return;
+
+    var textDiv = bubble.querySelector(".message-text");
+    if (textDiv) {
+        textDiv.innerText = msg.content;
+    }
+
+    var timeSpan = wrapper.querySelector(".message-time");
+    if (timeSpan) {
+        var date = msg.timestamp ? new Date(msg.timestamp) : new Date();
+        var formattedTime = date.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+        timeSpan.innerHTML = '<span class="edited-label">edited</span> ' + formattedTime;
     }
 }
 
