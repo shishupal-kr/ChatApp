@@ -41,7 +41,7 @@ public class SecurityConfig {
                         .requestMatchers("/chat/**").permitAll()
                         .requestMatchers("/topic/**").permitAll()
                         .requestMatchers("/app/**").permitAll()
-                        .requestMatchers("/html/**").permitAll()
+                        .requestMatchers("/html/**", "/css/**", "/js/**", "/favicon.ico").permitAll()
                         .requestMatchers("/**/*.html").permitAll()
                         .requestMatchers("/images/**").permitAll()
                         .requestMatchers("/css/**").permitAll()
