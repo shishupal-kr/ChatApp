@@ -17,11 +17,9 @@ public class ChatRestController {
 
     @GetMapping("/conversations")
     public List<ConversationDTO> getConversations(Principal principal) {
-
         if (principal == null) {
             return List.of();
         }
-
         return chatService.getConversations(principal.getName());
     }
 
@@ -33,7 +31,11 @@ public class ChatRestController {
             return List.of();
         }
 
-        return chatService.searchUsers(keyword, principal.getName());
+        if (keyword == null || keyword.trim().length() < 2) {
+            return List.of();
+        }
+
+        return chatService.searchUsers(keyword.trim(), principal.getName());
     }
 
     @GetMapping("/online-users")

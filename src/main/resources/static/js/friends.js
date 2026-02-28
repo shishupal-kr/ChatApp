@@ -292,7 +292,13 @@ function handleSearchKey(event) {
 }
 
 function searchUser(keyword) {
-  fetch(`/api/chat/users/search?keyword=${keyword}`, {
+  if (!keyword || keyword.length < 3) {
+    return;
+  }
+
+  const encodedKeyword = encodeURIComponent(keyword);
+
+  fetch(`/api/chat/users/search?keyword=${encodedKeyword}`, {
     headers: { Authorization: "Bearer " + token }
   })
     .then(res => res.json())

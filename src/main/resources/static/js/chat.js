@@ -429,6 +429,71 @@ function deleteSelected() {
     clearSelection();
 }
 
+function forwardSelected() {
+    if (selectedMessages.size === 0) return;
+
+    const texts = [];
+
+    selectedMessages.forEach(id => {
+        const bubble = document.querySelector("[data-id='" + id + "'] .message-text");
+        if (bubble) texts.push(bubble.innerText);
+    });
+
+    if (texts.length === 0) return;
+
+    window.forwardMessages = texts;
+    openForwardModal();
+    clearSelection();
+}
+
+function openForwardModal() {
+    fetch("/api/users", {
+        headers: { Authorization: "Bearer " + token }
+    })
+    .then(res => res.json())
+    .then(users => {
+        const list = document.getElementById("forwardUserList");
+        if (!list) return;
+
+        list.innerHTML = "";
+
+        users.forEach(user => {
+            if (user === currentUser) return;
+
+            const item = document.createElement("div");
+            item.className = "forward-user-item";
+            item.innerText = user;
+
+            item.onclick = function () {
+                sendForward(user);
+            };
+
+            list.appendChild(item);
+        });
+
+        document.getElementById("forwardModal").style.display = "flex";
+    });
+}
+
+function closeForwardModal() {
+    const modal = document.getElementById("forwardModal");
+    if (modal) modal.style.display = "none";
+}
+
+function sendForward(receiver) {
+    if (!window.forwardMessages) return;
+
+    window.forwardMessages.forEach(text => {
+        stompClient.send("/app/private-message", {}, JSON.stringify({
+            receiver: receiver,
+            content: text,
+            replyToId: null
+        }));
+    });
+
+    closeForwardModal();
+}
+
 function editSelected() {
 
     if (selectedMessages.size !== 1) return;

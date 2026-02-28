@@ -63,9 +63,4 @@ public interface ChatMessageRepository
     Optional<ChatMessageEntity>
     findTopBySenderAndReceiverOrderByTimestampDesc(String sender, String receiver);
 
-     @Query("SELECT u.username FROM User u " +
-             "WHERE u.username LIKE %:keyword% " +
-             "AND u.username <> :currentUser")
-     List<String> searchUsers(@Param("keyword") String keyword,
-                              @Param("currentUser") String currentUser);
 }

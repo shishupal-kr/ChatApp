@@ -14,19 +14,24 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
+import com.shishupal.chatapp.repository.UserRepository;
+
 @Service
 public class ChatService {
 
     private final ChatMessageRepository repository;
     private final OnlineUserService onlineUserService;
+    private final UserRepository userRepository;
 
     public ChatService(ChatMessageRepository repository,
-                       OnlineUserService onlineUserService) {
+                       OnlineUserService onlineUserService,
+                       UserRepository userRepository) {
         this.repository = repository;
         this.onlineUserService = onlineUserService;
+        this.userRepository = userRepository;
     }
     public List<String> searchUsers(String keyword, String currentUser) {
-        return repository.searchUsers(keyword, currentUser);
+        return userRepository.searchByUsername(keyword, currentUser);
     }
 
     public List<ConversationDTO> getConversations(String currentUser) {
@@ -75,6 +80,11 @@ public class ChatService {
         );
 
         return conversations;
+    }
+
+    // Privacy-safe: return only usernames from previous chats
+    public List<String> getConversationUsers(String username) {
+        return repository.findDistinctChatUsers(username);
     }
 
     public Set<String> getOnlineUsers() {

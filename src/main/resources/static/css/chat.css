@@ -361,6 +361,69 @@ body {
     border-radius: 20px;
 }
 
+/* ================= FORWARD MODAL ================= */
+
+.forward-modal {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 999;
+}
+
+.forward-box {
+    width: 90%;
+    max-width: 340px;
+
+    background: rgba(255,255,255,0.12);
+    backdrop-filter: blur(22px);
+    -webkit-backdrop-filter: blur(22px);
+
+    border-radius: 24px;
+    border: 1px solid rgba(255,255,255,0.25);
+
+    padding: 18px;
+    color: white;
+
+    box-shadow:
+        0 12px 30px rgba(0,0,0,0.35),
+        inset 0 0 10px rgba(255,255,255,0.05);
+}
+
+.forward-box h3 {
+    margin: 0 0 14px 0;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.forward-user-item {
+    padding: 10px 12px;
+    border-radius: 14px;
+    cursor: pointer;
+    margin-bottom: 8px;
+    transition: background 0.2s ease, transform 0.15s ease;
+}
+
+.forward-user-item:hover {
+    background: rgba(255,255,255,0.15);
+    transform: translateX(4px);
+}
+
+.forward-box button {
+    margin-top: 10px;
+    width: 100%;
+    padding: 8px;
+    border-radius: 14px;
+    border: none;
+    cursor: pointer;
+
+    background: linear-gradient(135deg, #4facfe, #00f2fe);
+    color: white;
+    font-weight: 500;
+}
+
 /* ================= MOBILE RESPONSIVE ================= */
 @media (max-width: 768px) {
 

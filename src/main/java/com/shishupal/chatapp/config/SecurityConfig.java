@@ -26,7 +26,6 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
-        // Configures stateless session management; disables default auth
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(session ->
@@ -35,7 +34,6 @@ public class SecurityConfig {
                 .httpBasic(AbstractHttpConfigurer::disable)
                 .formLogin(AbstractHttpConfigurer::disable)
 
-                // Permits unauthenticated access to specified endpoints
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/auth/**").permitAll()
                         .requestMatchers("/chat/**").permitAll()
@@ -44,9 +42,6 @@ public class SecurityConfig {
                         .requestMatchers("/html/**", "/css/**", "/js/**", "/favicon.ico").permitAll()
                         .requestMatchers("/**/*.html").permitAll()
                         .requestMatchers("/images/**").permitAll()
-                        .requestMatchers("/css/**").permitAll()
-                        .requestMatchers("/js/**").permitAll()
-                        .requestMatchers("/favicon.ico").permitAll()
                         .requestMatchers("/api/chat/**").authenticated()
                         .anyRequest().authenticated()
                 )
