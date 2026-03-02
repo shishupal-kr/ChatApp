@@ -2,13 +2,16 @@ package com.shishupal.chatapp.controller;
 
 import com.shishupal.chatapp.dto.LoginRequest;
 import com.shishupal.chatapp.dto.RegisterRequest;
+import com.shishupal.chatapp.entity.User;
 import com.shishupal.chatapp.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.security.Principal;
+import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -25,5 +28,18 @@ public class AuthController {
     @PostMapping("/login")
     public String login(@RequestBody LoginRequest request) {
         return userService.loginUser(request);
+    }
+
+    @GetMapping("/me")
+    public ResponseEntity<?> getCurrentUser(Principal principal) {
+
+        User user = userService.findByUsername(principal.getName());
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("username", user.getUsername());
+        response.put("fullName", user.getFullName());   // if exists
+        response.put("status", user.getStatus());
+
+        return ResponseEntity.ok(response);
     }
 }

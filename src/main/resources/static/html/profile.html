@@ -1,10 +1,43 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+  <title>Profile - ChatApp</title>
+  <link rel="stylesheet" href="/css/profile.css">
+  <script src="/js/profile.js" defer></script>
 </head>
 <body>
+
+<div class="profile-container">
+
+  <div class="profile-header">
+    <span onclick="goBack()" class="back-btn">‹</span>
+    <span class="profile-title">Profile</span>
+  </div>
+
+  <div class="profile-center-section">
+
+    <div class="avatar-wrapper" id="avatarWrapper">
+        <div class="status-ring" id="statusRing"></div>
+        <div class="profile-avatar" id="profileAvatar">
+            U
+        </div>
+    </div>
+
+    <div class="profile-display-name" id="displayName">
+      Full Name
+    </div>
+
+    <div class="profile-username" id="profileUsername">
+      @username
+    </div>
+
+  </div>
+
+  <div class="profile-actions">
+    <button class="profile-btn secondary" onclick="goBack()">Back</button>
+  </div>
+
+</div>
 
 </body>
 </html>

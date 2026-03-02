@@ -105,6 +105,15 @@ if (!selectedUser) {
 document.getElementById("chatTitle").innerText = selectedUser;
 document.getElementById("profileCircle").innerText = selectedUser.charAt(0).toUpperCase();
 
+// Make chat header clickable to open profile page
+var normalHeaderElement = document.getElementById("normalHeader");
+if (normalHeaderElement) {
+    normalHeaderElement.style.cursor = "pointer";
+    normalHeaderElement.addEventListener("click", function () {
+        window.location.href = "/html/profile.html?user=" + selectedUser;
+    });
+}
+
 function loadHistory() {
 
     if (loading) return;

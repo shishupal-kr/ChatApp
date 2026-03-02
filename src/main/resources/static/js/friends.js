@@ -325,8 +325,16 @@ function searchUser(keyword) {
       });
     });
 }
-
+// 3 Dot Menu Function
 function logout() {
   localStorage.clear();
   window.location.href = "/html/login.html";
+}
+
+function openSettings() {
+  window.location.href = "/html/settings.html";
+}
+
+function openProfile() {
+  window.location.href = "/html/profile.html";
 }

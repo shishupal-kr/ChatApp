@@ -1,10 +1,62 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Settings - ChatApp</title>
+    <link rel="stylesheet" href="/css/settings.css">
+    <script src="/js/settings.js" defer></script>
 </head>
 <body>
+
+<div class="settings-container">
+
+    <div class="settings-header">
+        Settings
+    </div>
+
+    <div class="settings-content">
+
+        <div class="settings-section">
+            <div class="setting-row" onclick="window.location.href='profile.html'">
+                👤 Profile
+            </div>
+        </div>
+
+        <div class="settings-section">
+            <div class="setting-row" onclick="toggleTheme()">
+                🌓 Dark / Light Mode
+            </div>
+        </div>
+
+        <div class="settings-section">
+
+            <div class="setting-row">
+                ✏ Change Password
+            </div>
+            <input class="setting-input" type="password" id="newPassword">
+            <button class="setting-btn">Update</button>
+
+            <div class="setting-row">
+                📧 Change Email
+            </div>
+            <input class="setting-input" type="email" id="newEmail">
+            <button class="setting-btn">Update</button>
+
+        </div>
+
+        <div class="settings-section">
+            <div class="setting-row setting-btn danger" onclick="deleteAccount()">
+                🗑 Delete Account
+            </div>
+        </div>
+
+        <div class="settings-section">
+            <div class="setting-row" onclick="showAbout()">
+                📱 About App
+            </div>
+        </div>
+
+    </div>
+</div>
 
 </body>
 </html>
