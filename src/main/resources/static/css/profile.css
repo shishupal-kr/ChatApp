@@ -4,7 +4,7 @@
 
 body {
     margin: 0;
-    height: 100dvh;
+    min-height: 100dvh;
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
     background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
     display: flex;
@@ -34,7 +34,7 @@ body {
     justify-content: center;
     position: relative;
 
-    padding: 18px;
+    padding: calc(18px + env(safe-area-inset-top)) 18px 18px 18px;
     font-size: 18px;
     font-weight: 600;
     color: white;
@@ -181,7 +181,7 @@ body {
 
 .profile-actions {
     margin-top: auto;
-    padding: 20px;
+    padding: 20px 20px calc(20px + env(safe-area-inset-bottom));
 }
 
 .profile-actions .profile-btn {

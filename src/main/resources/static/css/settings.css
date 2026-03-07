@@ -2,7 +2,7 @@
 
 body {
     margin: 0;
-    height: 100dvh;
+    min-height: 100dvh;
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Arial;
     background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
     display: flex;
@@ -25,7 +25,7 @@ body {
 /* ===== HEADER ===== */
 
 .settings-header {
-    padding: 18px;
+    padding: calc(18px + env(safe-area-inset-top)) 18px 18px 18px;
     font-size: 20px;
     font-weight: 600;
     color: white;
@@ -38,7 +38,7 @@ body {
 .settings-content {
     flex: 1;
     overflow-y: auto;
-    padding: 18px;
+    padding: 18px 18px calc(18px + env(safe-area-inset-bottom));
     display: flex;
     flex-direction: column;
     gap: 18px;
