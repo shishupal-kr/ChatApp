@@ -10,7 +10,7 @@ async function loadProfile() {
         let response;
 
         if (profileUsername) {
-            response = await fetch("/api/user/" + profileUsername, {
+            response = await fetch("/api/user/" + encodeURIComponent(profileUsername), {
                 headers: {
                     "Authorization": "Bearer " + token
                 }
@@ -24,7 +24,7 @@ async function loadProfile() {
         }
 
         if (!response.ok) {
-            console.error("Failed to load profile");
+            console.error("Failed to load profile. Status:", response.status);
             return;
         }
 
@@ -52,4 +52,21 @@ async function loadProfile() {
     } catch (error) {
         console.error("Profile load error:", error);
     }
+}
+
+function goBack() {
+    const params = new URLSearchParams(window.location.search);
+    const profileUsername = params.get("user");
+
+    if (profileUsername) {
+        window.location.href = "/html/chat.html?user=" + encodeURIComponent(profileUsername);
+        return;
+    }
+
+    if (document.referrer) {
+        window.history.back();
+        return;
+    }
+
+    window.location.href = "/html/friends.html";
 }
