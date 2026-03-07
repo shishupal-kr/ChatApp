@@ -109,7 +109,11 @@ document.getElementById("profileCircle").innerText = selectedUser.charAt(0).toUp
 var normalHeaderElement = document.getElementById("normalHeader");
 if (normalHeaderElement) {
     normalHeaderElement.style.cursor = "pointer";
-    normalHeaderElement.addEventListener("click", function () {
+    normalHeaderElement.addEventListener("click", function (event) {
+        // If back button was clicked, do nothing (prevent profile open)
+        if (event.target.classList.contains("chat-back-btn")) {
+            return;
+        }
         window.location.href = "/html/profile.html?user=" + selectedUser;
     });
 }

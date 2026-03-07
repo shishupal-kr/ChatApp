@@ -10,7 +10,7 @@ async function loadProfile() {
         let response;
 
         if (profileUsername) {
-            response = await fetch("/api/users/" + profileUsername, {
+            response = await fetch("/api/user/" + profileUsername, {
                 headers: {
                     "Authorization": "Bearer " + token
                 }
