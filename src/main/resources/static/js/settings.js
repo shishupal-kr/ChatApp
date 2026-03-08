@@ -1,8 +1,3 @@
-// ===== Navigation =====
-function goBack() {
-    window.history.back();
-}
-
 // ===== Theme =====
 function toggleTheme() {
     document.body.classList.toggle("light-mode");

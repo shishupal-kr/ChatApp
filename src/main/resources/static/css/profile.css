@@ -112,25 +112,6 @@ body {
     color: rgba(255,255,255,0.7);
 }
 
-.profile-email {
-    font-size: 15px;
-    color: rgba(255,255,255,0.7);
-}
-
-.profile-input {
-    width: 100%;
-    padding: 12px;
-    border-radius: 14px;
-    border: none;
-    outline: none;
-    background: rgba(255,255,255,0.18);
-    color: white;
-    text-align: center;
-}
-
-.profile-input::placeholder {
-    color: rgba(255,255,255,0.6);
-}
 
 /* ===== Actions ===== */
 .profile-actions {

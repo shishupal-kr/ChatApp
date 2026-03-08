@@ -185,52 +185,6 @@ function renderConversations(conversations) {
   });
 }
 
-// ===== Updates =====
-// handle incoming message
-function handleIncomingMessage(msg) {
-
-  var container = document.getElementById("friendList");
-
-  // Find existing conversation item
-  var existing = container.querySelector("[data-user='" + msg.sender + "']");
-
-  // If conversation not present, reload full list
-  if (!existing) {
-    fetch("/api/chat/conversations", {
-      headers: { Authorization: "Bearer " + token }
-    })
-    .then(res => res.json())
-    .then(data => renderConversations(data));
-    return;
-  }
-
-  // Update last message preview
-  var parentItem = existing.closest(".friend-item");
-  var messagePreview = parentItem.querySelector(".friend-message");
-  messagePreview.innerText = msg.content;
-
-  // Update time
-  var timeDiv = parentItem.querySelector(".friend-time");
-  var date = new Date();
-  timeDiv.innerText = date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-
-  // Increase unread badge
-  var badge = parentItem.querySelector(".unread-badge");
-
-  if (badge) {
-    var count = parseInt(badge.innerText);
-    badge.innerText = count + 1;
-  } else {
-    var newBadge = document.createElement("span");
-    newBadge.className = "unread-badge";
-    newBadge.innerText = "1";
-    parentItem.querySelector(".friend-right").appendChild(newBadge);
-  }
-
-  // Move conversation visually to the top
-  container.prepend(parentItem);
-}
-
 function updateOnlineStatus(onlineUsers) {
 
   var wrappers = document.querySelectorAll('.friend-avatar-wrapper');
@@ -246,30 +200,6 @@ function updateOnlineStatus(onlineUsers) {
       wrapper.classList.add('offline');
     }
   });
-}
-
-function showTypingPreview(username) {
-
-  var container = document.getElementById("friendList");
-  var wrapper = container.querySelector("[data-user='" + username + "']");
-
-  if (!wrapper) return;
-
-  var parentItem = wrapper.closest(".friend-item");
-  var preview = parentItem.querySelector(".friend-message");
-
-  preview.innerText = "Typing...";
-  preview.style.fontStyle = "italic";
-  preview.style.color = "#25d366";
-
-  // Reset after 2 seconds
-  setTimeout(function () {
-    fetch("/api/chat/conversations", {
-      headers: { Authorization: "Bearer " + token }
-    })
-    .then(res => res.json())
-    .then(data => renderConversations(data));
-  }, 2000);
 }
 
 // ===== Search =====
