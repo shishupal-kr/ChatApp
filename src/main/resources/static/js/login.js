@@ -1,6 +1,6 @@
 function login() {
 
-    var username = document.getElementById("username").value;
+    var username = document.getElementById("username").value.trim();
     var password = document.getElementById("password").value;
 
     fetch("/api/auth/login", {
