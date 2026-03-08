@@ -15,4 +15,7 @@ public class ChatMessage {
     private String status;
     private Long id;
     private Boolean edited;
+    private Long replyToId;
+    private String replyToSender;
+    private String replyToContent;
 }

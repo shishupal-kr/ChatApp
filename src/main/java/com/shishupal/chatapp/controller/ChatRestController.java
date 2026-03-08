@@ -43,4 +43,12 @@ public class ChatRestController {
         return List.copyOf(chatService.getOnlineUsers());
     }
 
+    @GetMapping("/unread-counts")
+    public java.util.Map<String, Long> getUnreadCounts(Principal principal) {
+        if (principal == null) {
+            return java.util.Map.of();
+        }
+        return chatService.getUnreadCounts(principal.getName());
+    }
+
 }

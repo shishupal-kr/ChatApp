@@ -3,7 +3,6 @@ package com.shishupal.chatapp.controller;
 import com.shishupal.chatapp.entity.ChatMessageEntity;
 import com.shishupal.chatapp.repository.ChatMessageRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
@@ -15,7 +14,6 @@ import java.util.List;
 public class ChatHistoryController {
 
     private final ChatMessageRepository chatMessageRepository;
-    private final SimpMessagingTemplate messagingTemplate;
 
     @GetMapping("/history/{username}")
     public List<ChatMessageEntity> getChatHistory(

@@ -52,6 +52,12 @@ public class ChatController {
 
         message.setSender(sender);
 
+        Long replyToId = message.getReplyToId();
+        ChatMessageEntity replyToEntity = null;
+        if (replyToId != null) {
+            replyToEntity = chatMessageRepository.findById(replyToId).orElse(null);
+        }
+
         // Builds persistable message from sender, receiver, content
         ChatMessageEntity entity = ChatMessageEntity.builder()
                 .sender(sender)
@@ -59,10 +65,18 @@ public class ChatController {
                 .content(message.getContent())
                 .timestamp(LocalDateTime.now())
                 .status(ChatMessageEntity.MessageStatus.SENT)
+                .replyToId(replyToEntity == null ? null : replyToEntity.getId())
+                .replyToSender(replyToEntity == null ? null : replyToEntity.getSender())
+                .replyToContent(replyToEntity == null ? null : replyToEntity.getContent())
                 .build();
 
          chatMessageRepository.save(entity);
          message.setId(entity.getId());
+         if (replyToEntity != null) {
+             message.setReplyToId(replyToEntity.getId());
+             message.setReplyToSender(replyToEntity.getSender());
+             message.setReplyToContent(replyToEntity.getContent());
+         }
 
          System.out.println("MESSAGE SAVED TO DATABASE SUCCESSFULLY");
 

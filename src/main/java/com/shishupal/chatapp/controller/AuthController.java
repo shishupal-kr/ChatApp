@@ -6,6 +6,7 @@ import com.shishupal.chatapp.entity.User;
 import com.shishupal.chatapp.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -41,5 +42,14 @@ public class AuthController {
         response.put("status", user.getStatus());
 
         return ResponseEntity.ok(response);
+    }
+
+    @DeleteMapping("/delete-account")
+    public ResponseEntity<?> deleteAccount(Principal principal) {
+        if (principal == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unauthorized");
+        }
+        userService.deleteCurrentUser(principal.getName());
+        return ResponseEntity.ok("Account deleted");
     }
 }

@@ -63,6 +63,11 @@ public class UserService {
                 .orElseThrow(() -> new IllegalArgumentException("User not found"));
     }
 
+    public void deleteCurrentUser(String username) {
+        User user = findByUsername(username);
+        userRepository.delete(user);
+    }
+
     private String normalizeEmail(String email) {
         String trimmed = email == null ? "" : email.trim();
         return trimmed.isEmpty() ? null : trimmed.toLowerCase();

@@ -32,6 +32,13 @@ public class ChatMessageEntity {
 
     private boolean edited;
 
+    private Long replyToId;
+
+    private String replyToSender;
+
+    @Column(columnDefinition = "TEXT")
+    private String replyToContent;
+
     public enum MessageStatus {
         SENT,
         DELIVERED,
