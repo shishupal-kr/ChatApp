@@ -1,5 +1,5 @@
+// ===== Register =====
 function register() {
-
     var username = document.getElementById("username").value.trim();
     var email = document.getElementById("email").value.trim();
     var password = document.getElementById("password").value;
@@ -8,8 +8,7 @@ function register() {
 
     error.innerText = "";
 
-    // ================= VALIDATION =================
-
+    // ===== Validation =====
     if (!username || !email || !password || !confirmPassword) {
         error.innerText = "All fields are required";
         return;
@@ -35,8 +34,7 @@ function register() {
         return;
     }
 
-    // ================= API CALL =================
-
+    // ===== API Call =====
     fetch("/api/auth/register", {
         method: "POST",
         headers: {
@@ -63,6 +61,7 @@ function register() {
         });
 }
 
+// ===== Navigation =====
 function goToLogin() {
     window.location.href = "/html/login.html";
 }

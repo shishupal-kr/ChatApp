@@ -1,5 +1,5 @@
+// ===== Auth =====
 function login() {
-
     var username = document.getElementById("username").value.trim();
     var password = document.getElementById("password").value;
 
@@ -23,6 +23,7 @@ function login() {
     });
 }
 
+// ===== Navigation =====
 function goToRegister() {
     window.location.href = "/html/register.html";
 }

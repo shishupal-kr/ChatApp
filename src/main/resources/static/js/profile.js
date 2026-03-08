@@ -1,5 +1,7 @@
+// ===== Init =====
 document.addEventListener("DOMContentLoaded", loadProfile);
 
+// ===== Data Load =====
 async function loadProfile() {
     try {
         const token = localStorage.getItem("token");
@@ -54,6 +56,7 @@ async function loadProfile() {
     }
 }
 
+// ===== Navigation =====
 function goBack() {
     const params = new URLSearchParams(window.location.search);
     const profileUsername = params.get("user");

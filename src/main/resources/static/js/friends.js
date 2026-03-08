@@ -1,13 +1,16 @@
+// ===== State =====
 let debounceTimer;
 var currentUser = localStorage.getItem("username");
 var token = localStorage.getItem("token");
 var stompClient = null;
 
+// ===== Auth Guard =====
 if (!currentUser || !token) {
   window.location.href = "/html/login.html";
 }
 
 
+// ===== Menu =====
 // toggle menu dropdown
 function toggleMenu() {
   const menu = document.getElementById("menuDropdown");
@@ -22,6 +25,7 @@ document.addEventListener("click", function (event) {
   }
 });
 
+// ===== Initial Data =====
 // Load conversations immediately (independent of WebSocket)
 fetch("/api/chat/conversations", {
   headers: { Authorization: "Bearer " + token }
@@ -62,6 +66,7 @@ fetch("/api/chat/conversations", {
   .then(res => res.json())
   .then(users => updateOnlineStatus(users));
 
+// ===== WebSocket =====
 function connectWebSocket() {
   if (stompClient) {
     return;
@@ -110,10 +115,12 @@ function connectWebSocket() {
   );
 }
 
+// ===== Init =====
 document.addEventListener("DOMContentLoaded", function () {
   connectWebSocket();
 });
 
+// ===== Cleanup =====
 window.addEventListener("beforeunload", function () {
   if (stompClient && stompClient.connected) {
     stompClient.disconnect();
@@ -121,9 +128,8 @@ window.addEventListener("beforeunload", function () {
   stompClient = null;
 });
 
-
-
-  // Render conversations
+// ===== Rendering =====
+// Render conversations
 function renderConversations(conversations) {
 
   var container = document.getElementById("friendList");
@@ -179,7 +185,8 @@ function renderConversations(conversations) {
   });
 }
 
-  // handle incoming message
+// ===== Updates =====
+// handle incoming message
 function handleIncomingMessage(msg) {
 
   var container = document.getElementById("friendList");
@@ -265,7 +272,7 @@ function showTypingPreview(username) {
   }, 2000);
 }
 
-// ================= SEARCH WITH DEBOUNCE =================
+// ===== Search =====
 function handleSearchKey(event) {
   const keyword = event.target.value.trim();
 
@@ -325,6 +332,8 @@ function searchUser(keyword) {
       });
     });
 }
+
+// ===== Actions =====
 // 3 Dot Menu Function
 function logout() {
   localStorage.clear();

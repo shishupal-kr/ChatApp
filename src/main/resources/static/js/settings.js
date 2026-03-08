@@ -1,17 +1,21 @@
+// ===== Navigation =====
 function goBack() {
     window.history.back();
 }
 
+// ===== Theme =====
 function toggleTheme() {
     document.body.classList.toggle("light-mode");
     localStorage.setItem("theme",
         document.body.classList.contains("light-mode") ? "light" : "dark");
 }
 
+// ===== About =====
 function showAbout() {
     alert("ChatApp v1.0\nBuilt with Spring Boot & WebSocket.");
 }
 
+// ===== Account =====
 function deleteAccount() {
     if (!confirm("Are you sure?")) return;
 

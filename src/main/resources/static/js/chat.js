@@ -1,3 +1,4 @@
+// ===== State =====
 window.editingMessageId = null;
 let replyingToMessageId = null;
 let selectedMessages = new Set();
@@ -9,15 +10,18 @@ let pageSize = 20;
 let loading = false;
 
 
+// ===== Auth Guard =====
 if (!currentUser || !token) {
     window.location.href = "/html/login.html";
 }
 
+// ===== Route Params =====
 var params = new URLSearchParams(window.location.search);
 var selectedUser = params.get("user");
 
 var stompClient = null;
 
+// ===== WebSocket =====
 function connectWebSocket() {
     if (stompClient) {
         console.log("WebSocket already created");
@@ -101,6 +105,7 @@ if (!selectedUser) {
     window.location.href = "/html/friends.html";
 }
 
+// ===== Header =====
 // Set header name and profile initial
 document.getElementById("chatTitle").innerText = selectedUser;
 document.getElementById("profileCircle").innerText = selectedUser.charAt(0).toUpperCase();
@@ -118,6 +123,7 @@ if (normalHeaderElement) {
     });
 }
 
+// ===== History =====
 function loadHistory() {
 
     if (loading) return;
@@ -178,6 +184,7 @@ function loadHistory() {
     });
 }
 
+// ===== Typing =====
 // Send typing indicator when user types
 var messageInput = document.getElementById("messageInput");
 
@@ -198,7 +205,7 @@ messageInput.addEventListener("input", function () {
 
 });
 
- // send a message
+// ===== Send =====
 function sendMessage() {
 
     var input = document.getElementById("messageInput");
@@ -228,6 +235,7 @@ function sendMessage() {
     cancelReply();
 }
 
+// ===== Render =====
 function renderMessage(msg, prepend = false) {
 
     var wrapper = document.createElement("div");
@@ -343,6 +351,7 @@ function renderMessage(msg, prepend = false) {
 
 }
 
+// ===== Selection =====
 function toggleMessageSelection(wrapper, messageId) {
     if (selectedMessages.has(messageId)) {
         selectedMessages.delete(messageId);
@@ -381,7 +390,7 @@ function updateEditedMessageInUI(msg) {
     }
 }
 
-// ================= SELECTION HEADER =================
+// ===== Selection Header =====
 function updateSelectionHeader() {
     const normalHeader = document.getElementById("normalHeader");
     const selectionHeader = document.getElementById("selectionHeader");
@@ -459,6 +468,7 @@ function forwardSelected() {
     clearSelection();
 }
 
+// ===== Forward Modal =====
 function openForwardModal() {
     fetch("/api/users", {
         headers: { Authorization: "Bearer " + token }
@@ -527,7 +537,7 @@ function editSelected() {
     clearSelection();
 }
 
-// ================= ONLINE INDICATOR =================
+// ===== Online Indicator =====
 function updateOnlineIndicator(onlineUsers) {
 
     var profileWrapper = document.getElementById("profileWrapper");
@@ -543,7 +553,7 @@ function updateOnlineIndicator(onlineUsers) {
     }
 }
 
-// ================= ENTER / SHIFT+ENTER SUPPORT =================
+// ===== Init =====
 document.addEventListener("DOMContentLoaded", function () {
     connectWebSocket();
 
@@ -577,7 +587,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 });
 
-// ================= REPLY FUNCTIONS =================
+// ===== Reply =====
 function startReply(messageId, content) {
     replyingToMessageId = messageId;
 
@@ -611,6 +621,7 @@ function showTypingIndicator() {
     }, 1500);
 }
 
+// ===== Cleanup =====
 window.addEventListener("beforeunload", function () {
     if (stompClient && stompClient.connected) {
         stompClient.disconnect();
