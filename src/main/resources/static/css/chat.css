@@ -1,4 +1,6 @@
-/* ================= GLOBAL ================= */
+/* ===== Page: Chat ===== */
+
+/* ===== Global ===== */
 body {
     margin: 0;
     min-height: 100dvh;
@@ -9,7 +11,7 @@ body {
     align-items: flex-start;
 }
 
-/* ================= GLASS CHAT ================= */
+/* ===== Layout: Container ===== */
 .glass-chat-container {
     width: 95%;
     max-width: 420px;
@@ -28,6 +30,7 @@ body {
         inset 0 0 25px rgba(255, 255, 255, 0.05);
 }
 
+/* ===== Header: Wrapper ===== */
 .glass-header-wrapper {
     position: sticky;
     top: 0;
@@ -42,6 +45,7 @@ body {
     -webkit-backdrop-filter: blur(18px);
 }
 
+/* ===== Header: Normal ===== */
 .glass-header {
     width: 100%;
     max-width: 100%;
@@ -63,6 +67,13 @@ body {
         0 6px 16px rgba(0, 0, 0, 0.25),
         inset 0 0 8px rgba(255, 255, 255, 0.05);
     cursor: pointer;
+}
+
+.chat-back-btn {
+    font-size: 18px;
+    cursor: pointer;
+    margin-right: 6px;
+    color: white;
 }
 
 .profile-wrapper {
@@ -100,6 +111,68 @@ body {
     color: white;
 }
 
+/* ===== Header: Selection ===== */
+.selection-header {
+    width: calc(100% - 32px);
+    margin: 8px 16px 0 16px;
+
+    background: rgba(255,255,255,0.10);
+    backdrop-filter: blur(22px);
+    -webkit-backdrop-filter: blur(22px);
+
+    border-radius: 26px;
+    border: 1px solid rgba(255,255,255,0.25);
+
+    padding: 10px 16px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    color: white;
+
+    box-shadow:
+        0 10px 25px rgba(0,0,0,0.35),
+        inset 0 0 10px rgba(255,255,255,0.05);
+
+    animation: fadeInUp 0.2s ease;
+}
+
+.selection-left {
+    display: flex;
+    align-items: center;
+}
+
+.selection-back {
+    font-size: 20px;
+    margin-right: 18px;
+    cursor: pointer;
+}
+
+#selectionCount {
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.selection-actions {
+    display: flex;
+    align-items: center;
+}
+
+.selection-actions span {
+    margin-left: 22px;
+    cursor: pointer;
+    font-size: 20px;
+    opacity: 0.9;
+    transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.selection-actions span:hover {
+    transform: scale(1.15);
+    opacity: 1;
+}
+
+/* ===== Messages ===== */
 .glass-messages {
     flex: 1;
     padding: 16px;
@@ -168,74 +241,45 @@ body {
     color: #4fc3f7;
 }
 
-.glass-input {
-    margin: 10px 16px calc(14px + env(safe-area-inset-bottom)) 16px;
-    width: calc(100% - 32px);
-    box-sizing: border-box;
-
-    background: rgba(255, 255, 255, 0.12);
-    backdrop-filter: blur(18px);
-    -webkit-backdrop-filter: blur(18px);
-
-    border-radius: 26px;
-    padding: 6px 8px;   /* reduced */
-    border: 1px solid rgba(255, 255, 255, 0.25);
-
-    display: flex;
-    align-items: center;
-    gap: 8px;
-
-    box-shadow:
-            0 6px 18px rgba(0, 0, 0, 0.28),
-            inset 0 0 10px rgba(255, 255, 255, 0.06);
+.edited-label {
+    font-size: 11px;
+    opacity: 0.7;
+    margin-right: 4px;
 }
 
-.glass-message-input {
-    flex: 1;
-    border: none;
-    outline: none;
-    background: transparent;
-    color: white;
-    font-size: 14px;
-    padding: 8px 10px;
+.reply-preview-bubble {
+    background: rgba(255,255,255,0.12);
+    padding: 6px 10px;
+    border-left: 3px solid #4facfe;
+    border-radius: 10px;
+    margin-bottom: 6px;
+    font-size: 12px;
+    opacity: 0.85;
 }
 
-.glass-send-btn {
-    width: 34px;
-    height: 34px;
-    border-radius: 50%;
-    border: none;
+.reply-sender {
+    font-weight: 600;
+    font-size: 11px;
+    margin-bottom: 2px;
+}
+
+.reply-text {
+    font-size: 12px;
+}
+
+.message-menu {
+    float: right;
     cursor: pointer;
-
-    background: linear-gradient(135deg, #4facfe, #00f2fe);
-    color: white;
+    opacity: 0.6;
+    margin-left: 6px;
     font-size: 14px;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    box-shadow: 0 0 10px rgba(0,150,255,0.5);
-    transition: 0.2s ease;
 }
 
-.glass-send-btn:hover {
-    transform: scale(1.05);
+.message-menu:hover {
+    opacity: 1;
 }
 
-@keyframes fadeInUp {
-    from {
-        opacity: 0;
-        transform: translateY(6px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-/* ================= REPLY BAR ================= */
-
+/* ===== Reply Bar ===== */
 .reply-bar {
     width: calc(100% - 32px);
     margin: 0 16px 4px 16px;
@@ -284,101 +328,63 @@ body {
     padding: 4px;
 }
 
-.message-menu {
-    float: right;
-    cursor: pointer;
-    opacity: 0.6;
-    margin-left: 6px;
-    font-size: 14px;
-}
-
-.message-menu:hover {
-    opacity: 1;
-}
-
-/* ================= SELECTION HEADER ================= */
-
-.selection-header {
+/* ===== Input ===== */
+.glass-input {
+    margin: 10px 16px calc(14px + env(safe-area-inset-bottom)) 16px;
     width: calc(100% - 32px);
-    margin: 8px 16px 0 16px;
+    box-sizing: border-box;
 
-    background: rgba(255,255,255,0.10);
-    backdrop-filter: blur(22px);
-    -webkit-backdrop-filter: blur(22px);
+    background: rgba(255, 255, 255, 0.12);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
 
     border-radius: 26px;
-    border: 1px solid rgba(255,255,255,0.25);
-
-    padding: 10px 16px;
+    padding: 6px 8px;
+    border: 1px solid rgba(255, 255, 255, 0.25);
 
     display: flex;
     align-items: center;
-    justify-content: space-between;
-
-    color: white;
+    gap: 8px;
 
     box-shadow:
-        0 10px 25px rgba(0,0,0,0.35),
-        inset 0 0 10px rgba(255,255,255,0.05);
-
-    animation: fadeInUp 0.2s ease;
+        0 6px 18px rgba(0, 0, 0, 0.28),
+        inset 0 0 10px rgba(255, 255, 255, 0.06);
 }
 
-.chat-back-btn{
-    font-size:18px;
-    cursor:pointer;
-    margin-right:6px;
-    color:white;
+.glass-message-input {
+    flex: 1;
+    border: none;
+    outline: none;
+    background: transparent;
+    color: white;
+    font-size: 14px;
+    padding: 8px 10px;
 }
 
-.selection-left {
+.glass-send-btn {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    border: none;
+    cursor: pointer;
+
+    background: linear-gradient(135deg, #4facfe, #00f2fe);
+    color: white;
+    font-size: 14px;
+
     display: flex;
     align-items: center;
+    justify-content: center;
+
+    box-shadow: 0 0 10px rgba(0,150,255,0.5);
+    transition: 0.2s ease;
 }
 
-.selection-back {
-    font-size: 20px;
-    margin-right: 18px;
-    cursor: pointer;
+.glass-send-btn:hover {
+    transform: scale(1.05);
 }
 
-#selectionCount {
-    font-size: 16px;
-    font-weight: 600;
-}
-
-.selection-actions {
-    display: flex;
-    align-items: center;
-}
-
-.selection-actions span {
-    margin-left: 22px;
-    cursor: pointer;
-    font-size: 20px;
-    opacity: 0.9;
-    transition: transform 0.2s ease, opacity 0.2s ease;
-}
-
-.selection-actions span:hover {
-    transform: scale(1.15);
-    opacity: 1;
-}
-
-/* Highlight selected message */
-.glass-message.selected .glass-bubble {
-    outline: 2px solid #4facfe;
-    box-shadow: 0 0 12px rgba(79, 172, 254, 0.6);
-}
-
-/* Optional subtle background highlight */
-.glass-message.selected {
-    background: rgba(255,255,255,0.05);
-    border-radius: 20px;
-}
-
-/* ================= FORWARD MODAL ================= */
-
+/* ===== Forward Modal ===== */
 .forward-modal {
     position: fixed;
     inset: 0;
@@ -440,7 +446,30 @@ body {
     font-weight: 500;
 }
 
-/* ================= MOBILE RESPONSIVE ================= */
+/* ===== Selection Highlight ===== */
+.glass-message.selected .glass-bubble {
+    outline: 2px solid #4facfe;
+    box-shadow: 0 0 12px rgba(79, 172, 254, 0.6);
+}
+
+.glass-message.selected {
+    background: rgba(255,255,255,0.05);
+    border-radius: 20px;
+}
+
+/* ===== Animations ===== */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(6px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ===== Mobile ===== */
 @media (max-width: 768px) {
 
     body {
@@ -464,31 +493,4 @@ body {
         margin: 8px 12px 12px 12px;
         width: calc(100% - 24px);
     }
-}
-
-/* Reply Preview*/
-.edited-label {
-    font-size: 11px;
-    opacity: 0.7;
-    margin-right: 4px;
-}
-
-.reply-preview-bubble {
-    background: rgba(255,255,255,0.12);
-    padding: 6px 10px;
-    border-left: 3px solid #4facfe;
-    border-radius: 10px;
-    margin-bottom: 6px;
-    font-size: 12px;
-    opacity: 0.85;
-}
-
-.reply-sender {
-    font-weight: 600;
-    font-size: 11px;
-    margin-bottom: 2px;
-}
-
-.reply-text {
-    font-size: 12px;
 }

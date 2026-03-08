@@ -1,7 +1,6 @@
+/* ===== Page: Profile ===== */
 
-
-/* ===== GLOBAL ===== */
-
+/* ===== Global ===== */
 body {
     margin: 0;
     min-height: 100dvh;
@@ -11,6 +10,7 @@ body {
     justify-content: center;
 }
 
+/* ===== Layout: Container ===== */
 .profile-container {
     width: 100%;
     max-width: 500px;
@@ -26,8 +26,7 @@ body {
     -webkit-backdrop-filter: blur(30px);
 }
 
-/* ===== HEADER ===== */
-
+/* ===== Header ===== */
 .profile-header {
     display: flex;
     align-items: center;
@@ -49,8 +48,42 @@ body {
     cursor: pointer;
 }
 
-/* ===== CONTENT AREA ===== */
+/* ===== Center Section ===== */
+.profile-center-section {
+    margin-top: 60px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+}
 
+.avatar-wrapper {
+    position: relative;
+    width: 140px;
+    height: 140px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.status-ring {
+    position: absolute;
+    width: 140px;
+    height: 140px;
+    border-radius: 50%;
+    z-index: 1;
+    transition: all 0.3s ease;
+}
+
+.status-ring.online {
+    border: 4px solid #00ff88;
+    box-shadow: 0 0 15px rgba(0,255,136,0.6);
+    animation: pulseRing 2.5s infinite ease-in-out;
+}
+
+.status-ring.offline {
+    border: 4px solid rgba(255,255,255,0.3);
+}
 
 .profile-avatar {
     width: 130px;
@@ -64,71 +97,8 @@ body {
     font-weight: 600;
     color: white;
     box-shadow: 0 15px 40px rgba(0,0,0,0.4);
-}
-
-/* ===== AVATAR WRAPPER ===== */
-
-.avatar-wrapper {
-    position: relative;
-    width: 140px;
-    height: 140px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.profile-avatar {
     position: relative;
     z-index: 2;
-}
-
-/* ===== STATUS RING ===== */
-
-.status-ring {
-    position: absolute;
-    width: 140px;
-    height: 140px;
-    border-radius: 50%;
-    z-index: 1;
-    transition: all 0.3s ease;
-}
-
-/* Online state */
-.status-ring.online {
-    border: 4px solid #00ff88;
-    box-shadow: 0 0 15px rgba(0,255,136,0.6);
-    animation: pulseRing 2.5s infinite ease-in-out;
-}
-
-/* Offline state */
-.status-ring.offline {
-    border: 4px solid rgba(255,255,255,0.3);
-}
-
-/* Slow pulse animation */
-@keyframes pulseRing {
-    0% {
-        box-shadow: 0 0 10px rgba(0,255,136,0.5);
-        transform: scale(1);
-    }
-    50% {
-        box-shadow: 0 0 20px rgba(0,255,136,0.9);
-        transform: scale(1.05);
-    }
-    100% {
-        box-shadow: 0 0 10px rgba(0,255,136,0.5);
-        transform: scale(1);
-    }
-}
-
-/* ===== CENTER PROFILE LAYOUT ===== */
-
-.profile-center-section {
-    margin-top: 60px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 12px;
 }
 
 .profile-display-name {
@@ -137,11 +107,15 @@ body {
     color: white;
 }
 
-.profile-email {
+.profile-username {
     font-size: 15px;
     color: rgba(255,255,255,0.7);
 }
 
+.profile-email {
+    font-size: 15px;
+    color: rgba(255,255,255,0.7);
+}
 
 .profile-input {
     width: 100%;
@@ -158,7 +132,11 @@ body {
     color: rgba(255,255,255,0.6);
 }
 
-/* ===== BUTTONS ===== */
+/* ===== Actions ===== */
+.profile-actions {
+    margin-top: auto;
+    padding: 20px 20px calc(20px + env(safe-area-inset-bottom));
+}
 
 .profile-btn {
     padding: 10px 18px;
@@ -179,11 +157,22 @@ body {
     background: rgba(255,255,255,0.12);
 }
 
-.profile-actions {
-    margin-top: auto;
-    padding: 20px 20px calc(20px + env(safe-area-inset-bottom));
-}
-
 .profile-actions .profile-btn {
     width: 100%;
+}
+
+/* ===== Animations ===== */
+@keyframes pulseRing {
+    0% {
+        box-shadow: 0 0 10px rgba(0,255,136,0.5);
+        transform: scale(1);
+    }
+    50% {
+        box-shadow: 0 0 20px rgba(0,255,136,0.9);
+        transform: scale(1.05);
+    }
+    100% {
+        box-shadow: 0 0 10px rgba(0,255,136,0.5);
+        transform: scale(1);
+    }
 }
