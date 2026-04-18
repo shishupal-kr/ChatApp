@@ -68,6 +68,7 @@
 .menu-wrapper {
     position: relative;
     display: inline-block;
+    z-index: 20;
 }
 
 .menu-icon {
@@ -91,6 +92,7 @@
     min-width: 90px;
     padding: 4px 0;
     display: none;
+    z-index: 50;
 }
 
 .menu-dropdown.show {

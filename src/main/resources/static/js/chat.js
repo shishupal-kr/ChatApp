@@ -119,17 +119,8 @@ function goBack() {
 document.getElementById("chatTitle").innerText = selectedUser;
 document.getElementById("profileCircle").innerText = selectedUser.charAt(0).toUpperCase();
 
-// Make chat header clickable to open profile page
-var normalHeaderElement = document.getElementById("normalHeader");
-if (normalHeaderElement) {
-    normalHeaderElement.style.cursor = "pointer";
-    normalHeaderElement.addEventListener("click", function (event) {
-        // If back button was clicked, do nothing (prevent profile open)
-        if (event.target.classList.contains("chat-back-btn")) {
-            return;
-        }
-        window.location.href = "/html/profile.html?user=" + selectedUser;
-    });
+function openProfilePage() {
+    window.location.href = "/html/profile.html?user=" + selectedUser;
 }
 
 // ===== History =====
