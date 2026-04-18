@@ -54,10 +54,24 @@ body {
 /* ===== Title ===== */
 .login-card h2 {
     text-align: center;
-    margin-bottom: 24px;
+    margin: 0 0 24px;
     color: white;
     font-size: 24px;
     font-weight: 600;
+}
+
+.register-header {
+    position: relative;
+}
+
+.back-btn {
+    position: absolute;
+    left: 0;
+    top: 0;
+    font-size: 22px;
+    line-height: 1;
+    color: white;
+    cursor: pointer;
 }
 
 /* ===== Inputs ===== */

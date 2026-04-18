@@ -35,12 +35,26 @@ body {
 
 /* ===== Header ===== */
 .settings-header {
+    position: relative;
     padding: calc(18px + env(safe-area-inset-top)) 18px 18px 18px;
-    font-size: 20px;
-    font-weight: 600;
     color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
     border-bottom: 1px solid rgba(255,255,255,0.15);
+}
+
+.settings-title {
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.back-btn {
+    position: absolute;
+    left: 18px;
+    font-size: 22px;
+    cursor: pointer;
 }
 
 /* ===== Content ===== */

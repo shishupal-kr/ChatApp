@@ -5,6 +5,16 @@ function toggleTheme() {
         document.body.classList.contains("light-mode") ? "light" : "dark");
 }
 
+// ===== Navigation =====
+function goBack() {
+    if (document.referrer) {
+        window.history.back();
+        return;
+    }
+
+    window.location.href = "/html/friends.html";
+}
+
 // ===== About =====
 function showAbout() {
     alert("ChatApp v1.0\nBuilt with Spring Boot & WebSocket.");

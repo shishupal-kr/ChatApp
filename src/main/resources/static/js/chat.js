@@ -105,6 +105,15 @@ if (!selectedUser) {
     window.location.href = "/html/friends.html";
 }
 
+function goBack() {
+    if (document.referrer) {
+        window.history.back();
+        return;
+    }
+
+    window.location.href = "/html/friends.html";
+}
+
 // ===== Header =====
 // Set header name and profile initial
 document.getElementById("chatTitle").innerText = selectedUser;

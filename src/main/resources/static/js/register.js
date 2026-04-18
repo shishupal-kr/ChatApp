@@ -62,6 +62,15 @@ function register() {
 }
 
 // ===== Navigation =====
+function goBack() {
+    if (document.referrer) {
+        window.history.back();
+        return;
+    }
+
+    window.location.href = "/html/login.html";
+}
+
 function goToLogin() {
     window.location.href = "/html/login.html";
 }
