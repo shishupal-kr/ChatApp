@@ -106,11 +106,6 @@ if (!selectedUser) {
 }
 
 function goBack() {
-    if (document.referrer) {
-        window.history.back();
-        return;
-    }
-
     window.location.href = "/html/friends.html";
 }
 
