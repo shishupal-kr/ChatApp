@@ -254,7 +254,18 @@ function searchUser(keyword) {
       data.forEach(username => {
         const div = document.createElement("div");
         div.className = "friend-item";
-        div.innerText = username;
+        const initial = username.charAt(0).toUpperCase();
+
+        div.innerHTML =
+          "<div class='friend-left'>" +
+              "<div class='friend-avatar-wrapper offline'>" +
+                  "<div class='friend-avatar'>" + initial + "</div>" +
+              "</div>" +
+              "<div class='friend-text'>" +
+                  "<div class='friend-name'>" + username + "</div>" +
+                  "<div class='friend-message'>Start a new conversation</div>" +
+              "</div>" +
+          "</div>";
         div.onclick = () => {
           window.location.href = "/html/chat.html?user=" + username;
         };

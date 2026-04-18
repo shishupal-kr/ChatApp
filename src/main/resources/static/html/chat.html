@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>Chat - ChatApp</title>
     <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="stylesheet" href="/css/app-shell.css">
     <link rel="stylesheet" href="/css/chat.css">
 
     <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
@@ -17,7 +18,7 @@
 </head>
 <body>
 
-<div class="glass-chat-container">
+<div class="glass-chat-container app-panel">
 
     <!-- HEADER -->
     <div class="glass-header-wrapper">
@@ -63,19 +64,21 @@
     <!-- MESSAGES -->
     <div id="messages" class="glass-messages"></div>
 
-    <!-- REPLY BAR (Above Input Like WhatsApp) -->
-    <div id="replyBar" class="reply-bar" style="display: none;">
-        <div class="reply-content">
-            <span class="reply-label">Replying to</span>
-            <span id="replyPreview" class="reply-preview-text"></span>
+    <div class="chat-footer">
+        <!-- REPLY BAR (Above Input Like WhatsApp) -->
+        <div id="replyBar" class="reply-bar" style="display: none;">
+            <div class="reply-content">
+                <span class="reply-label">Replying to</span>
+                <span id="replyPreview" class="reply-preview-text"></span>
+            </div>
+            <span class="reply-close" onclick="cancelReply()">✕</span>
         </div>
-        <span class="reply-close" onclick="cancelReply()">✕</span>
-    </div>
 
-    <!-- INPUT -->
-    <div class="glass-input">
-        <input id="messageInput" class="glass-message-input" placeholder="Message...">
-        <button class="glass-send-btn" onclick="sendMessage()">➤</button>
+        <!-- INPUT -->
+        <div class="glass-input">
+            <input id="messageInput" class="glass-message-input" placeholder="Message...">
+            <button class="glass-send-btn" onclick="sendMessage()">➤</button>
+        </div>
     </div>
 
 </div>
