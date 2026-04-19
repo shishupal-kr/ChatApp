@@ -24,12 +24,8 @@ function showAbout() {
 function deleteAccount() {
     if (!confirm("Are you sure?")) return;
 
-    fetch("/api/auth/delete-account", {
-        method: "DELETE",
-        headers: {
-            "Authorization": "Bearer " + localStorage.getItem("token")
-        }
-    }).then(() => {
+    apiFetch("/api/auth/delete-account", { method: "DELETE" })
+    .then(() => {
         alert("Account deleted");
         logout();
     });

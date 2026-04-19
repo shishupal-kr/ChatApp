@@ -1,13 +1,8 @@
 // ===== State =====
 let debounceTimer;
-var currentUser = localStorage.getItem("username");
-var token = localStorage.getItem("token");
+var currentUser = getUser();
+var token = getToken();
 var stompClient = null;
-
-// ===== Auth Guard =====
-if (!currentUser || !token) {
-  window.location.href = "/html/login.html";
-}
 
 
 // ===== Menu =====
@@ -27,17 +22,13 @@ document.addEventListener("click", function (event) {
 
 // ===== Initial Data =====
 // Load conversations immediately (independent of WebSocket)
-fetch("/api/chat/conversations", {
-  headers: { Authorization: "Bearer " + token }
-})
+apiFetch("/api/chat/conversations")
   .then(res => res.json())
   .then(data => {
     renderConversations(data);
 
     // Load unread counts initially
-    fetch("/api/chat/unread-counts", {
-      headers: { Authorization: "Bearer " + token }
-    })
+    apiFetch("/api/chat/unread-counts")
     .then(res => res.json())
     .then(unreadMap => {
       Object.keys(unreadMap).forEach(username => {
@@ -59,9 +50,7 @@ fetch("/api/chat/conversations", {
     });
 
     // After conversations render, fetch current online users
-    return fetch("/api/chat/online-users", {
-      headers: { Authorization: "Bearer " + localStorage.getItem("token")}
-    });
+    return apiFetch("/api/chat/online-users");
   })
   .then(res => res.json())
   .then(users => updateOnlineStatus(users));
@@ -117,6 +106,7 @@ function connectWebSocket() {
 
 // ===== Init =====
 document.addEventListener("DOMContentLoaded", function () {
+  validateSession();
   connectWebSocket();
 });
 
@@ -217,9 +207,7 @@ function handleSearchKey(event) {
   debounceTimer = setTimeout(() => {
     if (keyword === "") {
       // Restore conversations list
-      fetch("/api/chat/conversations", {
-        headers: { Authorization: "Bearer " + token }
-      })
+      apiFetch("/api/chat/conversations")
       .then(res => res.json())
       .then(data => renderConversations(data));
     } else {
@@ -235,9 +223,7 @@ function searchUser(keyword) {
 
   const encodedKeyword = encodeURIComponent(keyword);
 
-  fetch(`/api/chat/users/search?keyword=${encodedKeyword}`, {
-    headers: { Authorization: "Bearer " + token }
-  })
+  apiFetch(`/api/chat/users/search?keyword=${encodedKeyword}`)
     .then(res => res.json())
     .then(data => {
       const container = document.getElementById("friendList");
@@ -276,11 +262,6 @@ function searchUser(keyword) {
 
 // ===== Actions =====
 // 3 Dot Menu Function
-function logout() {
-  localStorage.clear();
-  window.location.href = "/html/login.html";
-}
-
 function openSettings() {
   window.location.href = "/html/settings.html";
 }

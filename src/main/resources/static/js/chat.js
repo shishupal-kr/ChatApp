@@ -2,18 +2,12 @@
 window.editingMessageId = null;
 let replyingToMessageId = null;
 let selectedMessages = new Set();
-var currentUser = localStorage.getItem("username");
-var token = localStorage.getItem("token");
+var currentUser = getUser();
+var token = getToken();
 var readTriggered = false;
 let currentPage = 0;
 let pageSize = 20;
 let loading = false;
-
-
-// ===== Auth Guard =====
-if (!currentUser || !token) {
-    window.location.href = "/html/login.html";
-}
 
 // ===== Route Params =====
 var params = new URLSearchParams(window.location.search);
@@ -124,9 +118,7 @@ function loadHistory() {
     if (loading) return;
     loading = true;
 
-    fetch(`/api/chat/history/${selectedUser}?page=${currentPage}&size=${pageSize}`, {
-        headers: { Authorization: "Bearer " + token }
-    })
+    apiFetch(`/api/chat/history/${selectedUser}?page=${currentPage}&size=${pageSize}`)
     .then(res => res.json())
     .then(messages => {
 
@@ -465,9 +457,7 @@ function forwardSelected() {
 
 // ===== Forward Modal =====
 function openForwardModal() {
-    fetch("/api/users", {
-        headers: { Authorization: "Bearer " + token }
-    })
+    apiFetch("/api/users")
     .then(res => res.json())
     .then(users => {
         const list = document.getElementById("forwardUserList");
@@ -550,6 +540,7 @@ function updateOnlineIndicator(onlineUsers) {
 
 // ===== Init =====
 document.addEventListener("DOMContentLoaded", function () {
+    validateSession();
     connectWebSocket();
 
     const input = document.getElementById("messageInput");

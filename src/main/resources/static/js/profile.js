@@ -4,29 +4,19 @@ document.addEventListener("DOMContentLoaded", loadProfile);
 // ===== Data Load =====
 async function loadProfile() {
     try {
-        const token = localStorage.getItem("token");
-
         const params = new URLSearchParams(window.location.search);
         let profileUsername = params.get("user");
 
         let response;
 
         if (profileUsername) {
-            response = await fetch("/api/user/" + encodeURIComponent(profileUsername), {
-                headers: {
-                    "Authorization": "Bearer " + token
-                }
-            });
+            response = await apiFetch("/api/user/" + encodeURIComponent(profileUsername));
         } else {
-            response = await fetch("/api/auth/me", {
-                headers: {
-                    "Authorization": "Bearer " + token
-                }
-            });
+            response = await apiFetch("/api/auth/me");
         }
 
-        if (!response.ok) {
-            console.error("Failed to load profile. Status:", response.status);
+        if (!response || !response.ok) {
+            console.error("Failed to load profile. Status:", response && response.status);
             return;
         }
 
