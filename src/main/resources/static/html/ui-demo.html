@@ -1,0 +1,885 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>ChatApp UI Demo</title>
+    <style>
+        :root {
+            --app-bg-start: #0f2027;
+            --app-bg-mid: #203a43;
+            --app-bg-end: #2c5364;
+            --panel-bg: rgba(255, 255, 255, 0.08);
+            --panel-border: rgba(255, 255, 255, 0.2);
+            --surface-bg: rgba(255, 255, 255, 0.1);
+            --surface-border: rgba(255, 255, 255, 0.15);
+            --text-main: #fff;
+            --text-muted: rgba(255, 255, 255, 0.7);
+            --accent: #4facfe;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            min-height: 100dvh;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+            background: linear-gradient(135deg, var(--app-bg-start), var(--app-bg-mid), var(--app-bg-end));
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            color: var(--text-main);
+            padding: 10px 0;
+        }
+
+        .app-panel {
+            width: 95%;
+            max-width: 420px;
+            height: calc(100dvh - 20px);
+            border-radius: 30px;
+            background: var(--panel-bg);
+            backdrop-filter: blur(25px);
+            border: 1px solid var(--panel-border);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4), inset 0 0 25px rgba(255, 255, 255, 0.05);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .screen {
+            display: none;
+            flex: 1;
+            flex-direction: column;
+            min-height: 0;
+        }
+
+        .screen.active {
+            display: flex;
+        }
+
+        .app-topbar,
+        .friends-header,
+        .chat-header {
+            width: 100%;
+            box-sizing: border-box;
+            color: white;
+        }
+
+        .app-topbar {
+            position: relative;
+            padding: 22px 18px 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+        }
+
+        .app-back-btn {
+            position: absolute;
+            left: 18px;
+            font-size: 22px;
+            line-height: 1;
+            cursor: pointer;
+        }
+
+        .app-topbar-title {
+            font-size: 20px;
+            font-weight: 600;
+        }
+
+        .friends-header {
+            padding: 22px 18px 16px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+        }
+
+        .friends-title {
+            flex: 0 0 auto;
+            font-size: 20px;
+            font-weight: 600;
+        }
+
+        .search-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+            flex: 1;
+            min-width: 0;
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 10px;
+            font-size: 13px;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .search-input {
+            width: 100%;
+            min-width: 0;
+            padding: 6px 10px 6px 28px;
+            border-radius: 18px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            background: rgba(255, 255, 255, 0.12);
+            color: white;
+            outline: none;
+            font-size: 13px;
+        }
+
+        .search-input::placeholder {
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .friends-list,
+        .about-content,
+        .settings-content {
+            flex: 1;
+            overflow-y: auto;
+        }
+
+        .friends-list {
+            padding: 8px 16px 14px;
+        }
+
+        .friend-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 14px 16px;
+            margin-bottom: 12px;
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 22px;
+            cursor: pointer;
+        }
+
+        .friend-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .friend-avatar-wrap {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            padding: 3px;
+            border: 3px solid white;
+        }
+
+        .friend-avatar-wrap.online {
+            border-color: #00ff6a;
+        }
+
+        .friend-avatar,
+        .profile-avatar,
+        .chat-avatar {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            color: white;
+        }
+
+        .friend-avatar,
+        .chat-avatar {
+            background: #128c7e;
+            font-size: 16px;
+        }
+
+        .friend-name {
+            font-size: 15px;
+            font-weight: 600;
+        }
+
+        .friend-message,
+        .friend-time,
+        .profile-username,
+        .about-copy,
+        .download-link-note {
+            color: var(--text-muted);
+        }
+
+        .friend-message {
+            font-size: 13px;
+            margin-top: 2px;
+        }
+
+        .friend-time {
+            font-size: 12px;
+            margin-bottom: 4px;
+            text-align: right;
+        }
+
+        .unread-badge {
+            display: inline-block;
+            padding: 3px 7px;
+            border-radius: 12px;
+            background: #25d366;
+            font-size: 12px;
+        }
+
+        .app-bottom-nav {
+            padding: 10px 16px 20px;
+            background: linear-gradient(to top, rgba(15, 32, 39, 0.92), rgba(15, 32, 39, 0.6));
+            backdrop-filter: blur(20px);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .app-nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+            min-width: 60px;
+            padding: 6px 14px;
+            border-radius: 16px;
+            color: var(--text-muted);
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .app-nav-item.active {
+            background: rgba(79, 172, 254, 0.15);
+            color: var(--accent);
+        }
+
+        .app-nav-icon {
+            font-size: 22px;
+            line-height: 1;
+        }
+
+        .app-nav-label {
+            font-size: 11px;
+            font-weight: 500;
+        }
+
+        .profile-center {
+            flex: 1;
+            width: 100%;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            margin-top: 60px;
+            gap: 12px;
+            padding: 0 20px;
+        }
+
+        .avatar-wrapper {
+            position: relative;
+            width: 140px;
+            height: 140px;
+        }
+
+        .status-ring {
+            position: absolute;
+            inset: 0;
+            border-radius: 50%;
+            border: 4px solid #00ff88;
+            box-shadow: 0 0 15px rgba(0, 255, 136, 0.6);
+        }
+
+        .profile-avatar {
+            width: 130px;
+            height: 130px;
+            position: absolute;
+            inset: 5px;
+            background: linear-gradient(135deg, #4facfe, #00f2fe);
+            font-size: 44px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+        }
+
+        .profile-display-name {
+            font-size: 22px;
+            font-weight: 600;
+        }
+
+        .profile-username {
+            font-size: 15px;
+        }
+
+        .settings-content,
+        .about-content {
+            padding: 18px;
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+        }
+
+        .settings-section,
+        .about-section {
+            background: var(--surface-bg);
+            border: 1px solid var(--surface-border);
+            border-radius: 18px;
+            padding: 12px 16px;
+        }
+
+        .setting-row {
+            padding: 14px 0;
+            font-size: 15px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+        }
+
+        .setting-row:last-child {
+            border-bottom: none;
+        }
+
+        .setting-row-danger {
+            color: #ffb4b4;
+        }
+
+        .about-title {
+            margin-bottom: 14px;
+            font-size: 24px;
+            line-height: 1.3;
+        }
+
+        .about-copy {
+            margin-bottom: 14px;
+            font-size: 14px;
+            line-height: 1.55;
+        }
+
+        .about-copy:last-child {
+            margin-bottom: 0;
+        }
+
+        .about-section-title {
+            margin-bottom: 12px;
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .download-links {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-top: 14px;
+        }
+
+        .download-link-card {
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+        }
+
+        .download-link-card:last-child {
+            border-bottom: none;
+        }
+
+        .download-link-label {
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .download-link-note {
+            margin-top: 2px;
+            font-size: 13px;
+        }
+
+        .download-link-action {
+            display: inline-block;
+            margin-top: 8px;
+            color: #8fd0ff;
+            font-size: 13px;
+            font-weight: 600;
+            text-decoration: underline;
+        }
+
+        .download-link-action.is-disabled {
+            color: rgba(255, 255, 255, 0.76);
+            text-decoration: none;
+        }
+
+        .chat-header {
+            position: relative;
+            padding: 18px 16px 12px;
+            background: linear-gradient(to bottom, rgba(15, 32, 39, 0.72), rgba(15, 32, 39, 0.22));
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .chat-header-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(16px);
+            border-radius: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.22);
+            padding: 8px 16px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .chat-back-btn {
+            font-size: 22px;
+            line-height: 1;
+            cursor: pointer;
+        }
+
+        .chat-profile-trigger {
+            flex: 1;
+            min-width: 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+        }
+
+        .chat-avatar-wrap {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            padding: 3px;
+            border: 3px solid #00ff6a;
+            flex-shrink: 0;
+        }
+
+        .chat-username {
+            font-size: 15px;
+            font-weight: 600;
+        }
+
+        .chat-messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .chat-message {
+            max-width: 72%;
+        }
+
+        .chat-message.received {
+            align-self: flex-start;
+        }
+
+        .chat-message.sent {
+            align-self: flex-end;
+        }
+
+        .chat-bubble {
+            padding: 12px 16px;
+            border-radius: 18px;
+            font-size: 14px;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .chat-message.received .chat-bubble {
+            background: rgba(255, 255, 255, 0.18);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+        }
+
+        .chat-message.sent .chat-bubble {
+            background: linear-gradient(135deg, rgba(0, 122, 255, 0.8), rgba(0, 200, 255, 0.8));
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .chat-meta {
+            margin-top: 5px;
+            font-size: 11px;
+            text-align: right;
+            color: rgba(255, 255, 255, 0.78);
+        }
+
+        .chat-footer {
+            padding: 8px 16px 14px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            background: linear-gradient(to top, rgba(15, 32, 39, 0.82), rgba(15, 32, 39, 0.48));
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .glass-input {
+            background: rgba(255, 255, 255, 0.12);
+            border-radius: 26px;
+            padding: 6px 8px;
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .glass-message-input {
+            flex: 1;
+            border: none;
+            outline: none;
+            background: transparent;
+            color: white;
+            font-size: 14px;
+            padding: 8px 10px;
+        }
+
+        .glass-send-btn {
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            border: none;
+            background: linear-gradient(135deg, #4facfe, #00f2fe);
+            color: white;
+            font-size: 14px;
+        }
+
+        .demo-switcher {
+            padding: 10px 12px;
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            background: rgba(15, 32, 39, 0.45);
+        }
+
+        .demo-switch {
+            padding: 8px 12px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            background: rgba(255, 255, 255, 0.08);
+            color: white;
+            font-size: 12px;
+            cursor: pointer;
+        }
+
+        .demo-switch.active {
+            background: rgba(79, 172, 254, 0.18);
+            border-color: rgba(79, 172, 254, 0.4);
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 6px 0;
+            }
+
+            .app-panel {
+                width: calc(100% - 12px);
+                height: calc(100dvh - 12px);
+                max-width: 100%;
+            }
+
+            .profile-center {
+                margin-top: 48px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="app-panel">
+    <div class="demo-switcher">
+        <button class="demo-switch" data-target="friends" onclick="showScreen('friends')">Friends</button>
+        <button class="demo-switch" data-target="profile" onclick="showScreen('profile')">Profile</button>
+        <button class="demo-switch" data-target="settings" onclick="showScreen('settings')">Settings</button>
+        <button class="demo-switch" data-target="about" onclick="showScreen('about')">About</button>
+        <button class="demo-switch" data-target="chat" onclick="showScreen('chat')">Chat Detail</button>
+    </div>
+
+    <section class="screen active" id="friendsScreen">
+        <div class="friends-header">
+            <span class="friends-title">Chats</span>
+            <div class="search-wrapper">
+                <span class="search-icon">🔍</span>
+                <input class="search-input" type="text" placeholder="Search user...">
+            </div>
+        </div>
+
+        <div class="friends-list">
+            <div class="friend-item" onclick="showScreen('chat')">
+                <div class="friend-left">
+                    <div class="friend-avatar-wrap online">
+                        <div class="friend-avatar">A</div>
+                    </div>
+                    <div>
+                        <div class="friend-name">Alice</div>
+                        <div class="friend-message">Hey! Are you free later?</div>
+                    </div>
+                </div>
+                <div>
+                    <div class="friend-time">5:43 PM</div>
+                    <span class="unread-badge">2</span>
+                </div>
+            </div>
+
+            <div class="friend-item">
+                <div class="friend-left">
+                    <div class="friend-avatar-wrap">
+                        <div class="friend-avatar" style="background:#7b2d8b;">B</div>
+                    </div>
+                    <div>
+                        <div class="friend-name">Bob</div>
+                        <div class="friend-message">Thanks for the help!</div>
+                    </div>
+                </div>
+                <div>
+                    <div class="friend-time">4:12 PM</div>
+                </div>
+            </div>
+
+            <div class="friend-item">
+                <div class="friend-left">
+                    <div class="friend-avatar-wrap">
+                        <div class="friend-avatar" style="background:#d97706;">C</div>
+                    </div>
+                    <div>
+                        <div class="friend-name">Carol</div>
+                        <div class="friend-message">See you tomorrow</div>
+                    </div>
+                </div>
+                <div>
+                    <div class="friend-time">Yesterday</div>
+                </div>
+            </div>
+        </div>
+
+        <nav class="app-bottom-nav" aria-label="Primary">
+            <a class="app-nav-item" href="#" onclick="showScreen('chat'); return false;">
+                <span class="app-nav-icon">💬</span>
+                <span class="app-nav-label">Chat</span>
+            </a>
+            <a class="app-nav-item active" href="#" onclick="showScreen('friends'); return false;">
+                <span class="app-nav-icon">👥</span>
+                <span class="app-nav-label">Friends</span>
+            </a>
+            <a class="app-nav-item" href="#" onclick="showScreen('profile'); return false;">
+                <span class="app-nav-icon">👤</span>
+                <span class="app-nav-label">Profile</span>
+            </a>
+            <a class="app-nav-item" href="#" onclick="showScreen('settings'); return false;">
+                <span class="app-nav-icon">⚙️</span>
+                <span class="app-nav-label">Settings</span>
+            </a>
+        </nav>
+    </section>
+
+    <section class="screen" id="profileScreen">
+        <div class="app-topbar">
+            <span class="app-back-btn" onclick="showScreen('friends')">‹</span>
+            <span class="app-topbar-title">Profile</span>
+        </div>
+
+        <div class="profile-center">
+            <div class="avatar-wrapper">
+                <div class="status-ring"></div>
+                <div class="profile-avatar">A</div>
+            </div>
+            <div class="profile-display-name">Alice Johnson</div>
+            <div class="profile-username">@alice</div>
+        </div>
+
+        <nav class="app-bottom-nav" aria-label="Primary">
+            <a class="app-nav-item" href="#" onclick="showScreen('chat'); return false;">
+                <span class="app-nav-icon">💬</span>
+                <span class="app-nav-label">Chat</span>
+            </a>
+            <a class="app-nav-item" href="#" onclick="showScreen('friends'); return false;">
+                <span class="app-nav-icon">👥</span>
+                <span class="app-nav-label">Friends</span>
+            </a>
+            <a class="app-nav-item active" href="#" onclick="showScreen('profile'); return false;">
+                <span class="app-nav-icon">👤</span>
+                <span class="app-nav-label">Profile</span>
+            </a>
+            <a class="app-nav-item" href="#" onclick="showScreen('settings'); return false;">
+                <span class="app-nav-icon">⚙️</span>
+                <span class="app-nav-label">Settings</span>
+            </a>
+        </nav>
+    </section>
+
+    <section class="screen" id="settingsScreen">
+        <div class="app-topbar">
+            <span class="app-back-btn" onclick="showScreen('friends')">‹</span>
+            <span class="app-topbar-title">Settings</span>
+        </div>
+
+        <div class="settings-content">
+            <div class="settings-section">
+                <div class="setting-row" onclick="showScreen('profile')">👤 Profile</div>
+            </div>
+            <div class="settings-section">
+                <div class="setting-row">🌓 Dark / Light Mode</div>
+            </div>
+            <div class="settings-section">
+                <div class="setting-row">✏ Change Password</div>
+                <div class="setting-row">📧 Change Email</div>
+            </div>
+            <div class="settings-section">
+                <div class="setting-row">🗑 Delete Account</div>
+            </div>
+            <div class="settings-section">
+                <div class="setting-row setting-row-danger">↩ Logout</div>
+            </div>
+            <div class="settings-section">
+                <div class="setting-row" onclick="showScreen('about')">📱 About App</div>
+            </div>
+        </div>
+
+        <nav class="app-bottom-nav" aria-label="Primary">
+            <a class="app-nav-item" href="#" onclick="showScreen('chat'); return false;">
+                <span class="app-nav-icon">💬</span>
+                <span class="app-nav-label">Chat</span>
+            </a>
+            <a class="app-nav-item" href="#" onclick="showScreen('friends'); return false;">
+                <span class="app-nav-icon">👥</span>
+                <span class="app-nav-label">Friends</span>
+            </a>
+            <a class="app-nav-item" href="#" onclick="showScreen('profile'); return false;">
+                <span class="app-nav-icon">👤</span>
+                <span class="app-nav-label">Profile</span>
+            </a>
+            <a class="app-nav-item active" href="#" onclick="showScreen('settings'); return false;">
+                <span class="app-nav-icon">⚙️</span>
+                <span class="app-nav-label">Settings</span>
+            </a>
+        </nav>
+    </section>
+
+    <section class="screen" id="aboutScreen">
+        <div class="app-topbar">
+            <span class="app-back-btn" onclick="showScreen('settings')">‹</span>
+            <span class="app-topbar-title">About ChatApp</span>
+        </div>
+
+        <div class="about-content">
+            <div class="about-section">
+                <div class="about-title">About ChatApp</div>
+                <p class="about-copy">
+                    ChatApp is a simple real-time messaging application focused on one-to-one conversations.
+                    It is designed to provide a clean chat experience with message delivery, online presence,
+                    unread counts, and profile-based navigation.
+                </p>
+                <p class="about-copy">
+                    This application is currently available as a web app. It is built using Spring Boot,
+                    WebSocket, JWT authentication, and a frontend made with HTML, CSS, and JavaScript.
+                </p>
+                <p class="about-copy">Version: 1.0.0</p>
+            </div>
+
+            <div class="about-section">
+                <div class="about-section-title">Download Links</div>
+                <p class="about-copy">
+                    You can place your app download links here for Android, iPhone, desktop, or the hosted web version.
+                </p>
+                <div class="download-links">
+                    <div class="download-link-card">
+                        <div class="download-link-label">Android App</div>
+                        <div class="download-link-note">Download the Android APK build of ChatApp.</div>
+                        <a class="download-link-action" href="https://drive.google.com/file/d/1zuLXBd8cGw_3bys8sakr7SHz0nIkREgM/view?usp=drivesdk" target="_blank" rel="noopener noreferrer">Download APK</a>
+                    </div>
+                    <div class="download-link-card">
+                        <div class="download-link-label">iPhone App</div>
+                        <div class="download-link-note">Add your App Store link here.</div>
+                        <span class="download-link-action is-disabled">Coming Soon</span>
+                    </div>
+                    <div class="download-link-card">
+                        <div class="download-link-label">Desktop App</div>
+                        <div class="download-link-note">Add your Windows or macOS installer link here.</div>
+                        <span class="download-link-action is-disabled">Coming Soon</span>
+                    </div>
+                    <div class="download-link-card">
+                        <div class="download-link-label">Web App</div>
+                        <div class="download-link-note">Open the hosted web version of ChatApp.</div>
+                        <a class="download-link-action" href="#">Open Web App</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <nav class="app-bottom-nav" aria-label="Primary">
+            <a class="app-nav-item" href="#" onclick="showScreen('chat'); return false;">
+                <span class="app-nav-icon">💬</span>
+                <span class="app-nav-label">Chat</span>
+            </a>
+            <a class="app-nav-item" href="#" onclick="showScreen('friends'); return false;">
+                <span class="app-nav-icon">👥</span>
+                <span class="app-nav-label">Friends</span>
+            </a>
+            <a class="app-nav-item" href="#" onclick="showScreen('profile'); return false;">
+                <span class="app-nav-icon">👤</span>
+                <span class="app-nav-label">Profile</span>
+            </a>
+            <a class="app-nav-item active" href="#" onclick="showScreen('settings'); return false;">
+                <span class="app-nav-icon">⚙️</span>
+                <span class="app-nav-label">Settings</span>
+            </a>
+        </nav>
+    </section>
+
+    <section class="screen" id="chatScreen">
+        <div class="chat-header">
+            <div class="chat-header-card">
+                <span class="chat-back-btn" onclick="showScreen('friends')">‹</span>
+                <div class="chat-profile-trigger" onclick="showScreen('profile')">
+                    <div class="chat-avatar-wrap">
+                        <div class="chat-avatar">A</div>
+                    </div>
+                    <div class="chat-username">alice</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="chat-messages">
+            <div class="chat-message received">
+                <div class="chat-bubble">Hey! Are you free later?</div>
+                <div class="chat-meta">5:41 PM</div>
+            </div>
+            <div class="chat-message sent">
+                <div class="chat-bubble">Yes, I am free after 7.</div>
+                <div class="chat-meta">5:42 PM  ✔✔</div>
+            </div>
+            <div class="chat-message received">
+                <div class="chat-bubble">Perfect, let us talk then.</div>
+                <div class="chat-meta">5:43 PM</div>
+            </div>
+        </div>
+
+        <div class="chat-footer">
+            <div class="glass-input">
+                <input class="glass-message-input" placeholder="Message...">
+                <button class="glass-send-btn">➤</button>
+            </div>
+        </div>
+    </section>
+</div>
+
+<script>
+    function showScreen(name) {
+        document.querySelectorAll(".screen").forEach(function(screen) {
+            screen.classList.remove("active");
+        });
+
+        document.querySelectorAll(".demo-switch").forEach(function(button) {
+            button.classList.remove("active");
+        });
+
+        var screen = document.getElementById(name + "Screen");
+        var button = document.querySelector('.demo-switch[data-target="' + name + '"]');
+
+        if (screen) {
+            screen.classList.add("active");
+        }
+
+        if (button) {
+            button.classList.add("active");
+        }
+    }
+
+    showScreen("friends");
+</script>
+
+</body>
+</html>
