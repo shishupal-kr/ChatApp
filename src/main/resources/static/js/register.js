@@ -1,5 +1,24 @@
+async function readErrorMessage(response, fallbackMessage) {
+    try {
+        const data = await response.json();
+        if (data && typeof data.message === "string" && data.message.trim()) {
+            return data.message;
+        }
+    } catch (e) {
+        try {
+            const text = await response.text();
+            if (text && text.trim()) {
+                return text;
+            }
+        } catch (ignored) {
+        }
+    }
+
+    return fallbackMessage;
+}
+
 // ===== Register =====
-function register() {
+async function register() {
     var username = document.getElementById("username").value.trim();
     var email = document.getElementById("email").value.trim();
     var password = document.getElementById("password").value;
@@ -14,8 +33,6 @@ function register() {
     var age = document.getElementById("age").value.trim();
     var genderElement = document.getElementById("gender");
     var gender = genderElement ? genderElement.value.trim() : "";
-
-    console.log("Gender value:", gender); // DEBUG
 
     if (!firstName || !lastName || !age || !username || !email || !password || !confirmPassword) {
         error.innerText = "All fields are required";
@@ -47,35 +64,38 @@ function register() {
         return;
     }
 
+    if (!Number.isInteger(parseInt(age, 10)) || parseInt(age, 10) <= 0) {
+        error.innerText = "Please enter a valid age";
+        return;
+    }
+
     // ===== API Call =====
-    fetch("/api/auth/register", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-            firstName: firstName,
-            lastName: lastName,
-            age: parseInt(age),
-            gender: gender || "Male",
-            username: username,
-            email: email,
-            password: password
-        })
-    })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error("Registration failed");
-            }
-            return response.text();
-        })
-        .then(() => {
-            alert("Registration successful! Please login.");
-            window.location.href = "/html/login.html";
-        })
-        .catch(() => {
-            error.innerText = "Username or email may already exist";
+    try {
+        const response = await fetch("/api/auth/register", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                firstName: firstName,
+                lastName: lastName,
+                age: parseInt(age, 10),
+                gender: gender,
+                username: username,
+                email: email,
+                password: password
+            })
         });
+
+        if (!response.ok) {
+            error.innerText = await readErrorMessage(response, "Registration failed. Please try again.");
+            return;
+        }
+
+        window.location.href = "/html/login.html?message=" + encodeURIComponent("Registration successful. Please log in.");
+    } catch (e) {
+        error.innerText = "Unable to register right now. Please check your connection and try again.";
+    }
 }
 
 // ===== Navigation =====
