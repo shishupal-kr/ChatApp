@@ -27,10 +27,7 @@ public class ChatController {
     public void sendPrivateMessage(ChatMessage message,
                                    org.springframework.messaging.simp.SimpMessageHeaderAccessor accessor) {
 
-        System.out.println("PRIVATE MESSAGE METHOD CALLED");
-
         if (accessor.getUser() == null) {
-            System.out.println("No authenticated user found in headers.");
             return;
         }
 
@@ -38,17 +35,12 @@ public class ChatController {
         String receiver = message.getReceiver();
 
         if (receiver == null || receiver.isBlank()) {
-            System.out.println("Receiver is empty.");
             return;
         }
 
         if (message.getContent() == null || message.getContent().isBlank()) {
-            System.out.println("Message content is empty. Not saving.");
             return;
         }
-
-        System.out.println("Sender: " + sender);
-        System.out.println("Receiver: " + receiver);
 
         message.setSender(sender);
 
@@ -77,8 +69,6 @@ public class ChatController {
              message.setReplyToSender(replyToEntity.getSender());
              message.setReplyToContent(replyToEntity.getContent());
          }
-
-         System.out.println("MESSAGE SAVED TO DATABASE SUCCESSFULLY");
 
         messagingTemplate.convertAndSendToUser(
                 receiver,

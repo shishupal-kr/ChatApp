@@ -49,7 +49,6 @@ public class WebSocketAuthInterceptor implements ChannelInterceptor {
         // 2.5) Block SEND frames if no authenticated user is attached
         if (StompCommand.SEND.equals(accessor.getCommand())
                 && accessor.getUser() == null) {
-            System.out.println("Unauthenticated SEND blocked.");
             throw new IllegalArgumentException("User not authenticated");
         }
 
@@ -91,10 +90,6 @@ public class WebSocketAuthInterceptor implements ChannelInterceptor {
 
         // Optional: helpful if any code relies on SecurityContext in the same thread
         SecurityContextHolder.getContext().setAuthentication(authentication);
-
-        if (StompCommand.CONNECT.equals(accessor.getCommand())) {
-            System.out.println("WebSocket CONNECT authenticated: " + username);
-        }
 
         return message;
     }

@@ -24,7 +24,6 @@ public class ChatHistoryController {
     ) {
 
         String currentUser = principal.getName();
-        System.out.println("History requested by: " + currentUser);
 
         var pageable = org.springframework.data.domain.PageRequest.of(page, size);
 
