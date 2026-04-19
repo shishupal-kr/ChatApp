@@ -69,3 +69,50 @@ body {
     cursor: pointer;
     color: var(--text-main);
 }
+
+.app-bottom-nav {
+    padding: 10px 16px calc(18px + env(safe-area-inset-bottom));
+    background: linear-gradient(to top, rgba(15, 32, 39, 0.92), rgba(15, 32, 39, 0.6));
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    gap: 8px;
+}
+
+.app-nav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    min-width: 60px;
+    padding: 6px 14px;
+    border-radius: 16px;
+    color: var(--text-muted);
+    text-decoration: none;
+    transition: opacity 0.2s ease, transform 0.2s ease, background 0.2s ease, color 0.2s ease;
+}
+
+.app-nav-item:hover {
+    opacity: 0.9;
+    transform: translateY(-2px);
+    color: var(--text-main);
+}
+
+.app-nav-item.active {
+    background: rgba(79, 172, 254, 0.15);
+    color: #4facfe;
+}
+
+.app-nav-icon {
+    font-size: 22px;
+    line-height: 1;
+}
+
+.app-nav-label {
+    font-size: 11px;
+    font-weight: 500;
+}

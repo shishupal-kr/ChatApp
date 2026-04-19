@@ -13,6 +13,10 @@ let loading = false;
 var params = new URLSearchParams(window.location.search);
 var selectedUser = params.get("user");
 
+if (selectedUser) {
+    sessionStorage.setItem("lastChatUser", selectedUser);
+}
+
 var stompClient = null;
 
 // ===== WebSocket =====

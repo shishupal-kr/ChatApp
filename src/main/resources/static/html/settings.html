@@ -4,8 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>Settings - ChatApp</title>
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
     <link rel="stylesheet" href="/css/app-shell.css">
     <link rel="stylesheet" href="/css/settings.css?v=20260321">
+    <script src="/js/analytics.js"></script>
     <script src="/js/auth.js"></script>
     <script src="/js/settings.js" defer></script>
 </head>
@@ -55,12 +57,37 @@
         </div>
 
         <div class="settings-section">
+            <div class="setting-row setting-row-danger" onclick="logout()">
+                ↩ Logout
+            </div>
+        </div>
+
+        <div class="settings-section">
             <div class="setting-row" onclick="showAbout()">
                 📱 About App
             </div>
         </div>
 
     </div>
+
+    <nav class="app-bottom-nav" aria-label="Primary">
+        <a class="app-nav-item" href="/html/friends.html" onclick="return openChatTab(event)">
+            <span class="app-nav-icon">💬</span>
+            <span class="app-nav-label">Chat</span>
+        </a>
+        <a class="app-nav-item" href="/html/friends.html">
+            <span class="app-nav-icon">👥</span>
+            <span class="app-nav-label">Friends</span>
+        </a>
+        <a class="app-nav-item" href="/html/profile.html">
+            <span class="app-nav-icon">👤</span>
+            <span class="app-nav-label">Profile</span>
+        </a>
+        <a class="app-nav-item active" href="/html/settings.html">
+            <span class="app-nav-icon">⚙️</span>
+            <span class="app-nav-label">Settings</span>
+        </a>
+    </nav>
 </div>
 
 </body>

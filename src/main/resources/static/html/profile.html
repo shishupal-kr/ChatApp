@@ -4,8 +4,10 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>Profile - ChatApp</title>
+  <link rel="icon" type="image/x-icon" href="/favicon.ico">
   <link rel="stylesheet" href="/css/app-shell.css">
   <link rel="stylesheet" href="/css/profile.css?v=20260321">
+  <script src="/js/analytics.js"></script>
   <script src="/js/auth.js"></script>
   <script src="/js/profile.js" defer></script>
 </head>
@@ -40,6 +42,25 @@
   <div class="profile-actions">
     <button class="profile-btn secondary" onclick="goBack()">Back</button>
   </div>
+
+  <nav class="app-bottom-nav" aria-label="Primary">
+    <a class="app-nav-item" href="/html/friends.html" onclick="return openChatTab(event)">
+      <span class="app-nav-icon">💬</span>
+      <span class="app-nav-label">Chat</span>
+    </a>
+    <a class="app-nav-item" href="/html/friends.html">
+      <span class="app-nav-icon">👥</span>
+      <span class="app-nav-label">Friends</span>
+    </a>
+    <a class="app-nav-item active" href="/html/profile.html">
+      <span class="app-nav-icon">👤</span>
+      <span class="app-nav-label">Profile</span>
+    </a>
+    <a class="app-nav-item" href="/html/settings.html">
+      <span class="app-nav-icon">⚙️</span>
+      <span class="app-nav-label">Settings</span>
+    </a>
+  </nav>
 
 </div>
 

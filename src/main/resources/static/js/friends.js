@@ -5,21 +5,6 @@ var token = getToken();
 var stompClient = null;
 
 
-// ===== Menu =====
-// toggle menu dropdown
-function toggleMenu() {
-  const menu = document.getElementById("menuDropdown");
-  menu.classList.toggle("show");
-}
-
-// Close menu when clicking outside
-document.addEventListener("click", function (event) {
-  const wrapper = document.querySelector(".menu-wrapper");
-  if (!wrapper.contains(event.target)) {
-    document.getElementById("menuDropdown").classList.remove("show");
-  }
-});
-
 // ===== Initial Data =====
 // Load conversations immediately (independent of WebSocket)
 apiFetch("/api/chat/conversations")
@@ -261,7 +246,6 @@ function searchUser(keyword) {
 }
 
 // ===== Actions =====
-// 3 Dot Menu Function
 function openSettings() {
   window.location.href = "/html/settings.html";
 }

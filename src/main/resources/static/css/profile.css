@@ -94,7 +94,9 @@
 /* ===== Actions ===== */
 .profile-actions {
     margin-top: auto;
-    padding: 20px 20px calc(20px + env(safe-area-inset-bottom));
+    width: 100%;
+    box-sizing: border-box;
+    padding: 20px 20px 16px;
 }
 
 .profile-btn {

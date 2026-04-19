@@ -19,7 +19,6 @@
     padding: calc(16px + env(safe-area-inset-top)) 18px 16px 18px;
     color: white;
     display: flex;
-    justify-content: space-between;
     align-items: center;
     gap: 12px;
 
@@ -64,57 +63,11 @@
     color: rgba(255,255,255,0.7);
 }
 
-/* ===== Menu ===== */
-.menu-wrapper {
-    position: relative;
-    display: inline-block;
-    z-index: 20;
-}
-
-.menu-icon {
-    cursor: pointer;
-    font-size: 20px;
-    color: white;
-    padding: 4px 8px;
-}
-
-.menu-dropdown {
-    position: absolute;
-    right: 0;
-    top: 32px;
-
-    background: rgba(255,255,255,0.10);
-    backdrop-filter: blur(12px);
-
-    border-radius: 10px;
-    border: 1px solid rgba(255,255,255,0.18);
-
-    min-width: 90px;
-    padding: 4px 0;
-    display: none;
-    z-index: 50;
-}
-
-.menu-dropdown.show {
-    display: block;
-}
-
-.menu-item {
-    padding: 6px 10px;
-    font-size: 13px;
-    cursor: pointer;
-    color: white;
-}
-
-.menu-item:hover {
-    background: rgba(255,255,255,0.10);
-}
-
 /* ===== List ===== */
 .friend-list {
     flex: 1;
     overflow-y: auto;
-    padding: 8px 16px calc(14px + env(safe-area-inset-bottom)) 16px;
+    padding: 8px 16px 14px 16px;
     background: transparent;
 }
 

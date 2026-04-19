@@ -59,3 +59,19 @@ function logout() {
     localStorage.clear();
     window.location.href = "/html/login.html";
 }
+
+function openChatTab(event) {
+    if (event) {
+        event.preventDefault();
+    }
+
+    const lastChatUser = sessionStorage.getItem("lastChatUser");
+
+    if (lastChatUser) {
+        window.location.href = "/html/chat.html?user=" + encodeURIComponent(lastChatUser);
+        return false;
+    }
+
+    window.location.href = "/html/friends.html";
+    return false;
+}

@@ -271,7 +271,7 @@
 
 
 .chat-footer {
-    padding: 8px 16px calc(14px + env(safe-area-inset-bottom)) 16px;
+    padding: 8px 16px 12px 16px;
     display: flex;
     flex-direction: column;
     gap: 8px;
@@ -490,6 +490,6 @@
     }
 
     .chat-footer {
-        padding: 8px 14px calc(12px + env(safe-area-inset-bottom)) 14px;
+        padding: 8px 14px 12px 14px;
     }
 }
