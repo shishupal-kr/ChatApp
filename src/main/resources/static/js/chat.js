@@ -9,6 +9,18 @@ let currentPage = 0;
 let pageSize = 20;
 let loading = false;
 
+function markConversationAsRead() {
+    if (!stompClient || !stompClient.connected || !selectedUser) {
+        return;
+    }
+
+    stompClient.send("/app/read", {}, JSON.stringify({
+        receiver: selectedUser
+    }));
+
+    readTriggered = true;
+}
+
 // ===== Route Params =====
 var params = new URLSearchParams(window.location.search);
 var selectedUser = params.get("user");
@@ -37,6 +49,10 @@ function connectWebSocket() {
             stompClient.subscribe("/user/queue/messages", function (message) {
                 var msg = JSON.parse(message.body);
                 renderMessage(msg);
+
+                if (msg.sender === selectedUser && msg.status !== "READ") {
+                    markConversationAsRead();
+                }
             });
 
             stompClient.subscribe("/topic/online-users", function (message) {
@@ -158,15 +174,11 @@ function loadHistory() {
 
             var hasUnread = messages.some(function(m) {
                 return m.sender === selectedUser &&
-                       m.status === "DELIVERED";
+                       m.status !== "READ";
             });
 
             if (hasUnread) {
-                stompClient.send("/app/read", {}, JSON.stringify({
-                    receiver: selectedUser
-                }));
-
-                readTriggered = true;
+                markConversationAsRead();
             }
         }
     })
