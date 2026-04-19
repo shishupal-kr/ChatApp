@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>About - ChatApp</title>
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="stylesheet" href="/css/app-shell.css">
+    <link rel="stylesheet" href="/css/about.css?v=20260419">
+    <script src="/js/analytics.js"></script>
+    <script src="/js/auth.js"></script>
+</head>
+<body>
+
+<div class="about-container app-panel">
+
+    <div class="about-header app-topbar">
+        <span onclick="window.location.href='/html/settings.html'" class="app-back-btn">‹</span>
+        <span class="app-topbar-title">About ChatApp</span>
+    </div>
+
+    <div class="about-content">
+        <section class="about-section">
+            <h1 class="about-title">About ChatApp</h1>
+            <p class="about-copy">
+                ChatApp is a simple real-time messaging application focused on one-to-one conversations.
+                It is designed to provide a clean chat experience with message delivery, online presence,
+                unread counts, and profile-based navigation.
+            </p>
+            <p class="about-copy">
+                This application is currently available as a web app. It is built using Spring Boot,
+                WebSocket, JWT authentication, and a frontend made with HTML, CSS, and JavaScript.
+            </p>
+            <p class="about-copy">
+                Version: 1.0.0
+            </p>
+        </section>
+
+        <section class="about-section">
+            <h2 class="about-section-title">Download Links</h2>
+            <p class="about-copy">
+                You can place your app download links here for Android, iPhone, desktop, or the hosted web version.
+            </p>
+            <div class="download-links">
+                <div class="download-link-card">
+                    <div class="download-link-label">Android App</div>
+                    <div class="download-link-note">Download the Android APK build of ChatApp.</div>
+                    <a class="download-link-action" href="https://drive.google.com/file/d/1zuLXBd8cGw_3bys8sakr7SHz0nIkREgM/view?usp=drivesdk" target="_blank" rel="noopener noreferrer">Download APK</a>
+                </div>
+                <div class="download-link-card">
+                    <div class="download-link-label">iPhone App</div>
+                    <div class="download-link-note">Add your App Store link here.</div>
+                    <span class="download-link-action is-disabled">Coming Soon</span>
+                </div>
+                <div class="download-link-card">
+                    <div class="download-link-label">Desktop App</div>
+                    <div class="download-link-note">Add your Windows or macOS installer link here.</div>
+                    <span class="download-link-action is-disabled">Coming Soon</span>
+                </div>
+                <div class="download-link-card">
+                    <div class="download-link-label">Web App</div>
+                    <div class="download-link-note">Open the hosted web version of ChatApp.</div>
+                    <a class="download-link-action" href="/html/login.html">Open Web App</a>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <nav class="app-bottom-nav" aria-label="Primary">
+        <a class="app-nav-item" href="/html/friends.html" onclick="return openChatTab(event)">
+            <span class="app-nav-icon">💬</span>
+            <span class="app-nav-label">Chat</span>
+        </a>
+        <a class="app-nav-item" href="/html/friends.html">
+            <span class="app-nav-icon">👥</span>
+            <span class="app-nav-label">Friends</span>
+        </a>
+        <a class="app-nav-item" href="/html/profile.html">
+            <span class="app-nav-icon">👤</span>
+            <span class="app-nav-label">Profile</span>
+        </a>
+        <a class="app-nav-item active" href="/html/settings.html">
+            <span class="app-nav-icon">⚙️</span>
+            <span class="app-nav-label">Settings</span>
+        </a>
+    </nav>
+
+</div>
+
+</body>
+</html>

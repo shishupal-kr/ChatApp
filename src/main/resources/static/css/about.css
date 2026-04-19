@@ -1,0 +1,108 @@
+/* ===== Page: About ===== */
+
+.about-container {
+    width: 95%;
+    max-width: 420px;
+    height: calc(100dvh - env(safe-area-inset-top) - env(safe-area-inset-bottom));
+    max-height: calc(100dvh - env(safe-area-inset-top) - env(safe-area-inset-bottom));
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    border-radius: 30px;
+}
+
+.about-content {
+    flex: 1;
+    overflow-y: auto;
+    padding: 20px 18px 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.about-section {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 22px;
+    padding: 16px;
+}
+
+.about-title {
+    margin: 0 0 14px;
+    font-size: 24px;
+    line-height: 1.3;
+    color: white;
+}
+
+.about-copy {
+    margin: 0 0 14px;
+    color: rgba(255, 255, 255, 0.74);
+    font-size: 14px;
+    line-height: 1.55;
+}
+
+.about-section-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: white;
+    margin: 0 0 12px;
+}
+
+.download-links {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 14px;
+}
+
+.download-link-card {
+    display: block;
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.download-link-card:last-child {
+    border-bottom: none;
+}
+
+.download-link-label {
+    font-size: 14px;
+    font-weight: 600;
+    color: white;
+}
+
+.download-link-note {
+    margin-top: 2px;
+    font-size: 13px;
+    color: rgba(255, 255, 255, 0.68);
+}
+
+.download-link-action {
+    display: inline-block;
+    margin-top: 8px;
+    color: #8fd0ff;
+    font-size: 13px;
+    font-weight: 600;
+    text-decoration: underline;
+}
+
+.download-link-action.is-disabled {
+    color: rgba(255, 255, 255, 0.76);
+    pointer-events: none;
+    text-decoration: none;
+}
+
+@media (max-width: 768px) {
+    .about-container {
+        width: calc(100% - 16px);
+        margin: 8px;
+    }
+
+    .about-content {
+        padding: 16px 14px 14px;
+    }
+
+    .about-title {
+        font-size: 22px;
+    }
+}

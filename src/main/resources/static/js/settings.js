@@ -17,7 +17,7 @@ function goBack() {
 
 // ===== About =====
 function showAbout() {
-    alert("ChatApp v1.0\nBuilt with Spring Boot & WebSocket.");
+    window.location.href = "/html/about.html";
 }
 
 // ===== Account =====
