@@ -28,5 +28,17 @@ public class User {
     @Column(nullable = false)
     private String password;
 
+    @Column(nullable = false)
+    private String firstName;
+
+    @Column(nullable = true)
+    private String lastName;
+
+    @Column(nullable = true)
+    private Integer age;
+
+    @Column(nullable = false)
+    private String gender;
+
     private String status; //online/offline
 }

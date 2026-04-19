@@ -9,8 +9,21 @@ function register() {
     error.innerText = "";
 
     // ===== Validation =====
-    if (!username || !email || !password || !confirmPassword) {
+    var firstName = document.getElementById("firstName").value.trim();
+    var lastName = document.getElementById("lastName").value.trim();
+    var age = document.getElementById("age").value.trim();
+    var genderElement = document.getElementById("gender");
+    var gender = genderElement ? genderElement.value.trim() : "";
+
+    console.log("Gender value:", gender); // DEBUG
+
+    if (!firstName || !lastName || !age || !username || !email || !password || !confirmPassword) {
         error.innerText = "All fields are required";
+        return;
+    }
+
+    if (!gender) {
+        error.innerText = "Please select gender";
         return;
     }
 
@@ -41,6 +54,10 @@ function register() {
             "Content-Type": "application/json"
         },
         body: JSON.stringify({
+            firstName: firstName,
+            lastName: lastName,
+            age: parseInt(age),
+            gender: gender || "Male",
             username: username,
             email: email,
             password: password

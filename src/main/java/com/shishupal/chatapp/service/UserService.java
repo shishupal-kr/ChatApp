@@ -34,8 +34,11 @@ public class UserService {
        User user = User.builder()
                .username(request.getUsername())
                .email(normalizedEmail)
-               //.password(request.getPassword())
-               .password(passwordEncoder.encode(request.getPassword())) //update password encoder
+               .password(passwordEncoder.encode(request.getPassword()))
+               .firstName(request.getFirstName())
+               .lastName(request.getLastName())
+               .age(request.getAge())
+               .gender(request.getGender())
                .status("OFFLINE")
                .build();
 

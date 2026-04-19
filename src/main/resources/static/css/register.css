@@ -78,6 +78,30 @@
     box-shadow: 0 0 12px rgba(0, 150, 255, 0.6);
 }
 
+/* ===== Select (Gender Dropdown) ===== */
+.login-card select {
+    padding: 14px 16px;
+    margin-bottom: 14px;
+    border-radius: 22px;
+    border: 1px solid rgba(255,255,255,0.3);
+    background: rgba(255,255,255,0.15);
+    backdrop-filter: blur(15px);
+    color: white;
+    font-size: 14px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.login-card select:focus {
+    outline: none;
+    border: 1px solid rgba(0, 180, 255, 0.8);
+    box-shadow: 0 0 12px rgba(0, 150, 255, 0.6);
+}
+
+.login-card select option {
+    color: black;
+}
+
 /* ===== Primary Button ===== */
 .login-card button {
     padding: 14px;

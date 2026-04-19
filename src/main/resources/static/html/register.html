@@ -20,12 +20,21 @@
             <h2>Create Account</h2>
         </div>
 
+        <input id="firstName" placeholder="First Name">
+        <input id="lastName" placeholder="Last Name">
+        <input id="age" type="number" placeholder="Age">
+        <select id="gender">
+            <option value="">Select Gender</option>
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+        </select>
+
         <input id="username" placeholder="Username">
         <input id="email" type="email" placeholder="Email">
         <input id="password" type="password" placeholder="Password">
         <input id="confirmPassword" type="password" placeholder="Confirm Password">
 
-        <button onclick="register()">Register</button>
+        <button type="button" onclick="register()">Register</button>
         <button class="register-button" onclick="goToLogin()">Back to Login</button>
 
         <p id="errorMessage" style="color:red; font-size:13px; margin-top:10px;"></p>
