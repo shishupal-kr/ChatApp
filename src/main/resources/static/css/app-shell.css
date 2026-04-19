@@ -48,7 +48,7 @@ body {
 
 .app-topbar {
     position: relative;
-    padding: calc(18px + env(safe-area-inset-top)) 18px 18px 18px;
+    padding: 12px 18px 14px 18px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -64,7 +64,7 @@ body {
 .app-back-btn {
     position: absolute;
     left: 18px;
-    font-size: 22px;
+    font-size: 20px;
     line-height: 1;
     cursor: pointer;
     color: var(--text-main);
