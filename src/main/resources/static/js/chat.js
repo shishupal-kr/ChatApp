@@ -9,6 +9,26 @@ let currentPage = 0;
 let pageSize = 20;
 let loading = false;
 
+function updateChatViewportHeight() {
+    if (window.innerWidth > 768) {
+        document.documentElement.style.removeProperty("--chat-viewport-height");
+        return;
+    }
+
+    if (window.visualViewport) {
+        document.documentElement.style.setProperty(
+            "--chat-viewport-height",
+            `${window.visualViewport.height}px`
+        );
+        return;
+    }
+
+    document.documentElement.style.setProperty(
+        "--chat-viewport-height",
+        `${window.innerHeight}px`
+    );
+}
+
 function markConversationAsRead() {
     if (!stompClient || !stompClient.connected || !selectedUser) {
         return;
@@ -190,8 +210,24 @@ function loadHistory() {
 // ===== Typing =====
 // Send typing indicator when user types
 var messageInput = document.getElementById("messageInput");
+var sendButton = document.querySelector(".glass-send-btn");
 
 var typingTimeout;
+
+updateChatViewportHeight();
+
+window.addEventListener("resize", updateChatViewportHeight);
+
+if (window.visualViewport) {
+    window.visualViewport.addEventListener("resize", updateChatViewportHeight);
+    window.visualViewport.addEventListener("scroll", updateChatViewportHeight);
+}
+
+if (sendButton) {
+    sendButton.addEventListener("pointerdown", function (event) {
+        event.preventDefault();
+    });
+}
 
 messageInput.addEventListener("input", function () {
 
@@ -236,6 +272,7 @@ function sendMessage() {
 
     input.value = "";
     cancelReply();
+    input.focus({ preventScroll: true });
 }
 
 // ===== Render =====

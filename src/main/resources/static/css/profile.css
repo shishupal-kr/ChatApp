@@ -1,18 +1,11 @@
 /* ===== Page: Profile ===== */
 
-/* ===== Layout: Container ===== */
-.profile-container {
-    width: 95%;
-    max-width: 420px;
-    height: calc(100dvh - env(safe-area-inset-top) - env(safe-area-inset-bottom));
-    max-height: calc(100dvh - env(safe-area-inset-top) - env(safe-area-inset-bottom));
+.profile-screen {
     display: flex;
     flex-direction: column;
     overflow: hidden;
     align-items: stretch;
     justify-content: flex-start;
-
-    border-radius: 30px;
 }
 
 /* ===== Header ===== */
@@ -111,11 +104,6 @@
 }
 
 @media (max-width: 768px) {
-    .profile-container {
-        width: calc(100% - 16px);
-        margin: 8px;
-    }
-
     .profile-center-section {
         margin-top: 28px;
     }

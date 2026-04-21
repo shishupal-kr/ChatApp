@@ -1,7 +1,7 @@
 /* ===== Page: Chat ===== */
 
 /* ===== Layout: Container ===== */
-.glass-chat-container {
+.chat-screen {
     width: 95%;
     max-width: 420px;
     height: calc(100dvh - env(safe-area-inset-top) - env(safe-area-inset-bottom));
@@ -25,6 +25,13 @@
     background: linear-gradient(to bottom, rgba(15, 32, 39, 0.72), rgba(15, 32, 39, 0.22));
     backdrop-filter: blur(18px);
     -webkit-backdrop-filter: blur(18px);
+}
+
+@media (max-width: 768px) {
+    .glass-header-wrapper {
+        margin-top: calc(-1 * env(safe-area-inset-top));
+        padding-top: calc(env(safe-area-inset-top) + 2px);
+    }
 }
 
 /* ===== Header: Normal ===== */
@@ -487,10 +494,12 @@
 
 /* ===== Mobile ===== */
 @media (max-width: 768px) {
-    .glass-chat-container {
+    .chat-screen {
         width: calc(100% - 8px);
         max-width: 100%;
         margin: 4px;
+        height: var(--chat-viewport-height, calc(100dvh - env(safe-area-inset-top) - env(safe-area-inset-bottom)));
+        max-height: var(--chat-viewport-height, calc(100dvh - env(safe-area-inset-top) - env(safe-area-inset-bottom)));
     }
 
     .glass-header-wrapper {

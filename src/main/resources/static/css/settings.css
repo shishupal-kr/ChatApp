@@ -1,7 +1,7 @@
 /* ===== Page: Settings ===== */
 
 /* ===== Layout: Container ===== */
-.settings-container {
+.settings-screen {
     width: 95%;
     max-width: 420px;
     height: calc(100dvh - env(safe-area-inset-top) - env(safe-area-inset-bottom));
@@ -102,7 +102,7 @@
 }
 
 @media (max-width: 768px) {
-    .settings-container {
+    .settings-screen {
         width: calc(100% - 16px);
         margin: 8px;
     }

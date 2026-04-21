@@ -9,14 +9,15 @@
   <link rel="stylesheet" href="/css/friends.css">
   <script src="/js/analytics.js"></script>
   <script src="/js/auth.js"></script>
+  <script src="/js/app-shell.js" defer></script>
 
   <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js" defer></script>
   <script src="https://cdn.jsdelivr.net/npm/stompjs@2.3.3/lib/stomp.min.js" defer></script>
   <script src="/js/friends.js" defer></script>
 </head>
-<body>
+<body class="app-edge" data-nav="friends">
 
-<div class="friends-container app-panel">
+<div class="friends-screen app-panel app-panel--edge">
 
   <div class="friends-header">
     <span>Chats</span>
@@ -34,24 +35,7 @@
     <div class="empty-state">No friends online</div>
   </div>
 
-  <nav class="app-bottom-nav" aria-label="Primary">
-    <a class="app-nav-item" href="/html/friends.html" onclick="return openChatTab(event)">
-      <span class="app-nav-icon">💬</span>
-      <span class="app-nav-label">Chat</span>
-    </a>
-    <a class="app-nav-item active" href="/html/friends.html">
-      <span class="app-nav-icon">👥</span>
-      <span class="app-nav-label">Friends</span>
-    </a>
-    <a class="app-nav-item" href="/html/profile.html">
-      <span class="app-nav-icon">👤</span>
-      <span class="app-nav-label">Profile</span>
-    </a>
-    <a class="app-nav-item" href="/html/settings.html">
-      <span class="app-nav-icon">⚙️</span>
-      <span class="app-nav-label">Settings</span>
-    </a>
-  </nav>
+  <div data-app-nav></div>
 
 </div>
 
