@@ -1,6 +1,5 @@
 /* ===== Page: Settings ===== */
 
-/* ===== Layout: Container ===== */
 .prefs-page {
     width: 95%;
     max-width: 420px;
@@ -9,11 +8,9 @@
     display: flex;
     flex-direction: column;
     overflow: hidden;
-
     border-radius: 30px;
 }
 
-/* ===== Header ===== */
 .prefs-top {
     width: 100%;
     box-sizing: border-box;
@@ -29,35 +26,33 @@
     cursor: pointer;
 }
 
-/* ===== Content ===== */
 .prefs-body {
     flex: 1;
     overflow-y: auto;
-    padding: 18px;
+    padding: 16px;
     display: flex;
     flex-direction: column;
-    gap: 18px;
+    gap: 12px;
 }
 
-/* ===== Section ===== */
 .prefs-group {
-    background: rgba(255,255,255,0.12);
-    border-radius: 18px;
-    padding: 12px;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 20px;
+    padding: 10px;
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.12);
 }
 
-/* ===== Row ===== */
 .setting-row {
-    padding: 14px 12px;
+    padding: 12px 10px;
     color: white;
     font-size: 15px;
     cursor: pointer;
-
     display: flex;
-    justify-content: space-between;
     align-items: center;
-
-    border-bottom: 1px solid rgba(255,255,255,0.15);
+    gap: 12px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+    transition: background 0.2s ease, transform 0.2s ease;
 }
 
 .setting-row:last-child {
@@ -65,45 +60,132 @@
 }
 
 .setting-row:hover {
-    background: rgba(255,255,255,0.08);
+    background: rgba(255, 255, 255, 0.06);
+    transform: translateY(-1px);
+}
+
+.no-border {
+    cursor: default;
+}
+
+.no-border:hover {
+    background: transparent;
+    transform: none;
+}
+
+.row-icon {
+    width: 28px;
+    flex: 0 0 28px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+}
+
+.row-text {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.row-title {
+    font-weight: 600;
+    color: white;
+}
+
+.row-sub {
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.62);
+}
+
+.row-arrow {
+    color: rgba(255, 255, 255, 0.55);
+    font-size: 22px;
+    line-height: 1;
+}
+
+.field-block {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    margin: 10px 0 12px;
+}
+
+.setting-input {
+    flex: 1;
+    min-width: 0;
+    padding: 12px 14px;
+    border-radius: 14px;
+    border: none;
+    outline: none;
+    background: rgba(255, 255, 255, 0.14);
+    color: white;
+    box-sizing: border-box;
+}
+
+.setting-input::placeholder {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.setting-btn {
+    min-width: 88px;
+    padding: 12px 14px;
+    border-radius: 14px;
+    border: none;
+    cursor: pointer;
+    background: rgba(255, 255, 255, 0.16);
+    color: white;
+    white-space: nowrap;
+}
+
+.danger-group {
+    background: linear-gradient(180deg, rgba(255, 120, 120, 0.12), rgba(255, 255, 255, 0.08));
 }
 
 .row-danger {
-    color: #ffb4b4;
+    color: #ffd1d1;
 }
 
-/* ===== Inputs ===== */
-.setting-input {
+.danger-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
     width: 100%;
-    margin-top: 10px;
-    padding: 10px;
-    border-radius: 12px;
-    border: none;
-    outline: none;
-
-    background: rgba(255,255,255,0.18);
-    color: white;
-}
-
-/* ===== Buttons ===== */
-.setting-btn {
-    margin-top: 10px;
-    padding: 10px;
-    border-radius: 12px;
+    padding: 12px 14px;
+    border-radius: 16px;
     border: none;
     cursor: pointer;
-
-    background: rgba(255,255,255,0.2);
+    background: rgba(255, 0, 0, 0.34);
     color: white;
-}
-
-.setting-btn.danger {
-    background: rgba(255,0,0,0.35);
+    font-weight: 600;
+    box-shadow: 0 10px 24px rgba(255, 0, 0, 0.12);
 }
 
 @media (max-width: 768px) {
     .prefs-page {
         width: calc(100% - 16px);
         margin: 8px;
+    }
+
+    .prefs-body {
+        padding: 14px;
+        gap: 10px;
+    }
+
+    .prefs-group {
+        padding: 10px;
+        border-radius: 18px;
+    }
+
+    .field-block {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .setting-btn {
+        width: 100%;
     }
 }

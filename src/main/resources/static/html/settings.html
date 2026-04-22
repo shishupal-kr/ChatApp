@@ -22,53 +22,73 @@
     </div>
 
     <div class="prefs-body">
-
         <div class="prefs-group">
             <div class="setting-row" onclick="window.location.href='profile.html'">
-                👤 Profile
+                <span class="row-icon">👤</span>
+                <span class="row-text">
+                    <span class="row-title">Profile</span>
+                    <span class="row-sub">View your account details</span>
+                </span>
+                <span class="row-arrow">›</span>
             </div>
-        </div>
-
-        <div class="prefs-group">
             <div class="setting-row" onclick="toggleTheme()">
-                🌓 Dark / Light Mode
+                <span class="row-icon">🌓</span>
+                <span class="row-text">
+                    <span class="row-title">Theme</span>
+                    <span class="row-sub">Dark / light mode</span>
+                </span>
+                <span class="row-arrow">›</span>
             </div>
-        </div>
-
-        <div class="prefs-group">
-
-            <div class="setting-row">
-                ✏ Change Password
-            </div>
-            <input class="setting-input" type="password" id="newPassword">
-            <button class="setting-btn">Update</button>
-
-            <div class="setting-row">
-                📧 Change Email
-            </div>
-            <input class="setting-input" type="email" id="newEmail">
-            <button class="setting-btn">Update</button>
-
-        </div>
-
-        <div class="prefs-group">
-            <div class="setting-row setting-btn danger" onclick="deleteAccount()">
-                🗑 Delete Account
-            </div>
-        </div>
-
-        <div class="prefs-group">
-            <div class="setting-row row-danger" onclick="logout()">
-                ↩ Logout
-            </div>
-        </div>
-
-        <div class="prefs-group">
             <div class="setting-row" onclick="showAbout()">
-                📱 About App
+                <span class="row-icon">📱</span>
+                <span class="row-text">
+                    <span class="row-title">About App</span>
+                    <span class="row-sub">App info and download links</span>
+                </span>
+                <span class="row-arrow">›</span>
             </div>
         </div>
 
+        <div class="prefs-group">
+            <div class="setting-row no-border">
+                <span class="row-icon">✏</span>
+                <span class="row-text">
+                    <span class="row-title">Change Password</span>
+                    <span class="row-sub">Update your login password</span>
+                </span>
+            </div>
+            <div class="field-block">
+                <input class="setting-input" type="password" id="newPassword" placeholder="New password">
+                <button class="setting-btn" type="button">Update</button>
+            </div>
+
+            <div class="setting-row no-border">
+                <span class="row-icon">📧</span>
+                <span class="row-text">
+                    <span class="row-title">Change Email</span>
+                    <span class="row-sub">Update your contact email</span>
+                </span>
+            </div>
+            <div class="field-block">
+                <input class="setting-input" type="email" id="newEmail" placeholder="New email">
+                <button class="setting-btn" type="button">Update</button>
+            </div>
+        </div>
+
+        <div class="prefs-group danger-group">
+            <div class="setting-row row-danger" onclick="logout()">
+                <span class="row-icon">↩</span>
+                <span class="row-text">
+                    <span class="row-title">Logout</span>
+                    <span class="row-sub">End this session on this device</span>
+                </span>
+                <span class="row-arrow">›</span>
+            </div>
+            <button class="danger-btn" type="button" onclick="deleteAccount()">
+                <span>🗑</span>
+                <span>Delete account</span>
+            </button>
+        </div>
     </div>
 
     <div data-app-nav></div>
