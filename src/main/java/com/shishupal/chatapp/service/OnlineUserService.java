@@ -33,4 +33,8 @@ public class OnlineUserService {
     public Set<String> getOnlineUsers() {
         return userSessions.keySet();
     }
+
+    public boolean isOnline(String username) {
+        return userSessions.containsKey(username);
+    }
 }

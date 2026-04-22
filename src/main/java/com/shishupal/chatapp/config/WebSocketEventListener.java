@@ -1,6 +1,7 @@
 package com.shishupal.chatapp.config;
 
 import com.shishupal.chatapp.service.OnlineUserService;
+import com.shishupal.chatapp.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.event.EventListener;
 import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
@@ -14,6 +15,7 @@ import org.springframework.web.socket.messaging.SessionDisconnectEvent;
 public class WebSocketEventListener {
 
     private final OnlineUserService onlineUserService;
+    private final UserService userService;
     private final SimpMessagingTemplate messagingTemplate;
 
     // Handles authenticated user connection events
@@ -31,6 +33,7 @@ public class WebSocketEventListener {
 
         if (username != null && sessionId != null) {
             onlineUserService.userConnected(username, sessionId);
+            userService.updateStatus(username, "ONLINE");
 
             messagingTemplate.convertAndSend(
                     "/topic/online-users",
@@ -70,6 +73,10 @@ public class WebSocketEventListener {
                 } catch (InterruptedException ignored) {}
 
                 onlineUserService.userDisconnected(finalUsername, finalSessionId);
+
+                if (!onlineUserService.isOnline(finalUsername)) {
+                    userService.updateStatus(finalUsername, "OFFLINE");
+                }
 
                 messagingTemplate.convertAndSend(
                         "/topic/online-users",

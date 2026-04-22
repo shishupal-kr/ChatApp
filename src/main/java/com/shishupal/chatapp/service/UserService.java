@@ -120,6 +120,12 @@ public class UserService {
         userRepository.save(user);
     }
 
+    public void updateStatus(String username, String status) {
+        User user = findByUsername(username);
+        user.setStatus(status);
+        userRepository.save(user);
+    }
+
     public User findByUsername(String username) {
         return userRepository.findByUsername(username)
                 .orElseThrow(() -> new IllegalArgumentException("User not found"));

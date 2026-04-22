@@ -275,9 +275,9 @@
             flex-direction: column;
             align-items: center;
             justify-content: flex-start;
-            margin-top: 60px;
-            gap: 12px;
-            padding: 0 20px;
+            margin-top: 44px;
+            gap: 14px;
+            padding: 0 18px;
         }
 
         .avatar-box {
@@ -304,6 +304,21 @@
             box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
         }
 
+        .profile-card {
+            width: 100%;
+            max-width: 320px;
+            padding: 16px;
+            border-radius: 24px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.16);
+            backdrop-filter: blur(16px);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.18);
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            text-align: center;
+        }
+
         .profile-name {
             font-size: 22px;
             font-weight: 600;
@@ -311,6 +326,12 @@
 
         .profile-username {
             font-size: 15px;
+        }
+
+        .profile-email {
+            font-size: 14px;
+            color: var(--text-muted);
+            word-break: break-word;
         }
 
         .settings-content,
@@ -574,6 +595,7 @@
             .profile-center {
                 margin-top: 48px;
             }
+
         }
     </style>
 </head>
@@ -676,8 +698,11 @@
                 <div class="status-ring"></div>
                 <div class="profile-avatar">A</div>
             </div>
-            <div class="profile-name">Alice Johnson</div>
-            <div class="profile-username">@alice</div>
+            <div class="profile-card">
+                <div class="profile-name">Alice Johnson</div>
+                <div class="profile-username">@alice</div>
+                <div class="profile-email">alice@example.com</div>
+            </div>
         </div>
 
         <nav class="nav-bar" aria-label="Primary">
