@@ -51,6 +51,17 @@
 
         <div class="prefs-group">
             <div class="setting-row no-border">
+                <span class="row-icon">🔐</span>
+                <span class="row-text">
+                    <span class="row-title">Current Password</span>
+                    <span class="row-sub">Needed to confirm changes</span>
+                </span>
+            </div>
+            <div class="field-block">
+                <input class="setting-input" type="password" id="currentPassword" placeholder="Current password">
+            </div>
+
+            <div class="setting-row no-border">
                 <span class="row-icon">✏</span>
                 <span class="row-text">
                     <span class="row-title">Change Password</span>
@@ -59,7 +70,7 @@
             </div>
             <div class="field-block">
                 <input class="setting-input" type="password" id="newPassword" placeholder="New password">
-                <button class="setting-btn" type="button">Update</button>
+                <button class="setting-btn" type="button" onclick="updatePassword()">Update</button>
             </div>
 
             <div class="setting-row no-border">

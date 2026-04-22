@@ -52,4 +52,18 @@ public class AuthController {
         userService.deleteCurrentUser(principal.getName());
         return ResponseEntity.ok("Account deleted");
     }
+
+    @PostMapping("/change-password")
+    public ResponseEntity<?> changePassword(Principal principal, @RequestBody Map<String, String> request) {
+        if (principal == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unauthorized");
+        }
+
+        userService.changePassword(
+                principal.getName(),
+                request.get("currentPassword"),
+                request.get("newPassword")
+        );
+        return ResponseEntity.ok("Password updated");
+    }
 }
