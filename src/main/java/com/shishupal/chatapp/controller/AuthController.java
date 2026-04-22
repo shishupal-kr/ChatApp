@@ -38,7 +38,7 @@ public class AuthController {
 
         Map<String, Object> response = new HashMap<>();
         response.put("username", user.getUsername());
-        response.put("fullName", user.getFullName());   // if exists
+        response.put("fullName", userService.getDisplayName(user));
         response.put("status", user.getStatus());
 
         return ResponseEntity.ok(response);
@@ -65,5 +65,19 @@ public class AuthController {
                 request.get("newPassword")
         );
         return ResponseEntity.ok("Password updated");
+    }
+
+    @PostMapping("/change-email")
+    public ResponseEntity<?> changeEmail(Principal principal, @RequestBody Map<String, String> request) {
+        if (principal == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unauthorized");
+        }
+
+        userService.changeEmail(
+                principal.getName(),
+                request.get("currentPassword"),
+                request.get("newEmail")
+        );
+        return ResponseEntity.ok("Email updated");
     }
 }

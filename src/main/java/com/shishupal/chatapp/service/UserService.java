@@ -41,6 +41,7 @@ public class UserService {
                .password(passwordEncoder.encode(request.getPassword()))
                .firstName(request.getFirstName())
                .lastName(request.getLastName())
+               .fullName(buildFullName(request.getFirstName(), request.getLastName()))
                .age(request.getAge())
                .gender(request.getGender())
                .status("OFFLINE")
@@ -129,6 +130,19 @@ public class UserService {
         userRepository.delete(user);
     }
 
+    public String getDisplayName(User user) {
+        if (user == null) {
+            return "";
+        }
+
+        String fullName = user.getFullName();
+        if (fullName != null && !fullName.isBlank()) {
+            return fullName;
+        }
+
+        return buildFullName(user.getFirstName(), user.getLastName());
+    }
+
     private String normalizeEmail(String email) {
         String trimmed = email == null ? "" : email.trim();
         return trimmed.isEmpty() ? null : trimmed.toLowerCase();
@@ -142,5 +156,20 @@ public class UserService {
     private boolean isValidEmail(String email) {
         String trimmed = email == null ? "" : email.trim();
         return trimmed.matches("^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$");
+    }
+
+    private String buildFullName(String firstName, String lastName) {
+        String first = firstName == null ? "" : firstName.trim();
+        String last = lastName == null ? "" : lastName.trim();
+
+        if (first.isEmpty()) {
+            return last;
+        }
+
+        if (last.isEmpty()) {
+            return first;
+        }
+
+        return first + " " + last;
     }
 }
