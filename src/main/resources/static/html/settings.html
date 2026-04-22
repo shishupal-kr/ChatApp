@@ -12,30 +12,30 @@
     <script src="/js/app-shell.js" defer></script>
     <script src="/js/settings.js" defer></script>
 </head>
-<body class="app-edge" data-nav="settings">
+<body class="edge" data-nav="settings">
 
-<div class="settings-screen app-panel app-panel--edge">
+<div class="prefs-page shell shell-edge">
 
-    <div class="settings-header app-topbar">
-        <span onclick="goBack()" class="back-btn app-back-btn">‹</span>
-        <span class="settings-title app-topbar-title">Settings</span>
+    <div class="prefs-top topbar">
+        <span onclick="goBack()" class="back-btn back">‹</span>
+        <span class="prefs-title top-title">Settings</span>
     </div>
 
-    <div class="settings-content">
+    <div class="prefs-body">
 
-        <div class="settings-section">
+        <div class="prefs-group">
             <div class="setting-row" onclick="window.location.href='profile.html'">
                 👤 Profile
             </div>
         </div>
 
-        <div class="settings-section">
+        <div class="prefs-group">
             <div class="setting-row" onclick="toggleTheme()">
                 🌓 Dark / Light Mode
             </div>
         </div>
 
-        <div class="settings-section">
+        <div class="prefs-group">
 
             <div class="setting-row">
                 ✏ Change Password
@@ -51,19 +51,19 @@
 
         </div>
 
-        <div class="settings-section">
+        <div class="prefs-group">
             <div class="setting-row setting-btn danger" onclick="deleteAccount()">
                 🗑 Delete Account
             </div>
         </div>
 
-        <div class="settings-section">
-            <div class="setting-row setting-row-danger" onclick="logout()">
+        <div class="prefs-group">
+            <div class="setting-row row-danger" onclick="logout()">
                 ↩ Logout
             </div>
         </div>
 
-        <div class="settings-section">
+        <div class="prefs-group">
             <div class="setting-row" onclick="showAbout()">
                 📱 About App
             </div>

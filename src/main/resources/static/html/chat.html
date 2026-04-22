@@ -14,24 +14,24 @@
     <script src="https://cdn.jsdelivr.net/npm/stompjs@2.3.3/lib/stomp.min.js"></script>
     <script src="/js/chat.js" defer></script>
 </head>
-<body class="app-edge">
+<body class="edge">
 
-<div class="chat-screen app-panel app-panel--edge">
+<div class="chat-page shell shell-edge">
 
     <!-- HEADER -->
-    <div class="glass-header-wrapper">
+    <div class="chat-top">
 
         <!-- NORMAL HEADER -->
         <div id="normalHeader" class="glass-header">
 
             <span class="chat-back-btn" onclick="goBack(event)">‹</span>
 
-            <div class="chat-profile-trigger" onclick="openProfilePage()">
+            <div class="user-link" onclick="openProfilePage()">
                 <div class="profile-wrapper offline" id="profileWrapper">
                     <div class="profile-circle" id="profileCircle"></div>
                 </div>
 
-                <div class="chat-user-info">
+                <div class="user-meta">
                     <span id="chatTitle" class="chat-username"></span>
                 </div>
             </div>
@@ -39,7 +39,7 @@
         </div>
 
         <!-- SELECTION HEADER (Hidden by default) -->
-        <div id="selectionHeader" class="selection-header" style="display: none;">
+        <div id="selectionHeader" class="sel-bar" style="display: none;">
 
             <!-- LEFT SIDE (Back + Count) -->
             <div class="selection-left">
@@ -48,7 +48,7 @@
             </div>
 
             <!-- RIGHT SIDE (Actions) -->
-            <div class="selection-actions">
+            <div class="sel-actions">
                 <span onclick="replySelected()">↩</span>
                 <span onclick="editSelected()">✏</span>
                 <span onclick="copySelected()">⧉</span>
@@ -69,14 +69,14 @@
         <div id="replyBar" class="reply-bar" style="display: none;">
             <div class="reply-content">
                 <span class="reply-label">Replying to</span>
-                <span id="replyPreview" class="reply-preview-text"></span>
+                <span id="replyPreview" class="reply-snippet"></span>
             </div>
             <span class="reply-close" onclick="cancelReply()">✕</span>
         </div>
 
         <!-- INPUT -->
         <div class="glass-input">
-            <input id="messageInput" class="glass-message-input" placeholder="Message...">
+            <input id="messageInput" class="msg-input" placeholder="Message...">
             <button class="glass-send-btn" onclick="sendMessage()">➤</button>
         </div>
     </div>

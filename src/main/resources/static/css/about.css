@@ -1,6 +1,6 @@
 /* ===== Page: About ===== */
 
-.about-screen {
+.about-page {
     width: 95%;
     max-width: 420px;
     height: calc(100dvh - env(safe-area-inset-top) - env(safe-area-inset-bottom));
@@ -41,43 +41,43 @@
     line-height: 1.55;
 }
 
-.about-section-title {
+.section-title {
     font-size: 16px;
     font-weight: 600;
     color: white;
     margin: 0 0 12px;
 }
 
-.download-links {
+.dl-list {
     display: flex;
     flex-direction: column;
     gap: 8px;
     margin-top: 14px;
 }
 
-.download-link-card {
+.dl-card {
     display: block;
     padding: 10px 0;
     border-bottom: 1px solid rgba(255, 255, 255, 0.12);
 }
 
-.download-link-card:last-child {
+.dl-card:last-child {
     border-bottom: none;
 }
 
-.download-link-label {
+.dl-label {
     font-size: 14px;
     font-weight: 600;
     color: white;
 }
 
-.download-link-note {
+.dl-note {
     margin-top: 2px;
     font-size: 13px;
     color: rgba(255, 255, 255, 0.68);
 }
 
-.download-link-action {
+.dl-action {
     display: inline-block;
     margin-top: 8px;
     color: #8fd0ff;
@@ -86,14 +86,14 @@
     text-decoration: underline;
 }
 
-.download-link-action.is-disabled {
+.dl-action.is-disabled {
     color: rgba(255, 255, 255, 0.76);
     pointer-events: none;
     text-decoration: none;
 }
 
 @media (max-width: 768px) {
-    .about-screen {
+    .about-page {
         width: calc(100% - 16px);
         margin: 8px;
     }

@@ -34,7 +34,7 @@ function renderAppBottomNav() {
 
     const activeKey = document.body.dataset.nav || "";
     const nav = document.createElement("nav");
-    nav.className = "app-bottom-nav";
+    nav.className = "nav-bar";
     nav.setAttribute("aria-label", "Primary");
 
     nav.innerHTML = APP_SHELL_NAV_ITEMS.map((item) => {
@@ -42,9 +42,9 @@ function renderAppBottomNav() {
         const onclickAttr = item.onclick ? ` onclick="${item.onclick}"` : "";
 
         return `
-            <a class="app-nav-item${activeClass}" href="${item.href}"${onclickAttr}>
-                <span class="app-nav-icon">${item.icon}</span>
-                <span class="app-nav-label">${item.label}</span>
+            <a class="nav-item${activeClass}" href="${item.href}"${onclickAttr}>
+                <span class="nav-icon">${item.icon}</span>
+                <span class="nav-text">${item.label}</span>
             </a>
         `;
     }).join("");

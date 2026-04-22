@@ -1,6 +1,6 @@
 /* ===== Page: Profile ===== */
 
-.profile-screen {
+.profile-page {
     display: flex;
     flex-direction: column;
     overflow: hidden;
@@ -20,7 +20,7 @@
 }
 
 /* ===== Center Section ===== */
-.profile-center-section {
+.profile-main {
     flex: 1;
     width: 100%;
     box-sizing: border-box;
@@ -32,7 +32,7 @@
     gap: 12px;
 }
 
-.avatar-wrapper {
+.avatar-box {
     position: relative;
     width: 140px;
     height: 140px;
@@ -76,7 +76,7 @@
     z-index: 2;
 }
 
-.profile-display-name {
+.profile-name {
     font-size: 22px;
     font-weight: 600;
     color: white;
@@ -104,7 +104,7 @@
 }
 
 @media (max-width: 768px) {
-    .profile-center-section {
+    .profile-main {
         margin-top: 28px;
     }
 }

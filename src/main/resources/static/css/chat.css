@@ -1,7 +1,7 @@
 /* ===== Page: Chat ===== */
 
 /* ===== Layout: Container ===== */
-.chat-screen {
+.chat-page {
     width: 95%;
     max-width: 420px;
     height: calc(100dvh - env(safe-area-inset-top) - env(safe-area-inset-bottom));
@@ -14,7 +14,7 @@
 }
 
 /* ===== Header: Wrapper ===== */
-.glass-header-wrapper {
+.chat-top {
     position: sticky;
     top: 0;
     z-index: 1000;
@@ -28,7 +28,7 @@
 }
 
 @media (max-width: 768px) {
-    .glass-header-wrapper {
+    .chat-top {
         margin-top: calc(-1 * env(safe-area-inset-top));
         padding-top: calc(env(safe-area-inset-top) + 2px);
     }
@@ -67,7 +67,7 @@
     z-index: 2;
 }
 
-.chat-profile-trigger {
+.user-link {
     flex: 1;
     min-width: 0;
     display: flex;
@@ -84,7 +84,7 @@
     flex-shrink: 0;
 }
 
-.chat-user-info {
+.user-meta {
     flex: 1;
     min-width: 0;
     padding-right: 4px;
@@ -122,7 +122,7 @@
 }
 
 /* ===== Header: Selection ===== */
-.selection-header {
+.sel-bar {
     width: calc(100% - 32px);
     margin: 8px 16px 0 16px;
 
@@ -164,12 +164,12 @@
     font-weight: 600;
 }
 
-.selection-actions {
+.sel-actions {
     display: flex;
     align-items: center;
 }
 
-.selection-actions span {
+.sel-actions span {
     margin-left: 22px;
     cursor: pointer;
     font-size: 20px;
@@ -177,7 +177,7 @@
     transition: transform 0.2s ease, opacity 0.2s ease;
 }
 
-.selection-actions span:hover {
+.sel-actions span:hover {
     transform: scale(1.15);
     opacity: 1;
 }
@@ -332,7 +332,7 @@
     opacity: 0.7;
 }
 
-.reply-preview-text {
+.reply-snippet {
     font-weight: 500;
     max-width: 200px;
     white-space: nowrap;
@@ -369,7 +369,7 @@
         inset 0 0 10px rgba(255, 255, 255, 0.06);
 }
 
-.glass-message-input {
+.msg-input {
     flex: 1;
     border: none;
     outline: none;
@@ -380,7 +380,7 @@
     min-width: 0;
 }
 
-.glass-message-input::placeholder {
+.msg-input::placeholder {
     color: rgba(255, 255, 255, 0.68);
 }
 
@@ -494,7 +494,7 @@
 
 /* ===== Mobile ===== */
 @media (max-width: 768px) {
-    .chat-screen {
+    .chat-page {
         width: calc(100% - 8px);
         max-width: 100%;
         margin: 4px;
@@ -502,7 +502,7 @@
         max-height: var(--chat-viewport-height, calc(100dvh - env(safe-area-inset-top) - env(safe-area-inset-bottom)));
     }
 
-    .glass-header-wrapper {
+    .chat-top {
         padding: 6px 14px 8px 14px;
     }
 

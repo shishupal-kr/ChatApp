@@ -3,6 +3,7 @@ let debounceTimer;
 var currentUser = getUser();
 var token = getToken();
 var stompClient = null;
+var searchOpen = false;
 
 
 // ===== Initial Data =====
@@ -139,7 +140,7 @@ function renderConversations(conversations) {
 
     div.innerHTML =
       "<div class='friend-left'>" +
-          "<div class='friend-avatar-wrapper offline' data-user='" + conv.username + "'>" +
+          "<div class='friend-pic offline' data-user='" + conv.username + "'>" +
               "<div class='friend-avatar'>" + initial + "</div>" +
           "</div>" +
           "<div class='friend-text'>" +
@@ -162,7 +163,7 @@ function renderConversations(conversations) {
 
 function updateOnlineStatus(onlineUsers) {
 
-  var wrappers = document.querySelectorAll('.friend-avatar-wrapper');
+  var wrappers = document.querySelectorAll('.friend-pic');
 
   wrappers.forEach(function(wrapper) {
     var username = wrapper.getAttribute('data-user');
@@ -180,6 +181,11 @@ function updateOnlineStatus(onlineUsers) {
 // ===== Search =====
 function handleSearchKey(event) {
   const keyword = event.target.value.trim();
+
+  if (event.key === "Escape") {
+    closeSearch();
+    return;
+  }
 
   // Press Enter → instant search
   if (event.key === "Enter") {
@@ -229,7 +235,7 @@ function searchUser(keyword) {
 
         div.innerHTML =
           "<div class='friend-left'>" +
-              "<div class='friend-avatar-wrapper offline'>" +
+              "<div class='friend-pic offline'>" +
                   "<div class='friend-avatar'>" + initial + "</div>" +
               "</div>" +
               "<div class='friend-text'>" +
@@ -243,6 +249,58 @@ function searchUser(keyword) {
         container.appendChild(div);
       });
     });
+}
+
+function toggleSearch() {
+  if (searchOpen) {
+    closeSearch();
+    return;
+  }
+
+  searchOpen = true;
+
+  const panel = document.getElementById("searchPanel");
+  const input = document.getElementById("searchBox");
+  const button = document.querySelector(".search-toggle");
+
+  if (panel) {
+    panel.classList.add("is-open");
+    panel.setAttribute("aria-hidden", "false");
+  }
+
+  if (button) {
+    button.setAttribute("aria-expanded", "true");
+  }
+
+  if (input) {
+    window.setTimeout(() => input.focus(), 180);
+  }
+}
+
+function closeSearch() {
+  searchOpen = false;
+
+  const panel = document.getElementById("searchPanel");
+  const input = document.getElementById("searchBox");
+  const button = document.querySelector(".search-toggle");
+
+  if (panel) {
+    panel.classList.remove("is-open");
+    panel.setAttribute("aria-hidden", "true");
+  }
+
+  if (button) {
+    button.setAttribute("aria-expanded", "false");
+  }
+
+  if (input) {
+    input.value = "";
+    input.blur();
+  }
+
+  apiFetch("/api/chat/conversations")
+    .then(res => res.json())
+    .then(data => renderConversations(data));
 }
 
 // ===== Actions =====

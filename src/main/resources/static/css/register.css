@@ -1,7 +1,7 @@
 /* ===== Page: Register ===== */
 
 /* ===== Layout: Wrapper ===== */
-.login-wrapper {
+.auth-wrap {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -40,7 +40,7 @@
     font-weight: 600;
 }
 
-.register-header {
+.auth-head {
     position: relative;
 }
 
@@ -121,7 +121,7 @@
 }
 
 /* ===== Secondary Button ===== */
-.register-button {
+.auth-alt-btn {
     margin-top: 12px;
     padding: 14px;
     width: 100%;
@@ -135,7 +135,7 @@
     transition: 0.3s ease;
 }
 
-.register-button:hover {
+.auth-alt-btn:hover {
     transform: translateY(-2px);
 }
 
@@ -148,7 +148,7 @@
 }
 
 @media (max-width: 768px) {
-    .login-wrapper {
+    .auth-wrap {
         width: calc(100% - 16px);
         margin: 8px;
         padding: 20px;

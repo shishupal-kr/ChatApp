@@ -35,7 +35,7 @@
             padding: 10px 0;
         }
 
-        .app-panel {
+        .shell {
             width: 95%;
             max-width: 420px;
             height: calc(100dvh - 20px);
@@ -60,7 +60,7 @@
             display: flex;
         }
 
-        .app-topbar,
+        .topbar,
         .friends-header,
         .chat-header {
             width: 100%;
@@ -68,7 +68,7 @@
             color: white;
         }
 
-        .app-topbar {
+        .topbar {
             position: relative;
             padding: 22px 18px 18px;
             display: flex;
@@ -77,7 +77,7 @@
             border-bottom: 1px solid rgba(255, 255, 255, 0.15);
         }
 
-        .app-back-btn {
+        .back {
             position: absolute;
             left: 18px;
             font-size: 22px;
@@ -85,7 +85,7 @@
             cursor: pointer;
         }
 
-        .app-topbar-title {
+        .top-title {
             font-size: 20px;
             font-weight: 600;
         }
@@ -104,7 +104,7 @@
             font-weight: 600;
         }
 
-        .search-wrapper {
+        .search-box {
             position: relative;
             display: flex;
             align-items: center;
@@ -164,7 +164,7 @@
             gap: 12px;
         }
 
-        .friend-avatar-wrap {
+        .friend-pic {
             width: 48px;
             height: 48px;
             border-radius: 50%;
@@ -172,7 +172,7 @@
             border: 3px solid white;
         }
 
-        .friend-avatar-wrap.online {
+        .friend-pic.online {
             border-color: #00ff6a;
         }
 
@@ -204,7 +204,7 @@
         .friend-time,
         .profile-username,
         .about-copy,
-        .download-link-note {
+        .dl-note {
             color: var(--text-muted);
         }
 
@@ -227,7 +227,7 @@
             font-size: 12px;
         }
 
-        .app-bottom-nav {
+        .nav-bar {
             padding: 10px 16px 20px;
             background: linear-gradient(to top, rgba(15, 32, 39, 0.92), rgba(15, 32, 39, 0.6));
             backdrop-filter: blur(20px);
@@ -238,7 +238,7 @@
             gap: 8px;
         }
 
-        .app-nav-item {
+        .nav-item {
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -252,17 +252,17 @@
             cursor: pointer;
         }
 
-        .app-nav-item.active {
+        .nav-item.active {
             background: rgba(79, 172, 254, 0.15);
             color: var(--accent);
         }
 
-        .app-nav-icon {
+        .nav-icon {
             font-size: 22px;
             line-height: 1;
         }
 
-        .app-nav-label {
+        .nav-text {
             font-size: 11px;
             font-weight: 500;
         }
@@ -280,7 +280,7 @@
             padding: 0 20px;
         }
 
-        .avatar-wrapper {
+        .avatar-box {
             position: relative;
             width: 140px;
             height: 140px;
@@ -304,7 +304,7 @@
             box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
         }
 
-        .profile-display-name {
+        .profile-name {
             font-size: 22px;
             font-weight: 600;
         }
@@ -339,7 +339,7 @@
             border-bottom: none;
         }
 
-        .setting-row-danger {
+        .row-danger {
             color: #ffb4b4;
         }
 
@@ -359,39 +359,39 @@
             margin-bottom: 0;
         }
 
-        .about-section-title {
+        .section-title {
             margin-bottom: 12px;
             font-size: 16px;
             font-weight: 600;
         }
 
-        .download-links {
+        .dl-list {
             display: flex;
             flex-direction: column;
             gap: 8px;
             margin-top: 14px;
         }
 
-        .download-link-card {
+        .dl-card {
             padding: 10px 0;
             border-bottom: 1px solid rgba(255, 255, 255, 0.12);
         }
 
-        .download-link-card:last-child {
+        .dl-card:last-child {
             border-bottom: none;
         }
 
-        .download-link-label {
+        .dl-label {
             font-size: 14px;
             font-weight: 600;
         }
 
-        .download-link-note {
+        .dl-note {
             margin-top: 2px;
             font-size: 13px;
         }
 
-        .download-link-action {
+        .dl-action {
             display: inline-block;
             margin-top: 8px;
             color: #8fd0ff;
@@ -400,7 +400,7 @@
             text-decoration: underline;
         }
 
-        .download-link-action.is-disabled {
+        .dl-action.is-disabled {
             color: rgba(255, 255, 255, 0.76);
             text-decoration: none;
         }
@@ -429,7 +429,7 @@
             cursor: pointer;
         }
 
-        .chat-profile-trigger {
+        .user-link {
             flex: 1;
             min-width: 0;
             display: flex;
@@ -438,7 +438,7 @@
             cursor: pointer;
         }
 
-        .chat-avatar-wrap {
+        .chat-pic {
             width: 38px;
             height: 38px;
             border-radius: 50%;
@@ -516,7 +516,7 @@
             gap: 8px;
         }
 
-        .glass-message-input {
+        .msg-input {
             flex: 1;
             border: none;
             outline: none;
@@ -565,7 +565,7 @@
                 padding: 6px 0;
             }
 
-            .app-panel {
+            .shell {
                 width: calc(100% - 12px);
                 height: calc(100dvh - 12px);
                 max-width: 100%;
@@ -579,7 +579,7 @@
 </head>
 <body>
 
-<div class="app-panel">
+<div class="shell">
     <div class="demo-switcher">
         <button class="demo-switch" data-target="friends" onclick="showScreen('friends')">Friends</button>
         <button class="demo-switch" data-target="profile" onclick="showScreen('profile')">Profile</button>
@@ -591,7 +591,7 @@
     <section class="screen active" id="friendsScreen">
         <div class="friends-header">
             <span class="friends-title">Chats</span>
-            <div class="search-wrapper">
+            <div class="search-box">
                 <span class="search-icon">🔍</span>
                 <input class="search-input" type="text" placeholder="Search user...">
             </div>
@@ -600,7 +600,7 @@
         <div class="friends-list">
             <div class="friend-item" onclick="showScreen('chat')">
                 <div class="friend-left">
-                    <div class="friend-avatar-wrap online">
+                    <div class="friend-pic online">
                         <div class="friend-avatar">A</div>
                     </div>
                     <div>
@@ -616,7 +616,7 @@
 
             <div class="friend-item">
                 <div class="friend-left">
-                    <div class="friend-avatar-wrap">
+                    <div class="friend-pic">
                         <div class="friend-avatar" style="background:#7b2d8b;">B</div>
                     </div>
                     <div>
@@ -631,7 +631,7 @@
 
             <div class="friend-item">
                 <div class="friend-left">
-                    <div class="friend-avatar-wrap">
+                    <div class="friend-pic">
                         <div class="friend-avatar" style="background:#d97706;">C</div>
                     </div>
                     <div>
@@ -645,65 +645,65 @@
             </div>
         </div>
 
-        <nav class="app-bottom-nav" aria-label="Primary">
-            <a class="app-nav-item" href="#" onclick="showScreen('chat'); return false;">
-                <span class="app-nav-icon">💬</span>
-                <span class="app-nav-label">Chat</span>
+        <nav class="nav-bar" aria-label="Primary">
+            <a class="nav-item" href="#" onclick="showScreen('chat'); return false;">
+                <span class="nav-icon">💬</span>
+                <span class="nav-text">Chat</span>
             </a>
-            <a class="app-nav-item active" href="#" onclick="showScreen('friends'); return false;">
-                <span class="app-nav-icon">👥</span>
-                <span class="app-nav-label">Friends</span>
+            <a class="nav-item active" href="#" onclick="showScreen('friends'); return false;">
+                <span class="nav-icon">👥</span>
+                <span class="nav-text">Friends</span>
             </a>
-            <a class="app-nav-item" href="#" onclick="showScreen('profile'); return false;">
-                <span class="app-nav-icon">👤</span>
-                <span class="app-nav-label">Profile</span>
+            <a class="nav-item" href="#" onclick="showScreen('profile'); return false;">
+                <span class="nav-icon">👤</span>
+                <span class="nav-text">Profile</span>
             </a>
-            <a class="app-nav-item" href="#" onclick="showScreen('settings'); return false;">
-                <span class="app-nav-icon">⚙️</span>
-                <span class="app-nav-label">Settings</span>
+            <a class="nav-item" href="#" onclick="showScreen('settings'); return false;">
+                <span class="nav-icon">⚙️</span>
+                <span class="nav-text">Settings</span>
             </a>
         </nav>
     </section>
 
     <section class="screen" id="profileScreen">
-        <div class="app-topbar">
-            <span class="app-back-btn" onclick="showScreen('friends')">‹</span>
-            <span class="app-topbar-title">Profile</span>
+        <div class="topbar">
+            <span class="back" onclick="showScreen('friends')">‹</span>
+            <span class="top-title">Profile</span>
         </div>
 
         <div class="profile-center">
-            <div class="avatar-wrapper">
+            <div class="avatar-box">
                 <div class="status-ring"></div>
                 <div class="profile-avatar">A</div>
             </div>
-            <div class="profile-display-name">Alice Johnson</div>
+            <div class="profile-name">Alice Johnson</div>
             <div class="profile-username">@alice</div>
         </div>
 
-        <nav class="app-bottom-nav" aria-label="Primary">
-            <a class="app-nav-item" href="#" onclick="showScreen('chat'); return false;">
-                <span class="app-nav-icon">💬</span>
-                <span class="app-nav-label">Chat</span>
+        <nav class="nav-bar" aria-label="Primary">
+            <a class="nav-item" href="#" onclick="showScreen('chat'); return false;">
+                <span class="nav-icon">💬</span>
+                <span class="nav-text">Chat</span>
             </a>
-            <a class="app-nav-item" href="#" onclick="showScreen('friends'); return false;">
-                <span class="app-nav-icon">👥</span>
-                <span class="app-nav-label">Friends</span>
+            <a class="nav-item" href="#" onclick="showScreen('friends'); return false;">
+                <span class="nav-icon">👥</span>
+                <span class="nav-text">Friends</span>
             </a>
-            <a class="app-nav-item active" href="#" onclick="showScreen('profile'); return false;">
-                <span class="app-nav-icon">👤</span>
-                <span class="app-nav-label">Profile</span>
+            <a class="nav-item active" href="#" onclick="showScreen('profile'); return false;">
+                <span class="nav-icon">👤</span>
+                <span class="nav-text">Profile</span>
             </a>
-            <a class="app-nav-item" href="#" onclick="showScreen('settings'); return false;">
-                <span class="app-nav-icon">⚙️</span>
-                <span class="app-nav-label">Settings</span>
+            <a class="nav-item" href="#" onclick="showScreen('settings'); return false;">
+                <span class="nav-icon">⚙️</span>
+                <span class="nav-text">Settings</span>
             </a>
         </nav>
     </section>
 
     <section class="screen" id="settingsScreen">
-        <div class="app-topbar">
-            <span class="app-back-btn" onclick="showScreen('friends')">‹</span>
-            <span class="app-topbar-title">Settings</span>
+        <div class="topbar">
+            <span class="back" onclick="showScreen('friends')">‹</span>
+            <span class="top-title">Settings</span>
         </div>
 
         <div class="settings-content">
@@ -721,37 +721,37 @@
                 <div class="setting-row">🗑 Delete Account</div>
             </div>
             <div class="settings-section">
-                <div class="setting-row setting-row-danger">↩ Logout</div>
+                <div class="setting-row row-danger">↩ Logout</div>
             </div>
             <div class="settings-section">
                 <div class="setting-row" onclick="showScreen('about')">📱 About App</div>
             </div>
         </div>
 
-        <nav class="app-bottom-nav" aria-label="Primary">
-            <a class="app-nav-item" href="#" onclick="showScreen('chat'); return false;">
-                <span class="app-nav-icon">💬</span>
-                <span class="app-nav-label">Chat</span>
+        <nav class="nav-bar" aria-label="Primary">
+            <a class="nav-item" href="#" onclick="showScreen('chat'); return false;">
+                <span class="nav-icon">💬</span>
+                <span class="nav-text">Chat</span>
             </a>
-            <a class="app-nav-item" href="#" onclick="showScreen('friends'); return false;">
-                <span class="app-nav-icon">👥</span>
-                <span class="app-nav-label">Friends</span>
+            <a class="nav-item" href="#" onclick="showScreen('friends'); return false;">
+                <span class="nav-icon">👥</span>
+                <span class="nav-text">Friends</span>
             </a>
-            <a class="app-nav-item" href="#" onclick="showScreen('profile'); return false;">
-                <span class="app-nav-icon">👤</span>
-                <span class="app-nav-label">Profile</span>
+            <a class="nav-item" href="#" onclick="showScreen('profile'); return false;">
+                <span class="nav-icon">👤</span>
+                <span class="nav-text">Profile</span>
             </a>
-            <a class="app-nav-item active" href="#" onclick="showScreen('settings'); return false;">
-                <span class="app-nav-icon">⚙️</span>
-                <span class="app-nav-label">Settings</span>
+            <a class="nav-item active" href="#" onclick="showScreen('settings'); return false;">
+                <span class="nav-icon">⚙️</span>
+                <span class="nav-text">Settings</span>
             </a>
         </nav>
     </section>
 
     <section class="screen" id="aboutScreen">
-        <div class="app-topbar">
-            <span class="app-back-btn" onclick="showScreen('settings')">‹</span>
-            <span class="app-topbar-title">About ChatApp</span>
+        <div class="topbar">
+            <span class="back" onclick="showScreen('settings')">‹</span>
+            <span class="top-title">About ChatApp</span>
         </div>
 
         <div class="about-content">
@@ -770,51 +770,51 @@
             </div>
 
             <div class="about-section">
-                <div class="about-section-title">Download Links</div>
+                <div class="section-title">Download Links</div>
                 <p class="about-copy">
                     You can place your app download links here for Android, iPhone, desktop, or the hosted web version.
                 </p>
-                <div class="download-links">
-                    <div class="download-link-card">
-                        <div class="download-link-label">Android App</div>
-                        <div class="download-link-note">Download the Android APK build of ChatApp.</div>
-                        <a class="download-link-action" href="https://drive.google.com/file/d/1zuLXBd8cGw_3bys8sakr7SHz0nIkREgM/view?usp=drivesdk" target="_blank" rel="noopener noreferrer">Download APK</a>
+                <div class="dl-list">
+                    <div class="dl-card">
+                        <div class="dl-label">Android App</div>
+                        <div class="dl-note">Download the Android APK build of ChatApp.</div>
+                        <a class="dl-action" href="https://drive.google.com/file/d/1zuLXBd8cGw_3bys8sakr7SHz0nIkREgM/view?usp=drivesdk" target="_blank" rel="noopener noreferrer">Download APK</a>
                     </div>
-                    <div class="download-link-card">
-                        <div class="download-link-label">iPhone App</div>
-                        <div class="download-link-note">Add your App Store link here.</div>
-                        <span class="download-link-action is-disabled">Coming Soon</span>
+                    <div class="dl-card">
+                        <div class="dl-label">iPhone App</div>
+                        <div class="dl-note">Add your App Store link here.</div>
+                        <span class="dl-action is-disabled">Coming Soon</span>
                     </div>
-                    <div class="download-link-card">
-                        <div class="download-link-label">Desktop App</div>
-                        <div class="download-link-note">Add your Windows or macOS installer link here.</div>
-                        <span class="download-link-action is-disabled">Coming Soon</span>
+                    <div class="dl-card">
+                        <div class="dl-label">Desktop App</div>
+                        <div class="dl-note">Add your Windows or macOS installer link here.</div>
+                        <span class="dl-action is-disabled">Coming Soon</span>
                     </div>
-                    <div class="download-link-card">
-                        <div class="download-link-label">Web App</div>
-                        <div class="download-link-note">Open the hosted web version of ChatApp.</div>
-                        <a class="download-link-action" href="#">Open Web App</a>
+                    <div class="dl-card">
+                        <div class="dl-label">Web App</div>
+                        <div class="dl-note">Open the hosted web version of ChatApp.</div>
+                        <a class="dl-action" href="#">Open Web App</a>
                     </div>
                 </div>
             </div>
         </div>
 
-        <nav class="app-bottom-nav" aria-label="Primary">
-            <a class="app-nav-item" href="#" onclick="showScreen('chat'); return false;">
-                <span class="app-nav-icon">💬</span>
-                <span class="app-nav-label">Chat</span>
+        <nav class="nav-bar" aria-label="Primary">
+            <a class="nav-item" href="#" onclick="showScreen('chat'); return false;">
+                <span class="nav-icon">💬</span>
+                <span class="nav-text">Chat</span>
             </a>
-            <a class="app-nav-item" href="#" onclick="showScreen('friends'); return false;">
-                <span class="app-nav-icon">👥</span>
-                <span class="app-nav-label">Friends</span>
+            <a class="nav-item" href="#" onclick="showScreen('friends'); return false;">
+                <span class="nav-icon">👥</span>
+                <span class="nav-text">Friends</span>
             </a>
-            <a class="app-nav-item" href="#" onclick="showScreen('profile'); return false;">
-                <span class="app-nav-icon">👤</span>
-                <span class="app-nav-label">Profile</span>
+            <a class="nav-item" href="#" onclick="showScreen('profile'); return false;">
+                <span class="nav-icon">👤</span>
+                <span class="nav-text">Profile</span>
             </a>
-            <a class="app-nav-item active" href="#" onclick="showScreen('settings'); return false;">
-                <span class="app-nav-icon">⚙️</span>
-                <span class="app-nav-label">Settings</span>
+            <a class="nav-item active" href="#" onclick="showScreen('settings'); return false;">
+                <span class="nav-icon">⚙️</span>
+                <span class="nav-text">Settings</span>
             </a>
         </nav>
     </section>
@@ -823,8 +823,8 @@
         <div class="chat-header">
             <div class="chat-header-card">
                 <span class="chat-back-btn" onclick="showScreen('friends')">‹</span>
-                <div class="chat-profile-trigger" onclick="showScreen('profile')">
-                    <div class="chat-avatar-wrap">
+                <div class="user-link" onclick="showScreen('profile')">
+                    <div class="chat-pic">
                         <div class="chat-avatar">A</div>
                     </div>
                     <div class="chat-username">alice</div>
@@ -849,7 +849,7 @@
 
         <div class="chat-footer">
             <div class="glass-input">
-                <input class="glass-message-input" placeholder="Message...">
+                <input class="msg-input" placeholder="Message...">
                 <button class="glass-send-btn">➤</button>
             </div>
         </div>

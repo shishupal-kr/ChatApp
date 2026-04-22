@@ -10,12 +10,12 @@
     <script src="/js/analytics.js"></script>
     <script src="/js/register.js" defer></script>
 </head>
-<body class="app-edge">
+<body class="edge">
 
-<div class="login-wrapper app-panel app-panel--edge">
+<div class="auth-wrap shell shell-edge">
 
     <div class="login-card">
-        <div class="register-header">
+        <div class="auth-head">
             <span onclick="goBack()" class="back-btn">‹</span>
             <h2>Create Account</h2>
         </div>
@@ -35,7 +35,7 @@
         <input id="confirmPassword" type="password" placeholder="Confirm Password">
 
         <button type="button" onclick="register()">Register</button>
-        <button type="button" class="register-button" onclick="goToLogin()">Back to Login</button>
+        <button type="button" class="auth-alt-btn" onclick="goToLogin()">Back to Login</button>
 
         <p id="errorMessage" style="color:red; font-size:13px; margin-top:10px;" aria-live="polite"></p>
     </div>

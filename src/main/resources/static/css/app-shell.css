@@ -32,7 +32,7 @@ body {
     color: var(--text-main);
 }
 
-.app-panel {
+.shell {
     width: 95%;
     max-width: 420px;
     height: calc(100dvh - env(safe-area-inset-top) - env(safe-area-inset-bottom));
@@ -47,13 +47,13 @@ body {
 }
 
 @media (max-width: 768px) {
-    body.app-edge {
+    body.edge {
         justify-content: stretch;
         align-items: stretch;
         padding: env(safe-area-inset-top) 0 0;
     }
 
-    .app-panel.app-panel--edge {
+    .shell.shell-edge {
         width: 100%;
         max-width: none;
         height: calc(100dvh - env(safe-area-inset-top));
@@ -68,7 +68,7 @@ body {
     }
 }
 
-.app-topbar {
+.topbar {
     position: relative;
     padding: 12px 18px 14px 18px;
     display: flex;
@@ -78,12 +78,12 @@ body {
     color: var(--text-main);
 }
 
-.app-topbar-title {
+.top-title {
     font-size: 20px;
     font-weight: 600;
 }
 
-.app-back-btn {
+.back {
     position: absolute;
     left: 18px;
     font-size: 20px;
@@ -92,7 +92,7 @@ body {
     color: var(--text-main);
 }
 
-.app-bottom-nav {
+.nav-bar {
     padding: 10px 16px calc(18px + env(safe-area-inset-bottom));
     background: linear-gradient(to top, rgba(15, 32, 39, 0.92), rgba(15, 32, 39, 0.6));
     backdrop-filter: blur(20px);
@@ -104,7 +104,7 @@ body {
     gap: 8px;
 }
 
-.app-nav-item {
+.nav-item {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -118,23 +118,23 @@ body {
     transition: opacity 0.2s ease, transform 0.2s ease, background 0.2s ease, color 0.2s ease;
 }
 
-.app-nav-item:hover {
+.nav-item:hover {
     opacity: 0.9;
     transform: translateY(-2px);
     color: var(--text-main);
 }
 
-.app-nav-item.active {
+.nav-item.active {
     background: rgba(79, 172, 254, 0.15);
     color: #4facfe;
 }
 
-.app-nav-icon {
+.nav-icon {
     font-size: 22px;
     line-height: 1;
 }
 
-.app-nav-label {
+.nav-text {
     font-size: 11px;
     font-weight: 500;
 }

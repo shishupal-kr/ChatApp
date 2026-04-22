@@ -15,18 +15,23 @@
   <script src="https://cdn.jsdelivr.net/npm/stompjs@2.3.3/lib/stomp.min.js" defer></script>
   <script src="/js/friends.js" defer></script>
 </head>
-<body class="app-edge" data-nav="friends">
+<body class="edge" data-nav="friends">
 
-<div class="friends-screen app-panel app-panel--edge">
+<div class="friends-page shell shell-edge">
 
   <div class="friends-header">
-    <span>Chats</span>
+    <span class="friends-title">Chats</span>
+    <button class="search-toggle" type="button" aria-label="Open search" aria-expanded="false" onclick="toggleSearch()">
+      <span class="search-toggle-icon">🔍</span>
+    </button>
+  </div>
 
-    <div class="search-wrapper">
+  <div id="searchPanel" class="search-panel" aria-hidden="true">
+    <div class="search-box">
       <span class="search-icon">🔍</span>
       <input type="text"
              id="searchBox"
-             placeholder="Search user..."
+             placeholder="Search Username to Chat..."
              onkeyup="handleSearchKey(event)">
     </div>
   </div>
