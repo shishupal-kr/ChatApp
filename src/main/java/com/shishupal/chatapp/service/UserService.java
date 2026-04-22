@@ -18,7 +18,11 @@ public class UserService {
     private final JwtService jwtService;
 
     // Registers user; throws exception if username/email exists
-    public String registerUser(RegisterRequest request){
+   public String registerUser(RegisterRequest request){
+
+       if (!isValidEmail(request.getEmail())) {
+           throw new IllegalArgumentException("Invalid email format");
+       }
 
        String normalizedEmail = normalizeEmail(request.getEmail());
 
@@ -85,6 +89,36 @@ public class UserService {
         userRepository.save(user);
     }
 
+    public void changeEmail(String username, String currentPassword, String newEmail) {
+        User user = findByUsername(username);
+
+        if (currentPassword == null || currentPassword.isBlank()) {
+            throw new IllegalArgumentException("Current password is required");
+        }
+
+        if (newEmail == null || newEmail.isBlank()) {
+            throw new IllegalArgumentException("New email is required");
+        }
+
+        if (!isValidEmail(newEmail)) {
+            throw new IllegalArgumentException("Invalid email format");
+        }
+
+        if (!passwordEncoder.matches(currentPassword, user.getPassword())) {
+            throw new IllegalArgumentException("Current password is incorrect");
+        }
+
+        String normalizedEmail = normalizeEmail(newEmail);
+        userRepository.findByEmailIgnoreCase(normalizedEmail)
+                .filter(existing -> !existing.getUsername().equals(user.getUsername()))
+                .ifPresent(existing -> {
+                    throw new IllegalArgumentException("Email already exists");
+                });
+
+        user.setEmail(normalizedEmail);
+        userRepository.save(user);
+    }
+
     public User findByUsername(String username) {
         return userRepository.findByUsername(username)
                 .orElseThrow(() -> new IllegalArgumentException("User not found"));
@@ -103,5 +137,10 @@ public class UserService {
     private String normalizeUsername(String username) {
         String trimmed = username == null ? "" : username.trim();
         return trimmed.isEmpty() ? null : trimmed;
+    }
+
+    private boolean isValidEmail(String email) {
+        String trimmed = email == null ? "" : email.trim();
+        return trimmed.matches("^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$");
     }
 }

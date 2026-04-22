@@ -52,6 +52,42 @@ async function updatePassword() {
     }
 }
 
+async function updateEmail() {
+    var currentPassword = document.getElementById("currentPassword");
+    var newEmail = document.getElementById("newEmail");
+
+    if (!currentPassword.value.trim() || !newEmail.value.trim()) {
+        alert("Current password and new email are required");
+        return;
+    }
+
+    if (!newEmail.checkValidity()) {
+        alert("Enter a valid email address");
+        return;
+    }
+
+    try {
+        var res = await apiFetch("/api/auth/change-email", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                currentPassword: currentPassword.value.trim(),
+                newEmail: newEmail.value.trim()
+            })
+        });
+
+        if (!res.ok) {
+            alert((await res.text()) || "Email update failed");
+            return;
+        }
+
+        alert("Email updated");
+        newEmail.value = "";
+    } catch (e) {
+        alert("Email update failed");
+    }
+}
+
 // ===== Account =====
 function deleteAccount() {
     if (!confirm("Are you sure?")) return;
