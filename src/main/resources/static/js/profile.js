@@ -21,6 +21,7 @@ async function loadProfile() {
         }
 
         const user = await response.json();
+        const isOwnProfile = !profileUsername;
 
         document.getElementById("displayName").innerText =
             user.fullName || user.username;
@@ -31,14 +32,27 @@ async function loadProfile() {
         document.getElementById("profileAvatar").innerText =
             user.username.charAt(0).toUpperCase();
 
+        const emailEl = document.getElementById("profileEmail");
+        if (emailEl) {
+            if (isOwnProfile && user.email) {
+                emailEl.innerText = user.email;
+                emailEl.hidden = false;
+            } else {
+                emailEl.hidden = true;
+            }
+        }
+
         const ring = document.getElementById("statusRing");
+        if (ring) {
+            ring.classList.remove("online", "offline");
+        }
 
         if (user.status === "ONLINE") {
             ring.classList.add("online");
-            ring.classList.remove("offline");
+            ring.title = "Online";
         } else {
             ring.classList.add("offline");
-            ring.classList.remove("online");
+            ring.title = "Offline";
         }
 
     } catch (error) {
