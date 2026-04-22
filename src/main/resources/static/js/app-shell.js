@@ -1,3 +1,13 @@
+function setAppTheme(theme) {
+    const isLight = theme === "light";
+    document.body.classList.toggle("light-mode", isLight);
+    document.documentElement.classList.toggle("light-mode", isLight);
+}
+
+function applyStoredTheme() {
+    setAppTheme(localStorage.getItem("theme"));
+}
+
 const APP_SHELL_NAV_ITEMS = [
     {
         key: "chat",
@@ -52,4 +62,10 @@ function renderAppBottomNav() {
     mount.replaceWith(nav);
 }
 
+applyStoredTheme();
+window.addEventListener("storage", function (event) {
+    if (event.key === "theme") {
+        setAppTheme(event.newValue);
+    }
+});
 document.addEventListener("DOMContentLoaded", renderAppBottomNav);

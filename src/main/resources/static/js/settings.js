@@ -1,9 +1,16 @@
 // ===== Theme =====
 function toggleTheme() {
-    document.body.classList.toggle("light-mode");
-    localStorage.setItem("theme",
-        document.body.classList.contains("light-mode") ? "light" : "dark");
+    const isLight = !document.body.classList.contains("light-mode");
+    setAppTheme(isLight ? "light" : "dark");
+    localStorage.setItem("theme", isLight ? "light" : "dark");
 }
+
+function applyStoredTheme() {
+    const theme = localStorage.getItem("theme");
+    setAppTheme(theme);
+}
+
+applyStoredTheme();
 
 // ===== Navigation =====
 function goBack() {

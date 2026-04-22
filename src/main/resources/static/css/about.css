@@ -21,8 +21,8 @@
 }
 
 .about-section {
-    background: rgba(255, 255, 255, 0.1);
-    border: 1px solid rgba(255, 255, 255, 0.15);
+    background: rgba(12, 13, 18, 0.92);
+    border: 1px solid rgba(255, 255, 255, 0.06);
     border-radius: 22px;
     padding: 16px;
 }
@@ -36,7 +36,7 @@
 
 .about-copy {
     margin: 0 0 14px;
-    color: rgba(255, 255, 255, 0.74);
+    color: rgba(220, 235, 255, 0.56);
     font-size: 14px;
     line-height: 1.55;
 }
@@ -58,7 +58,7 @@
 .dl-card {
     display: block;
     padding: 10px 0;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
 }
 
 .dl-card:last-child {
@@ -74,20 +74,20 @@
 .dl-note {
     margin-top: 2px;
     font-size: 13px;
-    color: rgba(255, 255, 255, 0.68);
+    color: rgba(220, 235, 255, 0.48);
 }
 
 .dl-action {
     display: inline-block;
     margin-top: 8px;
-    color: #8fd0ff;
+    color: #8bc3ff;
     font-size: 13px;
     font-weight: 600;
     text-decoration: underline;
 }
 
 .dl-action.is-disabled {
-    color: rgba(255, 255, 255, 0.76);
+    color: rgba(220, 235, 255, 0.36);
     pointer-events: none;
     text-decoration: none;
 }
@@ -105,4 +105,33 @@
     .about-title {
         font-size: 22px;
     }
+}
+
+body.light-mode .about-section {
+    background: linear-gradient(145deg, rgba(255, 255, 255, 0.76), rgba(205, 231, 255, 0.56));
+    border-color: rgba(255, 255, 255, 0.86);
+    box-shadow: 0 12px 28px rgba(83, 133, 194, 0.14), inset 0 1px 0 rgba(255, 255, 255, 0.95);
+}
+
+body.light-mode .about-title,
+body.light-mode .section-title,
+body.light-mode .dl-label {
+    color: #0e2644;
+}
+
+body.light-mode .about-copy,
+body.light-mode .dl-note {
+    color: rgba(14, 38, 68, 0.64);
+}
+
+body.light-mode .dl-card {
+    border-bottom-color: rgba(14, 38, 68, 0.08);
+}
+
+body.light-mode .dl-action {
+    color: #1f73ff;
+}
+
+body.light-mode .dl-action.is-disabled {
+    color: rgba(14, 38, 68, 0.42);
 }
