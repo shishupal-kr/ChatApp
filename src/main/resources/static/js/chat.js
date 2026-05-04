@@ -8,6 +8,36 @@ var readTriggered = false;
 let currentPage = 0;
 let pageSize = 20;
 let loading = false;
+var kolkataTimeFormatter = new Intl.DateTimeFormat("en-IN", {
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: true
+});
+
+function formatKolkataWallTime(timestamp) {
+    if (!timestamp) {
+        return "";
+    }
+
+    var match = String(timestamp).match(
+        /^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2})(?::(\d{2}))?/
+    );
+
+    if (match) {
+        var hour = Number(match[4]);
+        var minute = match[5];
+        var suffix = hour >= 12 ? "pm" : "am";
+        var hour12 = hour % 12 || 12;
+        return String(hour12).padStart(2, "0") + ":" + minute + " " + suffix;
+    }
+
+    var date = new Date(timestamp);
+    if (Number.isNaN(date.getTime())) {
+        return "";
+    }
+
+    return kolkataTimeFormatter.format(date);
+}
 
 function updateChatViewportHeight() {
     if (window.innerWidth > 768) {
@@ -342,8 +372,7 @@ function renderMessage(msg, prepend = false) {
     var time = document.createElement("span");
     time.classList.add("message-time");
 
-    var date = msg.timestamp ? new Date(msg.timestamp) : new Date();
-    var formattedTime = date.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+    var formattedTime = formatKolkataWallTime(msg.timestamp) || formatKolkataWallTime(new Date().toISOString());
 
     if (msg.edited === true) {
         time.innerHTML = '<span class="edited-label">edited</span> ' + formattedTime;
@@ -424,8 +453,7 @@ function updateEditedMessageInUI(msg) {
 
     var timeSpan = wrapper.querySelector(".message-time");
     if (timeSpan) {
-        var date = msg.timestamp ? new Date(msg.timestamp) : new Date();
-        var formattedTime = date.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+        var formattedTime = formatKolkataWallTime(msg.timestamp) || formatKolkataWallTime(new Date().toISOString());
         timeSpan.innerHTML = '<span class="edited-label">edited</span> ' + formattedTime;
     }
 }

@@ -2,6 +2,8 @@ package com.shishupal.chatapp.dto;
 
 import lombok.*;
 
+import java.time.LocalDateTime;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -14,6 +16,7 @@ public class ChatMessage {
     private String content;
     private String status;
     private Long id;
+    private LocalDateTime timestamp;
     private Boolean edited;
     private Long replyToId;
     private String replyToSender;

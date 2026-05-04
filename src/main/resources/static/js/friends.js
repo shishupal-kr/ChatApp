@@ -4,6 +4,36 @@ var currentUser = getUser();
 var token = getToken();
 var stompClient = null;
 var searchOpen = false;
+var kolkataTimeFormatter = new Intl.DateTimeFormat("en-IN", {
+  hour: "2-digit",
+  minute: "2-digit",
+  hour12: true
+});
+
+function formatKolkataWallTime(timestamp) {
+  if (!timestamp) {
+    return "";
+  }
+
+  var match = String(timestamp).match(
+    /^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2})(?::(\d{2}))?/
+  );
+
+  if (match) {
+    var hour = Number(match[4]);
+    var minute = match[5];
+    var suffix = hour >= 12 ? "pm" : "am";
+    var hour12 = hour % 12 || 12;
+    return String(hour12).padStart(2, "0") + ":" + minute + " " + suffix;
+  }
+
+  var date = new Date(timestamp);
+  if (Number.isNaN(date.getTime())) {
+    return "";
+  }
+
+  return kolkataTimeFormatter.format(date);
+}
 
 
 // ===== Initial Data =====
@@ -124,11 +154,9 @@ function renderConversations(conversations) {
     var div = document.createElement("div");
     div.className = "friend-item";
 
-    // Format timestamp to HH:MM
     var time = "";
     if (conv.timestamp) {
-      var date = new Date(conv.timestamp);
-      time = date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+      time = formatKolkataWallTime(conv.timestamp);
     }
 
     // Unread count (if backend not sending yet, default 0)
