@@ -121,7 +121,7 @@
     padding: 0;
     border: none;
     background: transparent;
-    color: white;
+    color: rgba(244, 249, 255, 0.96);
     outline: none;
     font-size: 14px;
     font-weight: 500;
@@ -314,6 +314,10 @@ body.light-mode .search-box {
     background: linear-gradient(145deg, rgba(255, 255, 255, 0.94), rgba(209, 232, 255, 0.72));
     border-color: rgba(255, 255, 255, 0.86);
     box-shadow: inset 0 1px 0 rgba(255,255,255,0.96), 0 8px 20px rgba(84,133,194,0.1);
+}
+
+body.light-mode #searchBox {
+    color: #0e2644;
 }
 
 body.light-mode .search-box:focus-within {
