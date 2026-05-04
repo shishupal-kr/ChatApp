@@ -12,10 +12,12 @@ import org.springframework.stereotype.Controller;
 
 import java.security.Principal;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 
 @Controller
 @RequiredArgsConstructor
 public class ChatController {
+    private static final ZoneId KOLKATA_ZONE = ZoneId.of("Asia/Kolkata");
 
     private final SimpMessagingTemplate messagingTemplate;
     private final ChatMessageRepository chatMessageRepository;
@@ -55,7 +57,7 @@ public class ChatController {
                 .sender(sender)
                 .receiver(receiver)
                 .content(message.getContent())
-                .timestamp(LocalDateTime.now())
+                .timestamp(LocalDateTime.now(KOLKATA_ZONE))
                 .status(ChatMessageEntity.MessageStatus.SENT)
                 .replyToId(replyToEntity == null ? null : replyToEntity.getId())
                 .replyToSender(replyToEntity == null ? null : replyToEntity.getSender())
@@ -64,6 +66,7 @@ public class ChatController {
 
          chatMessageRepository.save(entity);
          message.setId(entity.getId());
+         message.setTimestamp(entity.getTimestamp());
          if (replyToEntity != null) {
              message.setReplyToId(replyToEntity.getId());
              message.setReplyToSender(replyToEntity.getSender());
@@ -176,6 +179,7 @@ public class ChatController {
         // Update DTO before sending
         message.setId(entity.getId());
         message.setContent(entity.getContent());
+        message.setTimestamp(entity.getTimestamp());
         message.setEdited(true);
 
         messagingTemplate.convertAndSendToUser(
