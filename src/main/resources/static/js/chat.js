@@ -470,9 +470,15 @@ function updateSelectionHeader() {
         normalHeader.style.display = "none";
         selectionHeader.style.display = "flex";
         selectionCount.innerText = selectedMessages.size;
+        if (window.appShellBack) {
+            window.appShellBack.push("chat-selection");
+        }
     } else {
         normalHeader.style.display = "flex";
         selectionHeader.style.display = "none";
+        if (window.appShellBack) {
+            window.appShellBack.release("chat-selection");
+        }
     }
 }
 
@@ -561,12 +567,19 @@ function openForwardModal() {
         });
 
         document.getElementById("forwardModal").style.display = "flex";
+        if (window.appShellBack) {
+            window.appShellBack.push("chat-forward-modal");
+        }
     });
 }
 
 function closeForwardModal() {
     const modal = document.getElementById("forwardModal");
+    const wasOpen = modal && modal.style.display !== "none";
     if (modal) modal.style.display = "none";
+    if (wasOpen && window.appShellBack) {
+        window.appShellBack.release("chat-forward-modal");
+    }
 }
 
 function sendForward(receiver) {
@@ -656,6 +669,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 // ===== Reply =====
 function startReply(messageId, content) {
+    const wasClosed = replyingToMessageId == null;
     replyingToMessageId = messageId;
 
     var preview = document.getElementById("replyPreview");
@@ -665,14 +679,23 @@ function startReply(messageId, content) {
         preview.innerText = content;
         bar.style.display = "flex";
     }
+
+    if (wasClosed && window.appShellBack) {
+        window.appShellBack.push("chat-reply");
+    }
 }
 
 function cancelReply() {
+    const wasOpen = replyingToMessageId != null;
     replyingToMessageId = null;
 
     var bar = document.getElementById("replyBar");
     if (bar) {
         bar.style.display = "none";
+    }
+
+    if (wasOpen && window.appShellBack) {
+        window.appShellBack.release("chat-reply");
     }
 }
 

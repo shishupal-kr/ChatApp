@@ -286,6 +286,9 @@ function toggleSearch() {
   }
 
   searchOpen = true;
+  if (window.appShellBack) {
+    window.appShellBack.push("friends-search");
+  }
 
   const panel = document.getElementById("searchPanel");
   const input = document.getElementById("searchBox");
@@ -306,6 +309,7 @@ function toggleSearch() {
 }
 
 function closeSearch() {
+  const wasOpen = searchOpen;
   searchOpen = false;
 
   const panel = document.getElementById("searchPanel");
@@ -324,6 +328,10 @@ function closeSearch() {
   if (input) {
     input.value = "";
     input.blur();
+  }
+
+  if (wasOpen && window.appShellBack) {
+    window.appShellBack.release("friends-search");
   }
 
   apiFetch("/api/chat/conversations")
