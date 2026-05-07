@@ -81,18 +81,7 @@
 .login-button {
     padding: 14px;
     width: 100%;
-    background: linear-gradient(145deg, #74baff 0%, #2f7cff 44%, #0f2e86 100%);
-    border: none;
-    color: white;
     border-radius: 22px;
-    font-weight: bold;
-    cursor: pointer;
-    box-shadow: 0 10px 18px rgba(47, 124, 255, 0.28);
-    transition: 0.3s ease;
-}
-
-.login-button:hover {
-    transform: translateY(-2px);
 }
 
 /* ===== Secondary Button ===== */
@@ -100,18 +89,7 @@
     padding: 14px;
     width: 100%;
     margin-top: 12px;
-    background: rgba(255,255,255,0.05);
-    border: 1px solid rgba(255,255,255,0.08);
-    color: white;
     border-radius: 22px;
-    font-weight: bold;
-    cursor: pointer;
-    backdrop-filter: blur(15px);
-    transition: 0.3s ease;
-}
-
-.auth-alt-btn:hover {
-    transform: translateY(-2px);
 }
 
 @media (max-width: 768px) {
@@ -149,15 +127,4 @@ body.light-mode .login-input::placeholder {
 body.light-mode .login-input:focus {
     border-color: rgba(40, 120, 255, 0.34);
     box-shadow: 0 0 12px rgba(40, 120, 255, 0.2);
-}
-
-body.light-mode .login-button {
-    background: linear-gradient(145deg, #d7f3ff, #2f80ff);
-    box-shadow: 0 10px 18px rgba(47, 128, 255, 0.22);
-}
-
-body.light-mode .auth-alt-btn {
-    background: linear-gradient(145deg, rgba(255, 255, 255, 0.84), rgba(205, 231, 255, 0.62));
-    border-color: rgba(255, 255, 255, 0.86);
-    color: #0e2644;
 }

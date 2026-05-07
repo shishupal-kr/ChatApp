@@ -16,6 +16,16 @@
     --accent: linear-gradient(145deg, #86caff 0%, #2f7cff 44%, #0c2a80 100%);
     --accent-color: #86caff;
     --accent-soft: rgba(123, 185, 255, 0.12);
+    --button-shadow:
+        0 14px 28px rgba(22, 74, 178, 0.28),
+        inset 0 1px 0 rgba(255, 255, 255, 0.16);
+    --button-shadow-hover:
+        0 18px 34px rgba(22, 74, 178, 0.34),
+        inset 0 1px 0 rgba(255, 255, 255, 0.22);
+    --button-shadow-soft:
+        0 12px 24px rgba(0, 0, 0, 0.24),
+        inset 0 1px 0 rgba(255, 255, 255, 0.08);
+    --button-focus-ring: 0 0 0 4px rgba(111, 192, 255, 0.16);
     --topbar-bg: linear-gradient(180deg, rgba(18, 20, 26, 0.88), rgba(10, 10, 14, 0.5));
     --nav-bg: linear-gradient(180deg, rgba(14, 16, 22, 0.96), rgba(8, 8, 12, 0.78));
     --panel-fg: rgba(255, 255, 255, 0.08);
@@ -34,6 +44,16 @@ body.light-mode {
     --accent: linear-gradient(145deg, #d7f3ff, #2f80ff);
     --accent-color: #2878ff;
     --accent-soft: rgba(40, 120, 255, 0.22);
+    --button-shadow:
+        0 16px 30px rgba(47, 128, 255, 0.22),
+        inset 0 1px 0 rgba(255, 255, 255, 0.36);
+    --button-shadow-hover:
+        0 18px 34px rgba(47, 128, 255, 0.26),
+        inset 0 1px 0 rgba(255, 255, 255, 0.46);
+    --button-shadow-soft:
+        0 14px 28px rgba(92, 132, 190, 0.16),
+        inset 0 1px 0 rgba(255, 255, 255, 0.72);
+    --button-focus-ring: 0 0 0 4px rgba(40, 120, 255, 0.14);
     --topbar-bg: linear-gradient(180deg, rgba(244, 250, 255, 0.28), rgba(191, 220, 255, 0.18));
     --nav-bg: linear-gradient(180deg, rgba(241, 248, 255, 0.34), rgba(188, 221, 255, 0.26));
     --panel-fg: rgba(255, 255, 255, 0.92);
@@ -199,4 +219,93 @@ body::after {
 .nav-text {
     font-size: 11px;
     font-weight: 500;
+}
+
+:is(.login-button, .auth-alt-btn, .login-card button, .setting-btn, .danger-btn, .glass-send-btn, .forward-box button, .search-toggle) {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    border: 1px solid transparent;
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
+    transform: translateY(0) scale(1);
+    transition:
+        transform 0.22s ease,
+        box-shadow 0.24s ease,
+        border-color 0.24s ease,
+        background 0.24s ease,
+        filter 0.24s ease;
+    will-change: transform;
+}
+
+:is(.login-button, .auth-alt-btn, .login-card button, .setting-btn, .danger-btn, .glass-send-btn, .forward-box button, .search-toggle)::before {
+    content: "";
+    position: absolute;
+    inset: 1px;
+    border-radius: inherit;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.18), rgba(255, 255, 255, 0.02) 46%, rgba(255, 255, 255, 0));
+    opacity: 0.75;
+    pointer-events: none;
+    z-index: -1;
+}
+
+:is(.login-button, .login-card button, .setting-btn, .glass-send-btn, .forward-box button) {
+    background: var(--accent);
+    box-shadow: var(--button-shadow);
+}
+
+:is(.auth-alt-btn, .search-toggle) {
+    background: var(--surface-bg);
+    border-color: var(--surface-border);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    box-shadow: var(--button-shadow-soft);
+}
+
+.danger-btn {
+    background: linear-gradient(145deg, rgba(255, 120, 120, 0.24), rgba(189, 34, 60, 0.8));
+    border-color: rgba(255, 183, 183, 0.18);
+    box-shadow:
+        0 14px 28px rgba(184, 37, 61, 0.18),
+        inset 0 1px 0 rgba(255, 255, 255, 0.14);
+}
+
+:is(.login-button, .login-card button, .setting-btn, .glass-send-btn, .forward-box button):hover {
+    transform: translateY(-2px) scale(1.01);
+    box-shadow: var(--button-shadow-hover), var(--button-focus-ring);
+    filter: saturate(1.04) brightness(1.03);
+}
+
+:is(.auth-alt-btn, .search-toggle, .danger-btn):hover {
+    transform: translateY(-2px) scale(1.01);
+    box-shadow: var(--button-shadow-soft), var(--button-focus-ring);
+    filter: brightness(1.03);
+}
+
+:is(.login-button, .auth-alt-btn, .login-card button, .setting-btn, .danger-btn, .glass-send-btn, .forward-box button, .search-toggle):active {
+    transform: translateY(1px) scale(0.98);
+    filter: brightness(0.98);
+}
+
+:is(.login-button, .auth-alt-btn, .login-card button, .setting-btn, .danger-btn, .glass-send-btn, .forward-box button, .search-toggle):focus-visible {
+    outline: none;
+    box-shadow: var(--button-shadow), var(--button-focus-ring);
+}
+
+:is(.back, .back-btn, .chat-back-btn, .selection-back, .reply-close, .sel-actions span) {
+    transition:
+        transform 0.18s ease,
+        color 0.18s ease,
+        opacity 0.18s ease,
+        text-shadow 0.18s ease;
+}
+
+:is(.back, .back-btn, .chat-back-btn, .selection-back, .reply-close, .sel-actions span):hover {
+    transform: translateY(-1px) scale(1.06);
+    text-shadow: 0 0 18px rgba(111, 192, 255, 0.22);
+}
+
+:is(.back, .back-btn, .chat-back-btn, .selection-back, .reply-close, .sel-actions span):active {
+    transform: translateY(0) scale(0.96);
 }
