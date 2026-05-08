@@ -104,6 +104,7 @@
     color: rgba(220, 235, 255, 0.46);
     font-size: 22px;
     line-height: 1;
+    flex: 0 0 auto;
 }
 
 .field-block {
@@ -116,8 +117,9 @@
 .setting-input {
     flex: 1;
     min-width: 0;
+    min-height: 46px;
     padding: 12px 14px;
-    border-radius: 14px;
+    border-radius: 999px;
     border: none;
     outline: none;
     background: rgba(12, 13, 18, 0.92);
@@ -131,9 +133,22 @@
 
 .setting-btn {
     min-width: 88px;
-    padding: 12px 14px;
-    border-radius: 14px;
+    min-height: 46px;
+    padding: 12px 18px;
+    border-radius: 999px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 auto;
     white-space: nowrap;
+    border-color: rgba(131, 192, 255, 0.22);
+    box-shadow:
+        0 10px 20px rgba(22, 74, 178, 0.2),
+        inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+
+.setting-btn::before {
+    display: none;
 }
 
 .danger-group {
@@ -145,13 +160,21 @@
 }
 
 .danger-btn {
-    display: flex;
+    display: inline-flex;
     align-items: center;
     justify-content: center;
     gap: 8px;
     width: 100%;
-    padding: 12px 14px;
-    border-radius: 16px;
+    min-height: 48px;
+    padding: 12px 18px;
+    border-radius: 999px;
+    box-shadow:
+        0 12px 22px rgba(184, 37, 61, 0.16),
+        inset 0 1px 0 rgba(255, 255, 255, 0.06);
+}
+
+.danger-btn::before {
+    display: none;
 }
 
 @media (max-width: 768px) {
@@ -208,6 +231,13 @@ body.light-mode .setting-row:hover {
 body.light-mode .setting-input {
     background: linear-gradient(145deg, rgba(255, 255, 255, 0.94), rgba(209, 232, 255, 0.72));
     color: #0e2644;
+}
+
+body.light-mode .setting-btn {
+    border-color: rgba(79, 143, 255, 0.26);
+    box-shadow:
+        0 10px 20px rgba(47, 128, 255, 0.14),
+        inset 0 1px 0 rgba(255, 255, 255, 0.12);
 }
 
 body.light-mode .setting-input::placeholder {

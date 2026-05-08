@@ -242,18 +242,12 @@ body::after {
 }
 
 :is(.login-button, .auth-alt-btn, .login-card button, .setting-btn, .danger-btn, .glass-send-btn, .forward-box button, .search-toggle)::before {
-    content: "";
-    position: absolute;
-    inset: 1px;
-    border-radius: inherit;
-    background: linear-gradient(180deg, rgba(255, 255, 255, 0.18), rgba(255, 255, 255, 0.02) 46%, rgba(255, 255, 255, 0));
-    opacity: 0.75;
-    pointer-events: none;
-    z-index: -1;
+    content: none;
 }
 
 :is(.login-button, .login-card button, .setting-btn, .glass-send-btn, .forward-box button) {
     background: var(--accent);
+    border-color: rgba(131, 192, 255, 0.22);
     box-shadow: var(--button-shadow);
 }
 
@@ -270,7 +264,7 @@ body::after {
     border-color: rgba(255, 183, 183, 0.18);
     box-shadow:
         0 14px 28px rgba(184, 37, 61, 0.18),
-        inset 0 1px 0 rgba(255, 255, 255, 0.14);
+        inset 0 1px 0 rgba(255, 255, 255, 0.06);
 }
 
 :is(.login-button, .auth-alt-btn, .login-card button, .setting-btn, .danger-btn, .glass-send-btn, .forward-box button, .search-toggle):active {
