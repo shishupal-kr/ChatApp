@@ -38,13 +38,9 @@ public class SecurityConfig {
 
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/", "/index.html").permitAll()
+                        .requestMatchers("/html/login.html", "/html/register.html").permitAll()
                         .requestMatchers("/api/auth/**").permitAll()
-                        .requestMatchers("/chat/**").permitAll()
-                        .requestMatchers("/topic/**").permitAll()
-                        .requestMatchers("/app/**").permitAll()
-                        .requestMatchers("/html/**", "/css/**", "/js/**", "/favicon.ico", "/gapk.png").permitAll()
-                        .requestMatchers("/**/*.html").permitAll()
-                        .requestMatchers("/images/**").permitAll()
+                        .requestMatchers("/css/**", "/js/**", "/favicon.ico", "/gapk.png").permitAll()
                         .requestMatchers("/api/chat/**").authenticated()
                         .anyRequest().authenticated()
                 )
