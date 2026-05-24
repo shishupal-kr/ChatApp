@@ -82,11 +82,6 @@ public class ChatService {
         return conversations;
     }
 
-    // Privacy-safe: return only usernames from previous chats
-    public List<String> getConversationUsers(String username) {
-        return repository.findDistinctChatUsers(username);
-    }
-
     public Set<String> getOnlineUsers() {
         return onlineUserService.getOnlineUsers();
     }
